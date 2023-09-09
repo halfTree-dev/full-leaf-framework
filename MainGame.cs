@@ -9,6 +9,10 @@ public class MainGame : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
+    // 窗口尺寸
+    public static int SCREEN_WIDTH;
+    public static int SCREEN_HEIGHT;
+
     public MainGame()
     {
         _graphics = new GraphicsDeviceManager(this);

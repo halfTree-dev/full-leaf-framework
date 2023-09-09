@@ -1,5 +1,4 @@
-﻿// Program.cs
-// 程序入口文件
+﻿// 启动程序
 
 using var game = new full_leaf_framework.MainGame();
 game.Run();
