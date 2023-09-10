@@ -122,7 +122,7 @@ public class InputManager {
         foreach (TrackingKey trackingKey in tracking_keys) {
             if (trackingKey.key_id == key) {
                 return trackingKey;
-                // 返回特定的案件对象
+                // 返回特定的按键对象
             }
         }
         return null;
