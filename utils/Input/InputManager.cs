@@ -13,25 +13,26 @@ namespace full_leaf_framework.Input;
 /// <summary>
 /// 输入控制器
 /// </summary>
-public class InputManager {
+public class InputManager
+{
 
     /// <summary>
     /// 追踪中的按键列表
     /// </summary>
-    private List<TrackingKey> tracking_keys;
+    private List<TrackingKey> trackingKeys;
     /// <summary>
     /// 按键情况记录
     /// </summary>
-    private List<KeyPressedState> previous_keys;
+    private List<KeyPressedState> previousKeys;
     /// <summary>
     /// 保留按键记录的数目
     /// </summary>
-    private int previous_keys_count = 50;
+    private int previousKeysCount = 50;
 
     /// <summary>
     /// 追踪中的鼠标
     /// </summary>
-    private TrackingMouse tracking_mouse;
+    private TrackingMouse trackingMouse;
 
     // 向记录中增添按键
     internal delegate void InsertKeyLog(TrackingKey trackingKey);
@@ -40,30 +41,36 @@ public class InputManager {
     /// <summary>
     /// 创建一个输入控制器
     /// </summary>
-    public InputManager() {
-        tracking_keys = new List<TrackingKey>();
-        previous_keys = new List<KeyPressedState>();
+    public InputManager()
+    {
+        trackingKeys = new List<TrackingKey>();
+        previousKeys = new List<KeyPressedState>();
         log_insert_key = new InsertKeyLog(InsertNewKey);
-        tracking_mouse = new TrackingMouse();
+        trackingMouse = new TrackingMouse();
     }
 
     /// <summary>
     /// 插入追踪按键
     /// </summary>
     /// <param name="keys">按键组</param>
-    public void InsertTrackingKeys(Keys[] keys) {
-        foreach (Keys key in keys) {
+    public void InsertTrackingKeys(Keys[] keys)
+    {
+        foreach (Keys key in keys)
+        {
             // 创建追踪按键
             TrackingKey new_key = new TrackingKey(key, this);
             bool is_repeated = false;
-            foreach (TrackingKey tracked_key in tracking_keys) {
-                if (tracked_key.key_id == key) {
+            foreach (TrackingKey tracked_key in trackingKeys)
+            {
+                if (tracked_key.keyId == key)
+                {
                     is_repeated = true;
                 }
             }
-            if (!is_repeated) {
+            if (!is_repeated)
+            {
                 // 不重复时增添按键
-                tracking_keys.Add(new_key);
+                trackingKeys.Add(new_key);
             }
         }
     }
@@ -72,12 +79,16 @@ public class InputManager {
     /// 移除追踪按键
     /// </summary>
     /// <param name="keys">按键组</param>
-    public void ExcludeTrackingKeys(Keys[] keys) {
-        foreach (Keys key in keys) {
+    public void ExcludeTrackingKeys(Keys[] keys)
+    {
+        foreach (Keys key in keys)
+        {
             // 检测并移除按键
-            foreach (TrackingKey trackingKey in tracking_keys) {
-                if (trackingKey.key_id == key) {
-                    tracking_keys.Remove(trackingKey);
+            foreach (TrackingKey trackingKey in trackingKeys)
+            {
+                if (trackingKey.keyId == key)
+                {
+                    trackingKeys.Remove(trackingKey);
                     break;
                 }
             }
@@ -87,13 +98,15 @@ public class InputManager {
     /// <summary>
     /// 更新输入控制器状态
     /// </summary>
-    public void Update(GameTime gameTime) {
+    public void Update(GameTime gameTime)
+    {
         KeyboardState kstate = Keyboard.GetState();
-        foreach (TrackingKey key in tracking_keys) {
+        foreach (TrackingKey key in trackingKeys)
+        {
             key.Update(kstate, gameTime);
         }
         // 键盘
-        tracking_mouse.Update(gameTime);
+        trackingMouse.Update(gameTime);
         // 鼠标
     }
 
@@ -101,13 +114,16 @@ public class InputManager {
     /// 添加新的按键记录
     /// </summary>
     /// <param name="trackingKey">要添加的按键</param>
-    private void InsertNewKey(TrackingKey trackingKey) {
-        if (previous_keys.Count <= previous_keys_count) {
-            previous_keys.Add(new KeyPressedState(trackingKey.key_id, trackingKey.hold_time));
+    private void InsertNewKey(TrackingKey trackingKey)
+    {
+        if (previousKeys.Count <= previousKeysCount)
+        {
+            previousKeys.Add(new KeyPressedState(trackingKey.keyId, trackingKey.holdTime));
         }
-        else {
-            previous_keys.Remove(previous_keys[0]);
-            previous_keys.Add(new KeyPressedState(trackingKey.key_id, trackingKey.hold_time));
+        else
+        {
+            previousKeys.Remove(previousKeys[0]);
+            previousKeys.Add(new KeyPressedState(trackingKey.keyId, trackingKey.holdTime));
             // 删除最晚的按键记录
         }
         // 添加新的按键记录
@@ -118,9 +134,12 @@ public class InputManager {
     /// </summary>
     /// <param name="key">按键id</param>
     /// <returns>按键状态对象</returns>
-    public TrackingKey GetTrackingKey(Keys key) {
-        foreach (TrackingKey trackingKey in tracking_keys) {
-            if (trackingKey.key_id == key) {
+    public TrackingKey GetTrackingKey(Keys key)
+    {
+        foreach (TrackingKey trackingKey in trackingKeys)
+        {
+            if (trackingKey.keyId == key)
+            {
                 return trackingKey;
                 // 返回特定的按键对象
             }
@@ -132,8 +151,9 @@ public class InputManager {
     /// 获取追踪中的鼠标
     /// </summary>
     /// <returns>鼠标状态对象</returns>
-    public TrackingMouse GetTrackingMouse() {
-        return tracking_mouse;
+    public TrackingMouse GetTrackingMouse()
+    {
+        return trackingMouse;
     }
 
 }
@@ -141,12 +161,13 @@ public class InputManager {
 /// <summary>
 /// 追踪中的按键
 /// </summary>
-public class TrackingKey {
+public class TrackingKey
+{
 
     /// <summary>
     /// 按键id
     /// </summary>
-    public Keys key_id;
+    public Keys keyId;
     /// <summary>
     /// 是否刚刚激活
     /// </summary>
@@ -162,7 +183,7 @@ public class TrackingKey {
     /// <summary>
     /// 按压时间
     /// </summary>
-    public float hold_time;
+    public float holdTime;
 
     // 按键松开时记录
     internal event InputManager.InsertKeyLog insert_released_key;
@@ -170,11 +191,12 @@ public class TrackingKey {
     /// <summary>
     /// 生成一个追踪按键
     /// </summary>
-    /// <param name="key_id">按键id</param>
-    public TrackingKey(Keys key_id, InputManager inputManager) {
-        this.key_id = key_id;
+    /// <param name="keyId">按键id</param>
+    public TrackingKey(Keys keyId, InputManager inputManager)
+    {
+        this.keyId = keyId;
         fired = pressed = released = false;
-        hold_time = 0f;
+        holdTime = 0f;
         // 委托InputManager添加记录
         insert_released_key = new InputManager.InsertKeyLog(inputManager.log_insert_key);
     }
@@ -182,25 +204,30 @@ public class TrackingKey {
     /// <summary>
     /// 更新该追踪按键
     /// </summary>
-    public void Update(KeyboardState kstate, GameTime gameTime) {
-        if (kstate.IsKeyDown(key_id)) {
+    public void Update(KeyboardState kstate, GameTime gameTime)
+    {
+        if (kstate.IsKeyDown(keyId))
+        {
             pressed = true;
             released = false;
-            if (hold_time == 0f) {
+            if (holdTime == 0f)
+            {
                 fired = true;
                 // 刚刚按下
             }
-            hold_time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            holdTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
-        else {
+        else
+        {
             pressed = false;
             fired = false;
-            if (hold_time > 0f) {
+            if (holdTime > 0f)
+            {
                 released = true;
                 // 刚刚松开
                 insert_released_key(this);
             }
-            hold_time = 0f;
+            holdTime = 0f;
         }
     }
 
@@ -209,7 +236,8 @@ public class TrackingKey {
 /// <summary>
 /// 按键按下情况
 /// </summary>
-public class KeyPressedState {
+public class KeyPressedState
+{
 
     /// <summary>
     /// 按键id
@@ -218,14 +246,15 @@ public class KeyPressedState {
     /// <summary>
     /// 曾今持续的按键时间
     /// </summary>
-    public float pressed_time;
+    public float pressedTime;
 
     /// <summary>
     /// 创造一个按键按下情况
     /// </summary>
-    public KeyPressedState(Keys key, float pressed_time) {
+    public KeyPressedState(Keys key, float pressedTime)
+    {
         this.key = key;
-        this.pressed_time = pressed_time;
+        this.pressedTime = pressedTime;
     }
 
 }
@@ -233,7 +262,8 @@ public class KeyPressedState {
 /// <summary>
 /// 追踪中的鼠标
 /// </summary>
-public class TrackingMouse {
+public class TrackingMouse
+{
 
     /// <summary>
     /// 鼠标的位置
@@ -254,7 +284,7 @@ public class TrackingMouse {
     /// <summary>
     /// 按压时间（左键）
     /// </summary>
-    public float hold_time_left;
+    public float holdTimeLeft;
     /// <summary>
     /// 是否刚刚激活（右键）
     /// </summary>
@@ -270,60 +300,70 @@ public class TrackingMouse {
     /// <summary>
     /// 按压时间（右键）
     /// </summary>
-    public float hold_time_right;
+    public float holdTimeRight;
 
     /// <summary>
     /// 创建鼠标追踪器
     /// </summary>
-    public TrackingMouse() {
+    public TrackingMouse()
+    {
         pos = new Point(0, 0);
         firedLeft = pressedLeft = releasedLeft = false;
         firedRight = pressedRight = releasedRight = false;
-        hold_time_left = hold_time_right = 0f;
+        holdTimeLeft = holdTimeRight = 0f;
     }
 
     /// <summary>
     /// 更新该追踪按键
     /// </summary>
-    public void Update(GameTime gameTime) {
+    public void Update(GameTime gameTime)
+    {
         MouseState mstate = Mouse.GetState();
         pos = mstate.Position;
-        if (mstate.LeftButton == ButtonState.Pressed) {
+        if (mstate.LeftButton == ButtonState.Pressed)
+        {
             pressedLeft = true;
             releasedLeft = false;
-            if (hold_time_left == 0f) {
+            if (holdTimeLeft == 0f)
+            {
                 firedLeft = true;
                 // 刚刚按下
             }
-            hold_time_left += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            holdTimeLeft += (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
-        else {
+        else
+        {
             pressedLeft = false;
             firedLeft = false;
-            if (hold_time_left > 0f) {
+            if (holdTimeLeft > 0f)
+            {
                 releasedLeft = true;
                 // 刚刚松开
             }
-            hold_time_left = 0f;
+            holdTimeLeft = 0f;
         }
         // 鼠标左键判定
-        if (mstate.RightButton == ButtonState.Pressed) {
+        if (mstate.RightButton == ButtonState.Pressed)
+        {
             pressedRight = true;
             releasedRight = false;
-            if (hold_time_right == 0f) {
+            if (holdTimeRight == 0f)
+            {
                 firedRight = true;
                 // 刚刚按下
             }
-            hold_time_right += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            holdTimeRight += (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
-        else {
+        else
+        {
             pressedRight = false;
             firedRight = false;
-            if (hold_time_right > 0f) {
+            if (holdTimeRight > 0f)
+            {
                 releasedRight = true;
                 // 刚刚松开
             }
-            hold_time_right = 0f;
+            holdTimeRight = 0f;
         }
         // 鼠标右键判定
     }

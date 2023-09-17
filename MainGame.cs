@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using full_leaf_framework.Input;
 
 namespace full_leaf_framework;
 
@@ -13,6 +14,8 @@ public class MainGame : Game
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
 
+    public InputManager inputManager;
+
     public MainGame()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -23,7 +26,8 @@ public class MainGame : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
-
+        inputManager = new InputManager();
+        inputManager.InsertTrackingKeys(new Keys[2] {Keys.A, Keys.D});
         base.Initialize();
     }
 
@@ -38,7 +42,7 @@ public class MainGame : Game
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
-
+        inputManager.Update(gameTime);
         // TODO: Add your update logic here
 
         base.Update(gameTime);

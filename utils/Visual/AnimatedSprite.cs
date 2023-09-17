@@ -1,0 +1,141 @@
+/*
+AnimatedSprite.cs
+通过精灵图集来构建动画对象。
+辅助Drawable类型来使用。
+*/
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+namespace full_leaf_framework.Visual;
+
+/// <summary>
+/// 动画对象
+/// </summary>
+public class AnimatedSprite {
+
+    /// <summary>
+    /// 图集材质
+    /// </summary>
+    private Texture2D texture;
+    /// <summary>
+    /// 图集的行数
+    /// </summary>
+    private int rows;
+    /// <summary>
+    /// 图集的列数
+    /// </summary>
+    private int columns;
+    /// <summary>
+    /// 当前对应帧
+    /// </summary>
+    private int currentFrame;
+    /// <summary>
+    /// 总帧数
+    /// </summary>
+    private int totalFrames;
+    /// <summary>
+    /// 帧之间的间隔时间
+    /// </summary>
+    private float frameDelay;
+    /// <summary>
+    /// 帧切换计时器
+    /// </summary>
+    private float currentFrameDelay;
+
+    private int width;
+    /// <summary>
+    /// 单个精灵的宽度
+    /// </summary>
+    public int Width { get => width; }
+    private int height;
+    /// <summary>
+    /// 单个精灵的高度
+    /// </summary>
+    public int Height { get => height; }
+
+    /// <summary>
+    /// 创建一个动画对象
+    /// </summary>
+    /// <param name="texture">图集材质</param>
+    /// <param name="rows">行数</param>
+    /// <param name="columns">列数</param>
+    /// <param name="frameDelay">帧之间的间隔时间</param>
+    /// <param name="startFrame">开始的帧数</param>
+    public AnimatedSprite(Texture2D texture, int rows = 1, int columns = 1,
+    float frameDelay = 0f, int startFrame = 0) {
+        this.texture = texture;
+        this.rows = rows;
+        this.columns = columns;
+        currentFrame = startFrame;
+        totalFrames = rows * columns;
+        this.frameDelay = frameDelay;
+        currentFrameDelay = 0f;
+        this.width = texture.Width / columns;
+        this.height = texture.Height / rows;
+    }
+
+    /// <summary>
+    /// 返回动画的单帧大小
+    /// </summary>
+    public Vector2 ReturnFrameSize() {
+        return new Vector2(width, height);
+    }
+
+    /// <summary>
+    /// 刷新该动画
+    /// </summary>
+    public void Update(GameTime gameTime) {
+        currentFrameDelay += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        if (currentFrameDelay > frameDelay) {
+            currentFrame++;
+            // currentFrame从0开始，一直到(totalFrames-1)帧
+            if (currentFrame >= totalFrames) {
+                currentFrame = 0;
+            }
+            currentFrameDelay = 0f;
+        }
+    }
+
+    /// <summary>
+    /// 在一个上下界范围中刷新该动画
+    /// </summary>
+    /// <param name="down">帧数下界</param>
+    /// <param name="up">帧数上界</param>
+    public void Update(GameTime gameTime, int down, int up) {
+        if (currentFrame < down) { currentFrame = down; }
+        if (currentFrame > up) { currentFrame = up; }
+        currentFrameDelay += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        if (currentFrameDelay > frameDelay) {
+            currentFrame++;
+            if (currentFrame > up) {
+                currentFrame = down;
+            }
+            currentFrameDelay = 0f;
+        }
+    }
+
+    /// <summary>
+    /// 绘制动画，
+    /// 当使用Draw方法时，动画会被居中绘制在指定坐标，
+    /// 请指定相应锚点
+    /// </summary>
+    /// <param name="location">位置</param>
+    /// <param name="anchorPoint">锚点</param>
+    /// <param name="effects">绘制附加效果</param>
+    /// <param name="angle">旋转角度</param>
+    public void Draw(SpriteBatch spriteBatch, Vector2 location, Vector2 anchorPoint,
+    SpriteEffects effects = SpriteEffects.None, float angle = 0, float scale = 1) {
+        int currentRow = currentFrame / columns;
+        int currentColumn = currentFrame % columns;
+        // 截取对应图集中的单个精灵
+        Rectangle sourceRectangle = new Rectangle(width * currentColumn,
+        height * currentRow, width, height);
+        // 绘制它
+        spriteBatch.Draw(texture, location - new Vector2(width / 2, height / 2) - anchorPoint,
+        sourceRectangle, Color.White, angle, new Vector2(width / 2, height / 2) + anchorPoint,
+        scale, effects, 1);
+        #warning 是先scale再angle?我指定的锚点应该是放缩后的坐标还是前的？
+    }
+
+}
