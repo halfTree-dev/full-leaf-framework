@@ -132,10 +132,10 @@ public class AnimatedSprite {
         Rectangle sourceRectangle = new Rectangle(width * currentColumn,
         height * currentRow, width, height);
         // 绘制它
-        spriteBatch.Draw(texture, location - new Vector2(width / 2, height / 2) - anchorPoint,
+        spriteBatch.Draw(texture, location - anchorPoint,
         sourceRectangle, Color.White, angle, new Vector2(width / 2, height / 2) + anchorPoint,
         scale, effects, 1);
-        #warning 是先scale再angle?我指定的锚点应该是放缩后的坐标还是前的？
+        // 破案了，spriteBatch默认是居中绘制，好吧，我输了，居然花了许久去考虑这一点
     }
 
 }

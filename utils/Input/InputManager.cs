@@ -215,6 +215,9 @@ public class TrackingKey
                 fired = true;
                 // 刚刚按下
             }
+            else {
+                fired = false;
+            }
             holdTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
         else
@@ -226,6 +229,9 @@ public class TrackingKey
                 released = true;
                 // 刚刚松开
                 insert_released_key(this);
+            }
+            else {
+                released = false;
             }
             holdTime = 0f;
         }

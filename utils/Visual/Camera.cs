@@ -113,9 +113,28 @@ public class Camera {
     /// 更新相机
     /// </summary>
     public void Update(GameTime gameTime) {
+        IsRangeAvailable();
     }
 
-    // 注：瓦片地图的左上角为（0,0）
+    /// <summary>
+    /// 检查摄像机的参数是否合法
+    /// </summary>
+    private void IsRangeAvailable() {
+        float camera_ratio = cameraRange.X / cameraRange.Y;
+        float draw_ratio = drawRange.Width / (float)drawRange.Height;
+        // 屏幕的显示比例应当相等
+        if (MathF.Abs(camera_ratio - draw_ratio) > 0.01f) {
+            throw new Exception("摄像机的镜头长宽比应当和绘制区域的长宽比等同");
+        }
+    }
+
+    /// <summary>
+    /// 获取从cameraRange转为drawRange的倍率
+    /// </summary>
+    private float GetRangeRatio() {
+        IsRangeAvailable();
+        return drawRange.Width / cameraRange.X;
+    }
 
     /// <summary>
     /// 绘制所有对象
@@ -151,6 +170,7 @@ public class Camera {
             }
             catch {}
         }
+        drawTargets.Clear();
     }
 
     /// <summary>
@@ -162,6 +182,7 @@ public class Camera {
         mixture_scale *= obj.sizeScale;
         // 实际大小的倍率
         float changed_scale = mixture_scale * scale;
+        changed_scale *= GetRangeRatio();
         // 屏幕缩放的倍率
         Vector2 draw_pos = ReturnScalePos(obj.pos);
         // 绘制的坐标

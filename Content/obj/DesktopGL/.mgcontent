@@ -4,6 +4,7 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>D:/C# Project/full-leaf-framework/Content/Characters/test.png</File>
     <File>D:/C# Project/full-leaf-framework/Content/Fonts/debugFont.spritefont</File>
   </SourceFiles>
   <DestFiles>

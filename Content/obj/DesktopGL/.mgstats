@@ -1,2 +1,3 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"D:/C# Project/full-leaf-framework/Content/Characters/test.png","D:/C# Project/full-leaf-framework/Content/bin/DesktopGL/Characters/test.xnb","TextureProcessor","Texture2DContent",396,40085,1.0594867
 "D:/C# Project/full-leaf-framework/Content/Fonts/debugFont.spritefont","D:/C# Project/full-leaf-framework/Content/bin/DesktopGL/Fonts/debugFont.xnb","FontDescriptionProcessor","SpriteFontContent",2008,21538,0.9292899

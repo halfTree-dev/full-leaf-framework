@@ -24,3 +24,4 @@ D:\C# Project\full-leaf-framework\obj\Debug\net6.0\full-leaf-framework.pdb
 D:\C# Project\full-leaf-framework\obj\Debug\net6.0\full-leaf-framework.genruntimeconfig.cache
 D:\C# Project\full-leaf-framework\obj\Debug\net6.0\ref\full-leaf-framework.dll
 D:\C# Project\full-leaf-framework\bin\Debug\net6.0\Content\Fonts\debugFont.xnb
+D:\C# Project\full-leaf-framework\bin\Debug\net6.0\Content\Characters\test.xnb

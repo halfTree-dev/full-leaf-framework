@@ -18,9 +18,13 @@ public class Drawable {
     /// </summary>
     public AnimatedSprite currentAnimation;
     /// <summary>
-    /// 动画在游戏内表现的实际大小的倍率
+    /// 动画在游戏内表现的实际大小
     /// </summary>
     public float sizeScale;
+    // #warning 不行，这样不能适应不同大小的Camera范围
+    // 实际上这个写法没有问题，这是对一个一定大小的精灵做固定比例的放缩，其实也是在本质上修改了图片的基础大小
+    // 那我可能会问了：欸，我要是摄像机的囊括范围更改了怎么办？
+    // 问题不大，因为游戏内修改使用scale不冲突，并且你要是要改cameraRange的话，那就算预处理，这个也行。
     /// <summary>
     /// 所处位置
     /// </summary>
