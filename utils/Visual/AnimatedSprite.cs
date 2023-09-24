@@ -118,7 +118,6 @@ public class AnimatedSprite {
     /// <summary>
     /// 绘制动画，
     /// 当使用Draw方法时，动画会被居中绘制在指定坐标，
-    /// 请指定相应锚点
     /// </summary>
     /// <param name="location">位置</param>
     /// <param name="anchorPoint">锚点</param>
@@ -131,11 +130,17 @@ public class AnimatedSprite {
         // 截取对应图集中的单个精灵
         Rectangle sourceRectangle = new Rectangle(width * currentColumn,
         height * currentRow, width, height);
-        // 绘制它
-        spriteBatch.Draw(texture, location - anchorPoint,
+        // 绘制它（锚点引起的坐标改变被提前处理）
+        spriteBatch.Draw(texture, location,
         sourceRectangle, Color.White, angle, new Vector2(width / 2, height / 2) + anchorPoint,
         scale, effects, 1);
         // 破案了，spriteBatch默认是居中绘制，好吧，我输了，居然花了许久去考虑这一点
+        // 又破案了，原来origin居然还会决定绘制的中心位置，我去，我居然还花了这么久调坐标
+        /*
+        最后再来总结一下spriteBatch的绘制流程：
+        通过origin决定图片的中心位置，然后根据location将图片绘制，接着再以这个中心位置进行scale
+        所以Camera只需要给出转化后的pos即可，无需其他处理
+        */
     }
 
 }

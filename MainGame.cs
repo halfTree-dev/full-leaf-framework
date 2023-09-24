@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using full_leaf_framework.Input;
 using full_leaf_framework.Visual;
+using System;
+
 
 namespace full_leaf_framework;
 
@@ -19,6 +21,7 @@ public class MainGame : Game
     public static Camera camera;
 
     public Drawable test;
+    public Drawable test2;
 
     public MainGame()
     {
@@ -36,7 +39,8 @@ public class MainGame : Game
     {
         // TODO: Add your initialization logic here
         inputManager = new InputManager();
-        inputManager.InsertTrackingKeys(new Keys[6] {Keys.A, Keys.D, Keys.W, Keys.S, Keys.Up, Keys.Down});
+        inputManager.InsertTrackingKeys(new Keys[8] {Keys.A, Keys.D, Keys.W, Keys.S,
+        Keys.Up, Keys.Down, Keys.Left, Keys.Right});
         base.Initialize();
     }
 
@@ -48,7 +52,9 @@ public class MainGame : Game
         new Vector2(0, 0), new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
         // 测试物体
         test = new Drawable(new AnimatedSprite(Content.Load<Texture2D>("Characters/test")), new Vector2(0, 0),
-        new Vector2(0, 0), 1);
+        new Vector2(0, 50), 1);
+        test2 = new Drawable(new AnimatedSprite(Content.Load<Texture2D>("Characters/test")), new Vector2(100, 0),
+        new Vector2(0, -50), 1);
 
         // TODO: use this.Content to load your game content here
     }
@@ -77,8 +83,15 @@ public class MainGame : Game
         if (inputManager.GetTrackingKey(Keys.Down).fired) {
             camera.scale -= 0.1f;
         }
+        if (inputManager.GetTrackingKey(Keys.Left).pressed) {
+            test.angle -= MathF.PI / 24;
+        }
+        if (inputManager.GetTrackingKey(Keys.Right).pressed) {
+            test.angle += MathF.PI / 24;
+        }
         // 添加绘制物体
         camera.insertObject(test);
+        camera.insertObject(test2);
         // TODO: Add your update logic here
 
         base.Update(gameTime);
