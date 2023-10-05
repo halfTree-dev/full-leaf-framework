@@ -21,7 +21,7 @@
     遍历所有的方向是不现实的，所以我们要采取更加明智的方法。
 
     这个推论我也没有证明，但是我还是要用它：
-    将两个多边形所有的边所在的直线作为直线l进行依次测试，
+    将两个多边形所有的边所在的直线作为直线t进行依次测试，
     如果都不行，则再不存在其它的直线满足条件。
     其实就是，只需要依次在每条边的垂直线做投影即可。
 
@@ -80,7 +80,27 @@ public class Polygon : Shape {
 
     public override bool IsCollision(Line line)
     {
-        throw new System.NotImplementedException();
+        bool result = true;
+        Line verticalLine; Line projectLine; Line targetProjectLine;
+        // 如果能找到一个分隔轴使得投影点不在投影线段上即可断定点在多边形外部
+        for (int i = 0; i < points.Length - 1; i++) {
+            verticalLine = new Line(points[i], points[i + 1]).SpawnVerticalLine(Vector2.Zero);
+            // 对每一条边创建一个投影轴
+            projectLine = GetWidestProjectLine(verticalLine, this);
+            // 对指定直线投影
+            targetProjectLine = line.Project(verticalLine);
+            if (!targetProjectLine.IsCollision(projectLine)) {
+                result = false; // 在多边形外部
+            }
+        }
+        // 除了对于多边形本身的判断，还有将直线作为分割线的判断
+        verticalLine = line.SpawnVerticalLine(Vector2.Zero);
+        projectLine = GetWidestProjectLine(verticalLine, this);
+        targetProjectLine = line.Project(verticalLine);
+        if (!targetProjectLine.IsCollision(projectLine)) {
+            result = false; // 在多边形外部
+        }
+        return result;
     }
 
     public override bool IsCollision(Circle circle)
@@ -90,12 +110,74 @@ public class Polygon : Shape {
 
     public override bool IsCollision(Polygon polygon)
     {
-        throw new System.NotImplementedException();
+        bool result = true;
+        Line verticalLine; Line projectLine; Line targetProjectLine;
+        // 如果能找到一个分隔轴使得投影点不在投影线段上即可断定点在多边形外部
+        for (int i = 0; i < points.Length - 1; i++) {
+            verticalLine = new Line(points[i], points[i + 1]).SpawnVerticalLine(Vector2.Zero);
+            // 对每一条边创建一个投影轴
+            projectLine = GetWidestProjectLine(verticalLine, this);
+            targetProjectLine = GetWidestProjectLine(verticalLine, polygon);
+            // 对两个多边形的直线分别投影
+            if (!targetProjectLine.IsCollision(projectLine)) {
+                result = false; // 有所分离
+            }
+        }
+        // 对另外一个多边形再来一次
+        for (int i = 0; i < polygon.points.Length - 1; i++) {
+            verticalLine = new Line(polygon.points[i], polygon.points[i + 1]).SpawnVerticalLine(Vector2.Zero);
+            // 对每一条边创建一个投影轴
+            projectLine = GetWidestProjectLine(verticalLine, this);
+            targetProjectLine = GetWidestProjectLine(verticalLine, polygon);
+            // 对两个多边形的直线分别投影
+            if (!targetProjectLine.IsCollision(projectLine)) {
+                result = false; // 有所分离
+            }
+        }
+        return result;
     }
 
     public override bool IsPointInside(Vector2 point)
     {
-        throw new System.NotImplementedException();
+        bool result = true;
+        // 如果能找到一个分隔轴使得投影点不在投影线段上即可断定点在多边形外部
+        for (int i = 0; i < points.Length - 1; i++) {
+            Line verticalLine = new Line(points[i], points[i + 1]).SpawnVerticalLine(Vector2.Zero);
+            // 对每一条边创建一个投影轴
+            Line projectLine = GetWidestProjectLine(verticalLine, this);
+            // 对指定直线投影
+            if (!projectLine.IsPointInside(point)) {
+                result = false; // 在多边形外部
+            }
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// 获取多边形的最宽的投影线
+    /// </summary>
+    /// <param name="verticalLine">投影面</param>
+    /// <param name="polygon">多边形</param>
+    private static Line GetWidestProjectLine(Line verticalLine, Polygon polygon) {
+        // 对每一条边创建一个投影轴
+        Vector2 pointL = verticalLine.ProjectPoint(polygon.points[0]);
+        Vector2 pointR = verticalLine.ProjectPoint(polygon.points[1]);
+        // 由两个point决定最广投影线
+        for (int j = 2; j < polygon.points.Length; j++) {
+            Vector2 currentPoint = verticalLine.ProjectPoint(polygon.points[j]);
+            // 如果这个点带来的投影范围更广，取代之
+            if (Vector2.Distance(currentPoint, pointL) > Vector2.Distance(currentPoint, pointR) &&
+            Vector2.Distance(currentPoint, pointL) > Vector2.Distance(pointL, pointR)) {
+                pointR = currentPoint;
+            }
+            if (Vector2.Distance(currentPoint, pointR) > Vector2.Distance(currentPoint, pointL) &&
+            Vector2.Distance(currentPoint, pointR) > Vector2.Distance(pointL, pointR)) {
+                pointL = currentPoint;
+            }
+        }
+        // 决定最广投影线
+        Line projectLine = new Line(pointL, pointR);
+        return projectLine;
     }
 
     public override void Rotate(float angle)

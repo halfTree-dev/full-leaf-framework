@@ -32,7 +32,8 @@ public class Circle : Shape {
 
     public override bool IsCollision(Circle circle)
     {
-        throw new System.NotImplementedException();
+        // 圆心距小于半径和
+        return Vector2.Distance(circle.Points[0], points[0]) <= radius + circle.radius;
     }
 
     public override bool IsCollision(Polygon polygon)
@@ -42,7 +43,8 @@ public class Circle : Shape {
 
     public override bool IsPointInside(Vector2 point)
     {
-        throw new System.NotImplementedException();
+        // 点到圆心距离在半径内
+        return Vector2.Distance(point, points[0]) <= radius;
     }
 
     public override void Rotate(float angle)
