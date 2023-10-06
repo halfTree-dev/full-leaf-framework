@@ -105,7 +105,8 @@ public class Polygon : Shape {
 
     public override bool IsCollision(Circle circle)
     {
-        throw new System.NotImplementedException();
+        // 大山拔腿就跑
+        return circle.IsCollision(this);
     }
 
     public override bool IsCollision(Polygon polygon)
@@ -158,7 +159,7 @@ public class Polygon : Shape {
     /// </summary>
     /// <param name="verticalLine">投影面</param>
     /// <param name="polygon">多边形</param>
-    private static Line GetWidestProjectLine(Line verticalLine, Polygon polygon) {
+    public static Line GetWidestProjectLine(Line verticalLine, Polygon polygon) {
         // 对每一条边创建一个投影轴
         Vector2 pointL = verticalLine.ProjectPoint(polygon.points[0]);
         Vector2 pointR = verticalLine.ProjectPoint(polygon.points[1]);
