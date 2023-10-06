@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using full_leaf_framework.Input;
 using full_leaf_framework.Visual;
+using full_leaf_framework.Physics;
 using System;
 
 
@@ -39,8 +40,8 @@ public class MainGame : Game
     {
         // TODO: Add your initialization logic here
         inputManager = new InputManager();
-        inputManager.InsertTrackingKeys(new Keys[8] {Keys.A, Keys.D, Keys.W, Keys.S,
-        Keys.Up, Keys.Down, Keys.Left, Keys.Right});
+        inputManager.InsertTrackingKeys(new Keys[9] {Keys.A, Keys.D, Keys.W, Keys.S,
+        Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.E});
         base.Initialize();
     }
 
@@ -88,6 +89,51 @@ public class MainGame : Game
         }
         if (inputManager.GetTrackingKey(Keys.Right).pressed) {
             test.angle += MathF.PI / 24;
+        }
+        if (inputManager.GetTrackingKey(Keys.E).fired) {
+            // TestCase，启动！
+            float time = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            /*
+            // 1.直线不相交
+            Line line1 = new Line(new Vector2(0, 0), new Vector2(1, 2));
+            Line line2 = new Line(new Vector2(1, 1), new Vector2(2, 0));
+            Line line3 = new Line(new Vector2(0, 3), new Vector2(2, 3));
+            Console.WriteLine(line1.IsCollision(line2)); // f
+            Console.WriteLine(line1.IsCollision(line3)); // f
+            // 2.直线平行或重合
+            line1 = new Line(new Vector2(0, 0), new Vector2(1, 2));
+            line2 = new Line(new Vector2(1, 0), new Vector2(2, 2));
+            line3 = new Line(new Vector2(0.5f, 1), new Vector2(1.5f, 3));
+            Line line4 = new Line(new Vector2(1.5f, 3), new Vector2(2.5f, 5));
+            Console.WriteLine(line1.IsCollision(line2)); // f
+            Console.WriteLine(line1.IsCollision(line3)); // t
+            Console.WriteLine(line1.IsCollision(line4)); // f
+            // 3.直线相交
+            line1 = new Line(new Vector2(-1, -2), new Vector2(1, 2));
+            line2 = new Line(new Vector2(0.5f, 0), new Vector2(0.75f, 3));
+            line3 = new Line(new Vector2(-0.5f, -3), new Vector2(-0.5f, 3));
+            Console.WriteLine(line1.IsCollision(line2)); // t
+            Console.WriteLine(line1.IsCollision(line3)); // t
+            */
+            /*
+            // 4.线段和圆
+            Line line1 = new Line(new Vector2(0, 0), new Vector2(2, 2));
+            Circle circle1 = new Circle(new Vector2(2, 0), 1.2f);
+            Circle circle2 = new Circle(new Vector2(2, 0), 1.5f);
+            Console.WriteLine(line1.IsCollision(circle1)); // f
+            Console.WriteLine(line1.IsCollision(circle2)); // t
+            Line line2 = new Line(new Vector2(3, 1), new Vector2(3, -1));
+            circle1 = new Circle(new Vector2(2, 2), 1.2f);
+            circle2 = new Circle(new Vector2(2, 2), 1.7f);
+            Console.WriteLine(line2.IsCollision(circle1)); // f
+            Console.WriteLine(line2.IsCollision(circle2)); // t
+            // 5.圆和圆
+            circle1 = new Circle(new Vector2(0, 0), 3f);
+            circle2 = new Circle(new Vector2(4, 0), 2f);
+            Console.WriteLine(circle1.IsCollision(circle2)); // t
+            circle2 = new Circle(new Vector2(5, 1), 2f);
+            Console.WriteLine(circle2.IsCollision(circle1)); // f
+            */
         }
         // 添加绘制物体
         camera.insertObject(test);

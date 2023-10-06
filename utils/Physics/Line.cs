@@ -61,10 +61,10 @@ public class Line : Shape {
         // 从同一点指向目标点的向量
         Vector2 bpVector = point - points[0];
         // 判断是否共线(x1y2=x2y1)(包容些许误差)
-        if (beVector.X * bpVector.Y - beVector.Y * bpVector.X <= 0.01f) {
+        if (MathF.Abs(beVector.X * bpVector.Y - beVector.Y * bpVector.X) <= 0.001f) {
             // 判断向量的比值，0<=a<=1，即向量模be更大且同向
             if (bpVector.Length() <= beVector.Length() &&
-            bpVector.X * beVector.X >= 0f) {
+            bpVector.X * beVector.X + bpVector.Y * beVector.Y >= 0f) {
                 return true;
             }
         }
@@ -109,7 +109,7 @@ public class Line : Shape {
         // 两式相减得到y,x同理
         float[] line1 = GetLineEquation();
         float[] line2 = line.GetLineEquation();
-        if ((line1[0] * line2[1] - line2[0] * line1[1]) <= 0.001f) {
+        if (MathF.Abs(line1[0] * line2[1] - line2[0] * line1[1]) <= 0.001f) {
             return null;
         }
         float result_y = (line1[2] * line2[0] - line2[2] * line1[0]) /
