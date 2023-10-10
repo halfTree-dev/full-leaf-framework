@@ -171,7 +171,7 @@ public class Polygon : Shape {
             Vector2.Distance(currentPoint, pointL) > Vector2.Distance(pointL, pointR)) {
                 pointR = currentPoint;
             }
-            if (Vector2.Distance(currentPoint, pointR) > Vector2.Distance(currentPoint, pointL) &&
+            if (Vector2.Distance(currentPoint, pointR) >= Vector2.Distance(currentPoint, pointL) &&
             Vector2.Distance(currentPoint, pointR) > Vector2.Distance(pointL, pointR)) {
                 pointL = currentPoint;
             }

@@ -134,6 +134,17 @@ public class MainGame : Game
             circle2 = new Circle(new Vector2(5, 1), 2f);
             Console.WriteLine(circle2.IsCollision(circle1)); // f
             */
+            // 6.多边形和线段
+            Polygon polygon1 = new Polygon(new Vector2[4] {new Vector2(1, 1), new Vector2(3, 1),
+            new Vector2(4, 3), new Vector2(3, 3) });
+            Line line1 = new Line(new Vector2(1, 3), new Vector2(2, 3));
+            Line line2 = new Line(new Vector2(0, 1), new Vector2(1, 3));
+            Line line3 = new Line(new Vector2(2, 0), new Vector2(5, 2));
+            Line line4 = new Line(new Vector2(4, 1), new Vector2(3, 3));
+            Console.WriteLine(polygon1.IsCollision(line1)); // f
+            Console.WriteLine(polygon1.IsCollision(line2)); // f
+            Console.WriteLine(polygon1.IsCollision(line3)); // f
+            Console.WriteLine(polygon1.IsCollision(line4)); // t
         }
         // 添加绘制物体
         camera.insertObject(test);

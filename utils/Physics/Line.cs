@@ -28,6 +28,7 @@ public class Line : Shape {
         if (intersectionPoint == null) {
             // 平行或者重合
             // 仅当重合以及存在重合区间时相交，若存在重合区间，则必然有一方端点位于另一方上
+            // 有零向量时，返回值也是null，可以用IsPointInside方法做出相应的判断
             return IsPointInside(line.points[0]) || IsPointInside(line.points[1])
             || line.IsPointInside(points[0]) || line.IsPointInside(points[1]);
         }
@@ -107,8 +108,12 @@ public class Line : Shape {
         // A1x + B1y + C1 = 0, A2x + B2y + C2 = 0
         // A1A2x + B1A2y + C1A2 = 0, A2A1x + B2A1y + C2A1 = 0
         // 两式相减得到y,x同理
+        if (IsZeroVector(line) || IsZeroVector(this)) {
+            return null;
+        }
         float[] line1 = GetLineEquation();
         float[] line2 = line.GetLineEquation();
+        // 有零向量时，返回值也是null，表示无法相交
         if (MathF.Abs(line1[0] * line2[1] - line2[0] * line1[1]) <= 0.001f) {
             return null;
         }
