@@ -92,6 +92,15 @@ public class Polygon : Shape {
             if (!targetProjectLine.IsCollision(projectLine)) {
                 result = false; // 在多边形外部
             }
+            if (i == points.Length - 2) {
+                // 首尾相接的线段也算
+                verticalLine = new Line(points[i + 1], points[0]).SpawnVerticalLine(Vector2.Zero);
+                projectLine = GetWidestProjectLine(verticalLine, this);
+                targetProjectLine = line.Project(verticalLine);
+                if (!targetProjectLine.IsCollision(projectLine)) {
+                    result = false; // 在多边形外部
+                }
+            }
         }
         // 除了对于多边形本身的判断，还有将直线作为分割线的判断
         verticalLine = line.SpawnVerticalLine(Vector2.Zero);
@@ -123,6 +132,15 @@ public class Polygon : Shape {
             if (!targetProjectLine.IsCollision(projectLine)) {
                 result = false; // 有所分离
             }
+            if (i == points.Length - 2) {
+                // 首尾相接的线段也算
+                verticalLine = new Line(points[i + 1], points[0]).SpawnVerticalLine(Vector2.Zero);
+                projectLine = GetWidestProjectLine(verticalLine, this);
+                targetProjectLine = GetWidestProjectLine(verticalLine, polygon);
+                if (!targetProjectLine.IsCollision(projectLine)) {
+                    result = false; // 在多边形外部
+                }
+            }
         }
         // 对另外一个多边形再来一次
         for (int i = 0; i < polygon.points.Length - 1; i++) {
@@ -133,6 +151,15 @@ public class Polygon : Shape {
             // 对两个多边形的直线分别投影
             if (!targetProjectLine.IsCollision(projectLine)) {
                 result = false; // 有所分离
+            }
+            if (i == polygon.points.Length - 2) {
+                // 首尾相接的线段也算
+                verticalLine = new Line(polygon.points[i + 1], polygon.points[0]).SpawnVerticalLine(Vector2.Zero);
+                projectLine = GetWidestProjectLine(verticalLine, this);
+                targetProjectLine = GetWidestProjectLine(verticalLine, polygon);
+                if (!targetProjectLine.IsCollision(projectLine)) {
+                    result = false; // 在多边形外部
+                }
             }
         }
         return result;
