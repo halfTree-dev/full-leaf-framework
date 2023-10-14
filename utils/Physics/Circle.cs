@@ -54,42 +54,40 @@ public class Circle : Shape {
 
     public override bool IsCollision(Polygon polygon)
     {
-        // 只需要检查一条分离轴：圆心距离多边形上距离最短的一点即可
+        // 只需要检查分离轴：圆心距离多边形上距离最短的一点即可
         // 这个点不在顶点上就在线段上~
+        bool result = true;
         // 检查所有的边
-        Line minLine = new Line(Vector2.Zero, Vector2.Zero);
-        float minDistance = float.MaxValue;
         for (int i = 0; i < polygon.Points.Length - 1; i++) {
-            Line currentLine = new Line(polygon.Points[i], polygon.Points[i + 1]);
-            float currentDistance = currentLine.GetDistanceFromPoint(points[0]);
-            if (currentDistance < minDistance) {
-                minDistance = currentDistance;
-                minLine = currentLine;
+            Line verticalLine = new Line(polygon.Points[i], polygon.Points[i + 1]).SpawnVerticalLine(Vector2.Zero);
+            // 对每一条边创建一个投影轴
+            Line projectLine = Polygon.GetWidestProjectLine(verticalLine, polygon);
+            Line targetProjectLine = Project(verticalLine);
+            // 对两个多边形的直线分别投影
+            if (!targetProjectLine.IsCollision(projectLine)) {
+                result = false; // 有所分离
+            }
+            if (i == polygon.Points.Length - 2) {
+                // 首尾相接的线段也算
+                verticalLine = new Line(polygon.Points[i + 1], polygon.Points[0]).SpawnVerticalLine(Vector2.Zero);
+                projectLine = Polygon.GetWidestProjectLine(verticalLine, polygon);
+                targetProjectLine = Project(verticalLine);
+                if (!targetProjectLine.IsCollision(projectLine)) {
+                    result = false; // 在多边形外部
+                }
             }
         }
         // 检查所有的顶点
-        Vector2 minPoint = new Vector2(0, 0);
-        float minDistancePoint = float.MaxValue;
         for (int i = 0; i < polygon.Points.Length; i++) {
             Vector2 currentPoint = polygon.Points[i];
-            float currentDistancePoint = Vector2.Distance(currentPoint, points[0]);
-            if (currentDistancePoint < minDistancePoint) {
-                minDistancePoint = currentDistancePoint;
-                minPoint = currentPoint;
+            Line verticalLine = new Line(currentPoint, points[0]).SpawnVerticalLine(Vector2.Zero);
+            Line projectLine = Polygon.GetWidestProjectLine(verticalLine, polygon);
+            Line targetProjectLine = Project(verticalLine);
+            if (!targetProjectLine.IsCollision(projectLine)) {
+                result = false; // 有所分离
             }
         }
-        if (minDistance < minDistancePoint) {
-            Line verticalLine = minLine.SpawnVerticalLine(Vector2.Zero);
-            Line projectLine = Polygon.GetWidestProjectLine(verticalLine, polygon);
-            Line targetProjectLine = Project(verticalLine);
-            return projectLine.IsCollision(targetProjectLine);
-        }
-        else {
-            Line verticalLine = new Line(minPoint, points[0]);
-            Line projectLine = Polygon.GetWidestProjectLine(verticalLine, polygon);
-            Line targetProjectLine = Project(verticalLine);
-            return projectLine.IsCollision(targetProjectLine);
-        }
+        return result;
     }
 
     public override bool IsPointInside(Vector2 point)

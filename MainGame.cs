@@ -134,6 +134,7 @@ public class MainGame : Game
             circle2 = new Circle(new Vector2(5, 1), 2f);
             Console.WriteLine(circle2.IsCollision(circle1)); // f
             */
+            /*
             // 6.多边形和线段
             Polygon polygon1 = new Polygon(new Vector2[4] {new Vector2(1, 1), new Vector2(3, 1),
             new Vector2(4, 3), new Vector2(3, 3) });
@@ -145,6 +146,51 @@ public class MainGame : Game
             Console.WriteLine(polygon1.IsCollision(line2)); // f
             Console.WriteLine(polygon1.IsCollision(line3)); // f
             Console.WriteLine(polygon1.IsCollision(line4)); // t
+            polygon1 = new Polygon(new Vector2[5] {new Vector2(1, 4), new Vector2(1, -1),
+            new Vector2(4, 2), new Vector2(3, 5), new Vector2(2, 5) });
+            line1 = new Line(new Vector2(3, 0), new Vector2(4, 1));
+            line2 = new Line(new Vector2(4, 5), new Vector2(5, 5));
+            line3 = new Line(new Vector2(1, 7), new Vector2(5, 4));
+            line4 = new Line(new Vector2(0.5f, 3), new Vector2(0.5f, 5));
+            Line line5 = new Line(new Vector2(1, 5), new Vector2(2, 4.5f));
+            Line line6 = new Line(new Vector2(0, 0), new Vector2(4, 4));
+            Console.WriteLine(polygon1.IsCollision(line1)); // f
+            Console.WriteLine(polygon1.IsCollision(line2)); // f
+            Console.WriteLine(polygon1.IsCollision(line3)); // f
+            Console.WriteLine(polygon1.IsCollision(line4)); // f
+            Console.WriteLine(polygon1.IsCollision(line5)); // t
+            Console.WriteLine(polygon1.IsCollision(line6)); // t
+            */
+            /*
+            // 7.多边形之间
+            Polygon polygon1 = new Polygon(new Vector2[3] {new Vector2(1, 1), new Vector2(4, 1),
+            new Vector2(3, 3)});
+            Polygon polygon2 = new Polygon(new Vector2[4] {new Vector2(0, 1), new Vector2(2.5f, 2),
+            new Vector2(2.5f, 4), new Vector2(0, 3)});
+            Polygon polygon3 = new Polygon(new Vector2[5] {new Vector2(2, 3.5f), new Vector2(4, 3),
+            new Vector2(4, 5), new Vector2(3, 5.5f), new Vector2(2, 4)});
+            Polygon polygon4 = new Polygon(new Rectangle(-1, 3, 3, 2));
+            Console.WriteLine(polygon1.IsCollision(polygon2)); // t
+            Console.WriteLine(polygon1.IsCollision(polygon3)); // f
+            Console.WriteLine(polygon2.IsCollision(polygon3)); // t
+            Console.WriteLine(polygon4.IsCollision(polygon2)); // t
+            Console.WriteLine(polygon4.IsCollision(polygon1)); // f
+            */
+            /*
+            // 8.多边形和圆
+            Polygon polygon1 = new Polygon(new Vector2[5] {new Vector2(1, 4), new Vector2(1, -1),
+            new Vector2(4, 2), new Vector2(3, 5), new Vector2(2, 5) });
+            Circle circle1 = new Circle(new Vector2(4, 0), 1.3f);
+            Circle circle2 = new Circle(new Vector2(5, 1), 1.2f);
+            Circle circle3 = new Circle(new Vector2(5, 5), 1f);
+            Circle circle4 = new Circle(new Vector2(2, 6), 1.5f);
+            Circle circle5 = new Circle(new Vector2(1, 5), 0.9f);
+            Console.WriteLine(polygon1.IsCollision(circle1)); // f
+            Console.WriteLine(polygon1.IsCollision(circle2)); // f
+            Console.WriteLine(polygon1.IsCollision(circle3)); // f
+            Console.WriteLine(polygon1.IsCollision(circle4)); // t
+            Console.WriteLine(polygon1.IsCollision(circle5)); // t
+            */
         }
         // 添加绘制物体
         camera.insertObject(test);
