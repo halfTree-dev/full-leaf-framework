@@ -144,3 +144,31 @@ public class AnimatedSprite {
     }
 
 }
+
+/// <summary>
+/// 动画信息对象
+/// </summary>
+public class AnimationInfo {
+
+    /// <summary>
+    /// 资源位置
+    /// </summary>
+    public string location;
+    /// <summary>
+    /// 行数
+    /// </summary>
+    public int rows;
+    /// <summary>
+    /// 列数
+    /// </summary>
+    public int column;
+    /// <summary>
+    /// 帧间隔时间
+    /// </summary>
+    public float frameDelay;
+    /// <summary>
+    /// 起始帧
+    /// </summary>
+    public int startFrame;
+
+}
