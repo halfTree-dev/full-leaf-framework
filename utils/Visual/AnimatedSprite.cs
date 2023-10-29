@@ -30,6 +30,8 @@ public class AnimatedSprite {
     /// 当前对应帧
     /// </summary>
     private int currentFrame;
+    public int CurrentFrame { get => currentFrame;
+    set => currentFrame = value; }
     /// <summary>
     /// 总帧数
     /// </summary>
@@ -123,6 +125,7 @@ public class AnimatedSprite {
     /// <param name="anchorPoint">锚点</param>
     /// <param name="effects">绘制附加效果</param>
     /// <param name="angle">旋转角度</param>
+    /// <param name="scale">缩放比值</param>
     public void Draw(SpriteBatch spriteBatch, Vector2 location, Vector2 anchorPoint,
     SpriteEffects effects = SpriteEffects.None, float angle = 0, float scale = 1) {
         int currentRow = currentFrame / columns;

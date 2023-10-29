@@ -13,46 +13,46 @@ namespace full_leaf_framework.Scene;
 /// <summary>
 /// 瓦片地图信息
 /// </summary>
-public class TileMapInfo {
+internal class TileMapInfo {
 
     /// <summary>
     /// 精灵图集的信息
     /// </summary>
-    public SpriteInfo[] spriteInfos;
+    internal SpriteInfo[] spriteInfos;
     /// <summary>
     /// 单个瓦片宽度
     /// </summary>
-    public int tileWidth;
+    internal int tileWidth;
     /// <summary>
     /// 单个瓦片高度
     /// </summary>
-    public int tileHeight;
+    internal int tileHeight;
     /// <summary>
     /// 瓦片地图列数
     /// </summary>
-    public int mapWidth;
+    internal int mapWidth;
     /// <summary>
     /// 瓦片地图行数
     /// </summary>
-    public int mapHeight;
+    internal int mapHeight;
     /// <summary>
     /// 瓦片地图信息
     /// </summary>
-    public string[][] mapInfos;
+    internal string[][] mapInfos;
     /// <summary>
     /// 瓦片信息列表
     /// </summary>
-    public TileInfo[] tileInfos;
+    internal TileInfo[] tileInfos;
     /// <summary>
     /// 建筑信息列表
     /// </summary>
-    public BuildingInfo[] buildingInfos;
+    internal BuildingInfo[] buildingInfos;
 
     /// <summary>
     /// 创建一个TileMapInfo对象并且从指定路径读取数据
     /// </summary>
     /// <param name="location">应当填入相对路径，从程序目录开始</param>
-    public static TileMapInfo LoadTileMapInfo(string location) {
+    internal static TileMapInfo LoadTileMapInfo(string location) {
         string jsonContent = File.ReadAllText(location);
         TileMapInfo tileMapInfo = JsonConvert.DeserializeObject<TileMapInfo>(jsonContent);
         return tileMapInfo;
@@ -63,89 +63,89 @@ public class TileMapInfo {
 /// <summary>
 /// 精灵图集信息
 /// </summary>
-public class SpriteInfo {
+internal class SpriteInfo {
 
     /// <summary>
     /// 该图集的名称
     /// </summary>
-    public string unitName;
+    internal string unitName;
     /// <summary>
     /// 资源位置
     /// </summary>
-    public string location;
+    internal string location;
     /// <summary>
     /// 读取的图集资源
     /// </summary>
-    public AnimatedSprite texture;
+    internal AnimatedSprite texture;
     /// <summary>
     /// 图集的行数
     /// </summary>
-    public int rows;
+    internal int rows;
     /// <summary>
     /// 图集的列数
     /// </summary>
-    public int column;
+    internal int column;
 
 }
 
 /// <summary>
 /// 瓦片信息
 /// </summary>
-public class TileInfo {
+internal class TileInfo {
 
     /// <summary>
     /// 瓦片对应要创建的对象名称
     /// </summary>
-    public string tileClass;
+    internal string tileClass;
     /// <summary>
     /// 瓦片在图表中的符号表示
     /// </summary>
-    public string tileName;
+    internal string tileName;
     /// <summary>
     /// 使用的精灵图集名称
     /// </summary>
-    public string usedSprite;
+    internal string usedSprite;
     /// <summary>
     /// 使用帧（开始）
     /// </summary>
-    public int usedFrameL;
+    internal int usedFrameL;
     /// <summary>
     /// 使用帧（结尾）
     /// </summary>
-    public int usedFrameR;
+    internal int usedFrameR;
     /// <summary>
     /// 帧之间的延迟时间
     /// </summary>
-    public float frameDelay;
+    internal float frameDelay;
     /// <summary>
     /// 开始帧
     /// </summary>
-    public float startFrame;
+    internal float startFrame;
     /// <summary>
     /// 碰撞箱（可以为null）
     /// </summary>
-    public VectorInfo[] collisionBox;
+    internal VectorInfo[] collisionBox;
 
 }
 
 /// <summary>
 /// 向量信息
 /// </summary>
-public class VectorInfo {
+internal class VectorInfo {
 
     /// <summary>
     /// X值
     /// </summary>
-    public float X;
+    internal float X;
     /// <summary>
     /// Y值
     /// </summary>
-    public float Y;
+    internal float Y;
 
     /// <summary>
     /// 按照X与Y信息返回一个Vector2对象
     /// </summary>
-    public Vector2 GetVector2() {
+    internal Vector2 GetVector2() {
         return new Vector2(X, Y);
     }
 
@@ -154,39 +154,43 @@ public class VectorInfo {
 /// <summary>
 /// 建筑物信息
 /// </summary>
-public class BuildingInfo {
+internal class BuildingInfo {
 
     /// <summary>
     /// 建筑物对应要创建的对象名称
     /// </summary>
-    public string buildingClass;
+    internal string buildingClass;
     /// <summary>
     /// 动画信息
     /// </summary>
-    public AnimationInfo spriteInfo;
+    internal AnimationInfo spriteInfo;
     /// <summary>
     /// 位置的X值
     /// </summary>
-    public float posX;
+    internal float posX;
     /// <summary>
     /// 位置的Y值
     /// </summary>
-    public float posY;
+    internal float posY;
     /// <summary>
     /// 锚点的X值
     /// </summary>
-    public float anchorPointX;
+    internal float anchorPointX;
     /// <summary>
     /// 锚点的Y值
     /// </summary>
-    public float anchorPointY;
+    internal float anchorPointY;
     /// <summary>
     /// 放缩大小比值
     /// </summary>
-    public float sizeScale;
+    internal float sizeScale;
+    /// <summary>
+    /// 绘制图层
+    /// </summary>
+    internal int layer;
     /// <summary>
     /// 碰撞箱
     /// </summary>
-    public VectorInfo[] collisionBox;
+    internal VectorInfo[] collisionBox;
 
 }

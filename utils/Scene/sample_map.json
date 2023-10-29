@@ -71,6 +71,7 @@
             "anchorPointX":0,
             "anchorPointY":0,
             "sizeScale":1,
+            "layer":1,
             "collisionBox":null
         }
     ]
