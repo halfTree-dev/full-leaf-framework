@@ -120,11 +120,7 @@ internal class TileInfo {
     /// <summary>
     /// 开始帧
     /// </summary>
-    internal float startFrame;
-    /// <summary>
-    /// 碰撞箱（可以为null）
-    /// </summary>
-    internal VectorInfo[] collisionBox;
+    internal int startFrame;
 
 }
 
@@ -185,12 +181,12 @@ internal class BuildingInfo {
     /// </summary>
     internal float sizeScale;
     /// <summary>
+    /// 旋转角度
+    /// </summary>
+    internal float angle;
+    /// <summary>
     /// 绘制图层
     /// </summary>
     internal int layer;
-    /// <summary>
-    /// 碰撞箱
-    /// </summary>
-    internal VectorInfo[] collisionBox;
 
 }

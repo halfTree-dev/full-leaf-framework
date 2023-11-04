@@ -33,32 +33,30 @@
 
     "tileInfos":[
         {
-            "tileClass":"Tile",
+            "tileClass":"full_leaf_framework.Scene.Tile",
             "comments6":"要初始化的瓦片对象名",
             "tileName":"#",
             "usedSprite":"Set1",
             "usedFrameL":0,
             "usedFrameR":0,
             "frameDelay":0,
-            "startFrame":0,
-            "collisionBox":null
+            "startFrame":0
         },
         {
-            "tileClass":"Tile",
+            "tileClass":"full_leaf_framework.Scene.Tile",
             "tileName":".",
             "usedSprite":"Set2",
             "usedFrameL":0,
             "usedFrameR":0,
             "frameDelay":0,
             "startFrame":0,
-            "collisionBox":null,
             "comments5":"认为瓦片中心为(0, 0),相对坐标啦"
         }
     ],
 
     "buildingInfos":[
         {
-            "buildingClass":"Building",
+            "buildingClass":"full_leaf_framework.Scene.Building",
             "spriteInfo":{
                 "location":"Map/SampleFolder/SampleSprite",
                 "rows":1,
@@ -71,8 +69,8 @@
             "anchorPointX":0,
             "anchorPointY":0,
             "sizeScale":1,
-            "layer":1,
-            "collisionBox":null
+            "angle":0,
+            "layer":1
         }
     ]
 }

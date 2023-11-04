@@ -5,8 +5,8 @@ Tile 就是瓦片地图中的瓦片
 可以写继承类，然后创建具有专门功能的地块，在地图中发挥作用
 */
 
-using full_leaf_framework.Physics;
 using full_leaf_framework.Visual;
+using Microsoft.Xna.Framework;
 
 namespace full_leaf_framework.Scene;
 
@@ -14,11 +14,6 @@ namespace full_leaf_framework.Scene;
 /// 瓦片
 /// </summary>
 public class Tile {
-
-    /// <summary>
-    /// 瓦片的绘制效果
-    /// </summary>
-    public Drawable drawedTile;
 
     /// <summary>
     /// 使用的图集
@@ -44,10 +39,37 @@ public class Tile {
     /// 当前延迟时间计数器
     /// </summary>
     protected float currentDelay;
-    protected Polygon collisionBox;
+
     /// <summary>
-    /// 碰撞箱
+    /// 填充瓦片基本内容
     /// </summary>
-    public Polygon CollisionBox { get => collisionBox; }
+    /// <param name="usedSprite">使用的图集</param>
+    /// <param name="usedFrameL">使用帧（开始）</param>
+    /// <param name="usedFrameR">使用帧（结尾）</param>
+    /// <param name="currentFrame">当前帧</param>
+    /// <param name="frameDelay">帧之间的延迟时间</param>
+    public void BeginTile(AnimatedSprite usedSprite, int usedFrameL, int usedFrameR, int currentFrame, float frameDelay) {
+        this.usedSprite = usedSprite;
+        this.usedFrameL = usedFrameL;
+        this.usedFrameR = usedFrameR;
+        this.currentFrame = currentFrame;
+        this.frameDelay = frameDelay;
+        currentDelay = frameDelay;
+    }
+
+    /// <summary>
+    /// 更新瓦片，基类的更新仅包含动画
+    /// </summary>
+    public virtual void Update(GameTime gameTime) {
+        currentDelay -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+        if (currentDelay <= 0f) {
+            // 更新帧
+            currentFrame++;
+            if (currentFrame > usedFrameR) {
+                currentFrame = usedFrameL;
+            }
+            currentDelay = frameDelay;
+        }
+    }
 
 }

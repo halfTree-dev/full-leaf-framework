@@ -5,7 +5,11 @@ TileMap 瓦片地图
 对于地图中重复元素较多的情况下，这种方式能够提升编辑效率
 */
 
+using full_leaf_framework.Visual;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using System.Reflection;
 
 namespace full_leaf_framework.Scene;
 
@@ -51,15 +55,116 @@ public class TileMap {
     /// 建筑物集合
     /// </summary>
     public Building[] buildings;
-    // 注：建筑物本身就是一个Drawable对象
+
+    private ContentManager Content;
 
     /// <summary>
     /// 初始化瓦片地图
     /// </summary>
     /// <param name="location">应当填入相对路径，从程序目录开始</param>
-    public TileMap(string location) {
+    public TileMap(string location, ContentManager Content) {
         TileMapInfo tileMapInfo = TileMapInfo.LoadTileMapInfo(location);
+        this.Content = Content;
         // 以下是对数据的各项处理
+        tileWidth = tileMapInfo.tileWidth;
+        tileHeight = tileMapInfo.tileHeight;
+        mapWidth = tileMapInfo.mapWidth;
+        mapHeight = tileMapInfo.mapHeight;
+        // 填充基本数据
+        LoadSprites(tileMapInfo);
+        LoadTiles(tileMapInfo);
+        LoadBuildings(tileMapInfo);
+        // 读取相关资源
+    }
+
+    #region 读取资源
+
+    /// <summary>
+    /// 读取SpriteInfos
+    /// </summary>
+    private void LoadSprites(TileMapInfo tileMapInfo) {
+        spriteInfos = tileMapInfo.spriteInfos;
+        foreach (SpriteInfo spriteInfo in spriteInfos) {
+            spriteInfo.texture = new AnimatedSprite(Content.Load<Texture2D>(spriteInfo.location),
+            spriteInfo.rows, spriteInfo.column);
+        }
+    }
+
+    /// <summary>
+    /// 读取瓦片
+    /// </summary>
+    private void LoadTiles(TileMapInfo tileMapInfo) {
+        // 用来参考的tile信息
+        tiles = new Tile[mapHeight][];
+        // 生成地图
+        Assembly assembly = Assembly.GetExecutingAssembly();
+        // 获取当前程序集（为了创建瓦片）
+        for (int i = 0; i < tileMapInfo.mapInfos.Length; i++) {
+            tiles[i] = new Tile[mapWidth];
+            for (int j = 0; j < tileMapInfo.mapInfos[i].Length; j++) {
+                // 用tileMapInfo[i][j]表示第i+1行j+1列的瓦片
+                // 从tileInfos里查找与字符相匹配的瓦片类型
+                foreach (TileInfo tileInfo in tileMapInfo.tileInfos) {
+                    if (tileInfo.tileName == tileMapInfo.mapInfos[i][j]) {
+                        // 找到了，然后将对应的Tile按照类名初始化
+                        // 必须填写类的完全限定名，这点应当在Json中体现
+                        dynamic obj = assembly.CreateInstance(tileInfo.tileClass);
+                        Tile tile = (Tile)obj;
+                        foreach (SpriteInfo spriteInfo in spriteInfos) {
+                            if (tileInfo.usedSprite == spriteInfo.unitName) {
+                                // 找到图集，那么创建瓦片
+                                tile.BeginTile(spriteInfo.texture, tileInfo.usedFrameL,
+                                tileInfo.usedFrameR, tileInfo.startFrame, tileInfo.frameDelay);
+                            }
+                        }
+                        tiles[i][j] = tile;
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 读取建筑物
+    /// </summary>
+    private void LoadBuildings(TileMapInfo tileMapInfo) {
+        buildings = new Building[tileMapInfo.buildingInfos.Length];
+        // 创建建筑列表
+        Assembly assembly = Assembly.GetExecutingAssembly();
+        // 获取当前程序集（为了创建建筑物）
+        for (int i = 0; i < tileMapInfo.buildingInfos.Length; i++) {
+            // 按照名称创建对应建筑
+            dynamic obj = assembly.CreateInstance(tileMapInfo.buildingInfos[i].buildingClass);
+            Building building = (Building)obj;
+            BuildingInfo currentInfo = tileMapInfo.buildingInfos[i];
+            building.StartBuilding(currentInfo.spriteInfo.ReturnAnimation(Content),
+            new Vector2(currentInfo.posX, currentInfo.posY), new Vector2(currentInfo.anchorPointX, currentInfo.anchorPointY),
+            currentInfo.sizeScale, currentInfo.angle, SpriteEffects.None, currentInfo.layer);
+            buildings[i] = building;
+        }
+    }
+
+    #endregion
+
+    /// <summary>
+    /// 更新瓦片地图
+    /// </summary>
+    public void Update(GameTime gameTime) {
+        for (int i = 0; i < tiles.Length; i++) {
+            for (int j = 0; j < tiles[0].Length; j++) {
+                tiles[i][j].Update(gameTime);
+            }
+        }
+        foreach (Building building in buildings) {
+            building.Update(gameTime);
+        }
+    }
+
+    /// <summary>
+    /// 绘制瓦片地图
+    /// </summary>
+    public void Draw(Camera camera) {
+
     }
 
 }

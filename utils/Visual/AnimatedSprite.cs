@@ -5,6 +5,7 @@ AnimatedSprite.cs
 */
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace full_leaf_framework.Visual;
@@ -173,5 +174,13 @@ public class AnimationInfo {
     /// 起始帧
     /// </summary>
     public int startFrame;
+
+    /// <summary>
+    /// 返回动画对象
+    /// </summary>
+    public AnimatedSprite ReturnAnimation(ContentManager Content) {
+        return new AnimatedSprite(Content.Load<Texture2D>(location), rows,
+        column, frameDelay, startFrame);
+    }
 
 }
