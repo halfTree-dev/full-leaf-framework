@@ -13,46 +13,46 @@ namespace full_leaf_framework.Scene;
 /// <summary>
 /// 瓦片地图信息
 /// </summary>
-internal class TileMapInfo {
+public class TileMapInfo {
 
     /// <summary>
     /// 精灵图集的信息
     /// </summary>
-    internal SpriteInfo[] spriteInfos;
+    public SpriteInfo[] spriteInfos;
     /// <summary>
     /// 单个瓦片宽度
     /// </summary>
-    internal int tileWidth;
+    public int tileWidth;
     /// <summary>
     /// 单个瓦片高度
     /// </summary>
-    internal int tileHeight;
+    public int tileHeight;
     /// <summary>
     /// 瓦片地图列数
     /// </summary>
-    internal int mapWidth;
+    public int mapWidth;
     /// <summary>
     /// 瓦片地图行数
     /// </summary>
-    internal int mapHeight;
+    public int mapHeight;
     /// <summary>
     /// 瓦片地图信息
     /// </summary>
-    internal string[][] mapInfos;
+    public string[][] mapInfos;
     /// <summary>
     /// 瓦片信息列表
     /// </summary>
-    internal TileInfo[] tileInfos;
+    public TileInfo[] tileInfos;
     /// <summary>
     /// 建筑信息列表
     /// </summary>
-    internal BuildingInfo[] buildingInfos;
+    public BuildingInfo[] buildingInfos;
 
     /// <summary>
     /// 创建一个TileMapInfo对象并且从指定路径读取数据
     /// </summary>
     /// <param name="location">应当填入相对路径，从程序目录开始</param>
-    internal static TileMapInfo LoadTileMapInfo(string location) {
+    public static TileMapInfo LoadTileMapInfo(string location) {
         string jsonContent = File.ReadAllText(location);
         TileMapInfo tileMapInfo = JsonConvert.DeserializeObject<TileMapInfo>(jsonContent);
         return tileMapInfo;
@@ -63,85 +63,85 @@ internal class TileMapInfo {
 /// <summary>
 /// 精灵图集信息
 /// </summary>
-internal class SpriteInfo {
+public class SpriteInfo {
 
     /// <summary>
     /// 该图集的名称
     /// </summary>
-    internal string unitName;
+    public string unitName;
     /// <summary>
     /// 资源位置
     /// </summary>
-    internal string location;
+    public string location;
     /// <summary>
     /// 读取的图集资源
     /// </summary>
-    internal AnimatedSprite texture;
+    public AnimatedSprite texture;
     /// <summary>
     /// 图集的行数
     /// </summary>
-    internal int rows;
+    public int rows;
     /// <summary>
     /// 图集的列数
     /// </summary>
-    internal int column;
+    public int column;
 
 }
 
 /// <summary>
 /// 瓦片信息
 /// </summary>
-internal class TileInfo {
+public class TileInfo {
 
     /// <summary>
     /// 瓦片对应要创建的对象名称
     /// </summary>
-    internal string tileClass;
+    public string tileClass;
     /// <summary>
     /// 瓦片在图表中的符号表示
     /// </summary>
-    internal string tileName;
+    public string tileName;
     /// <summary>
     /// 使用的精灵图集名称
     /// </summary>
-    internal string usedSprite;
+    public string usedSprite;
     /// <summary>
     /// 使用帧（开始）
     /// </summary>
-    internal int usedFrameL;
+    public int usedFrameL;
     /// <summary>
     /// 使用帧（结尾）
     /// </summary>
-    internal int usedFrameR;
+    public int usedFrameR;
     /// <summary>
     /// 帧之间的延迟时间
     /// </summary>
-    internal float frameDelay;
+    public float frameDelay;
     /// <summary>
     /// 开始帧
     /// </summary>
-    internal int startFrame;
+    public int startFrame;
 
 }
 
 /// <summary>
 /// 向量信息
 /// </summary>
-internal class VectorInfo {
+public class VectorInfo {
 
     /// <summary>
     /// X值
     /// </summary>
-    internal float X;
+    public float X;
     /// <summary>
     /// Y值
     /// </summary>
-    internal float Y;
+    public float Y;
 
     /// <summary>
     /// 按照X与Y信息返回一个Vector2对象
     /// </summary>
-    internal Vector2 GetVector2() {
+    public Vector2 GetVector2() {
         return new Vector2(X, Y);
     }
 
@@ -150,43 +150,43 @@ internal class VectorInfo {
 /// <summary>
 /// 建筑物信息
 /// </summary>
-internal class BuildingInfo {
+public class BuildingInfo {
 
     /// <summary>
     /// 建筑物对应要创建的对象名称
     /// </summary>
-    internal string buildingClass;
+    public string buildingClass;
     /// <summary>
     /// 动画信息
     /// </summary>
-    internal AnimationInfo spriteInfo;
+    public AnimationInfo spriteInfo;
     /// <summary>
     /// 位置的X值
     /// </summary>
-    internal float posX;
+    public float posX;
     /// <summary>
     /// 位置的Y值
     /// </summary>
-    internal float posY;
+    public float posY;
     /// <summary>
     /// 锚点的X值
     /// </summary>
-    internal float anchorPointX;
+    public float anchorPointX;
     /// <summary>
     /// 锚点的Y值
     /// </summary>
-    internal float anchorPointY;
+    public float anchorPointY;
     /// <summary>
     /// 放缩大小比值
     /// </summary>
-    internal float sizeScale;
+    public float sizeScale;
     /// <summary>
     /// 旋转角度
     /// </summary>
-    internal float angle;
+    public float angle;
     /// <summary>
     /// 绘制图层
     /// </summary>
-    internal int layer;
+    public int layer;
 
 }

@@ -16,6 +16,11 @@ namespace full_leaf_framework.Scene;
 public class Tile {
 
     /// <summary>
+    /// 向外展现的可绘制对象
+    /// </summary>
+    public Drawable drawable;
+
+    /// <summary>
     /// 使用的图集
     /// </summary>
     protected AnimatedSprite usedSprite;
@@ -40,6 +45,13 @@ public class Tile {
     /// </summary>
     protected float currentDelay;
 
+    public AnimatedSprite UsedSprite { get => usedSprite; set => usedSprite = value; }
+    public int UsedFrameL { get => usedFrameL; set => usedFrameL = value; }
+    public int UsedFrameR { get => usedFrameR; set => usedFrameR = value; }
+    public int CurrentFrame { get => currentFrame; set => currentFrame = value; }
+    public float FrameDelay { get => frameDelay; set => frameDelay = value; }
+    public float CurrentDelay { get => currentDelay; set => currentDelay = value; }
+
     /// <summary>
     /// 填充瓦片基本内容
     /// </summary>
@@ -49,26 +61,26 @@ public class Tile {
     /// <param name="currentFrame">当前帧</param>
     /// <param name="frameDelay">帧之间的延迟时间</param>
     public void BeginTile(AnimatedSprite usedSprite, int usedFrameL, int usedFrameR, int currentFrame, float frameDelay) {
-        this.usedSprite = usedSprite;
-        this.usedFrameL = usedFrameL;
-        this.usedFrameR = usedFrameR;
-        this.currentFrame = currentFrame;
-        this.frameDelay = frameDelay;
-        currentDelay = frameDelay;
+        this.UsedSprite = usedSprite;
+        this.UsedFrameL = usedFrameL;
+        this.UsedFrameR = usedFrameR;
+        this.CurrentFrame = currentFrame;
+        this.FrameDelay = frameDelay;
+        CurrentDelay = frameDelay;
     }
 
     /// <summary>
     /// 更新瓦片，基类的更新仅包含动画
     /// </summary>
     public virtual void Update(GameTime gameTime) {
-        currentDelay -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-        if (currentDelay <= 0f) {
+        CurrentDelay -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+        if (CurrentDelay <= 0f) {
             // 更新帧
-            currentFrame++;
-            if (currentFrame > usedFrameR) {
-                currentFrame = usedFrameL;
+            CurrentFrame++;
+            if (CurrentFrame > UsedFrameR) {
+                CurrentFrame = UsedFrameL;
             }
-            currentDelay = frameDelay;
+            CurrentDelay = FrameDelay;
         }
     }
 

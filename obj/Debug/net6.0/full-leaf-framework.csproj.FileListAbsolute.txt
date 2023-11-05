@@ -26,3 +26,6 @@ D:\C# Project\full-leaf-framework\obj\Debug\net6.0\ref\full-leaf-framework.dll
 D:\C# Project\full-leaf-framework\bin\Debug\net6.0\Content\Fonts\debugFont.xnb
 D:\C# Project\full-leaf-framework\bin\Debug\net6.0\Content\Characters\test.xnb
 D:\C# Project\full-leaf-framework\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\C# Project\full-leaf-framework\bin\Debug\net6.0\Content\TileMap\tilemap.xnb
+D:\C# Project\full-leaf-framework\bin\Debug\net6.0\Content\TileMap\tiles1.xnb
+D:\C# Project\full-leaf-framework\bin\Debug\net6.0\Content\TileMap\tiles2.xnb

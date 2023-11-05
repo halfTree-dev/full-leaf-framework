@@ -115,6 +115,10 @@ public class TileMap {
                                 // 找到图集，那么创建瓦片
                                 tile.BeginTile(spriteInfo.texture, tileInfo.usedFrameL,
                                 tileInfo.usedFrameR, tileInfo.startFrame, tileInfo.frameDelay);
+                                // 对每个Tile对象生成Drawable
+                                tile.drawable = new Drawable(tile.UsedSprite, new Vector2(j * tileWidth, i * tileHeight),
+                                new Vector2(-tile.UsedSprite.Width / 2, -tile.UsedSprite.Height / 2),
+                                tileWidth / tile.UsedSprite.Width, 0, SpriteEffects.None, 0);
                             }
                         }
                         tiles[i][j] = tile;
@@ -164,7 +168,18 @@ public class TileMap {
     /// 绘制瓦片地图
     /// </summary>
     public void Draw(Camera camera) {
-
+        // 向camera中添加相应的对象
+        // 但是注意，对于每个Tile，它们共用一个AnimatedSprite，所以务必做好区分
+        for (int i = 0; i < tiles.Length; i++) {
+            for (int j = 0; j < tiles[0].Length; j++) {
+                // 利用瓦片的Drawable对象
+                tiles[i][j].drawable.settledFrame = tiles[i][j].CurrentFrame;
+                camera.insertObject(tiles[i][j].drawable);
+            }
+        }
+        foreach (Building building in buildings) {
+            camera.insertObject(building.drawable);
+        }
     }
 
 }

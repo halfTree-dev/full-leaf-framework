@@ -22,6 +22,8 @@ public class MainGame : Game
     public static InputManager inputManager;
     public static Camera camera;
 
+    public TileMap tileMap;
+
     public Drawable test;
     public Drawable test2;
 
@@ -57,7 +59,7 @@ public class MainGame : Game
         new Vector2(0, 50), 1);
         test2 = new Drawable(new AnimatedSprite(Content.Load<Texture2D>("Characters/test")), new Vector2(100, 0),
         new Vector2(0, -50), 1);
-
+        tileMap = new TileMap("utils/Scene/test_map.json", Content);
         // TODO: use this.Content to load your game content here
     }
 
@@ -93,13 +95,15 @@ public class MainGame : Game
         }
         if (inputManager.GetTrackingKey(Keys.E).fired) {
             float time = (float)gameTime.TotalGameTime.TotalSeconds;
-            TileMapInfo tileMapInfo = TileMapInfo.LoadTileMapInfo("utils/Scene/sample_map.json");
+            tileMap = new TileMap("utils/Scene/test_map.json", Content);
             Console.WriteLine((float)gameTime.TotalGameTime.TotalSeconds - time);
         }
         // 添加绘制物体
-        camera.insertObject(test);
-        camera.insertObject(test2);
+        // camera.insertObject(test);
+        // camera.insertObject(test2);
         // TODO: Add your update logic here
+        tileMap.Update(gameTime);
+        tileMap.Draw(camera);
 
         base.Update(gameTime);
     }
