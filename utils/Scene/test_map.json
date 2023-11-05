@@ -1,0 +1,69 @@
+{
+    "spriteInfos":[
+        {
+            "unitName":"coldColors",
+            "location":"TileMap/tiles1",
+            "rows":2,
+            "column":2
+        },
+        {
+            "unitName":"warmColors",
+            "location":"TileMap/tiles2",
+            "rows":2,
+            "column":2
+        }
+    ],
+    "tileWidth":32,
+    "tileHeight":32,
+
+    "mapWidth":10,
+    "mapHeight":5,
+    "mapInfos":[
+        ["#", "#", "#", "#", "#", "#", "#", "#", "#", "#"],
+        ["#", "#", "#", "#", "#", "#", "#", "#", "#", "#"],
+        ["#", "#", ".", ".", "#", "#", ".", ".", "#", "#"],
+        ["#", "#", "#", "#", "#", "#", "#", "#", "#", "#"],
+        ["#", "#", "#", "#", "#", "#", "#", "#", "#", "#"]
+    ],
+
+    "tileInfos":[
+        {
+            "tileClass":"full_leaf_framework.Scene.Tile",
+            "tileName":"#",
+            "usedSprite":"coldColors",
+            "usedFrameL":0,
+            "usedFrameR":3,
+            "frameDelay":0.5,
+            "startFrame":0
+        },
+        {
+            "tileClass":"full_leaf_framework.Scene.Tile",
+            "tileName":".",
+            "usedSprite":"warmColors",
+            "usedFrameL":0,
+            "usedFrameR":3,
+            "frameDelay":0.5,
+            "startFrame":1
+        }
+    ],
+
+    "buildingInfos":[
+        {
+            "buildingClass":"full_leaf_framework.Scene.Building",
+            "spriteInfo":{
+                "location":"TileMap/tilemap",
+                "rows":1,
+                "column":1,
+                "frameDelay":0,
+                "startFrame":0
+            },
+            "posX":0,
+            "posY":160,
+            "anchorPointX":-64,
+            "anchorPointY":-32,
+            "sizeScale":1,
+            "angle":0,
+            "layer":5
+        }
+    ]
+}

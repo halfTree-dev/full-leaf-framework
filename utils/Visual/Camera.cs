@@ -185,9 +185,15 @@ public class Camera {
         changed_scale *= GetRangeRatio();
         // 屏幕缩放的倍率
         Vector2 draw_pos = ReturnScalePos(obj.pos);
+        // 当强制绘制时更改绘制帧
+        int currentFrame = obj.currentAnimation.CurrentFrame;
+        if (obj.settledFrame != -1) {
+            obj.currentAnimation.CurrentFrame = obj.settledFrame;
+        }
         // 绘制的坐标（注：提前处理锚点，根据锚点更改绘制位置）
         obj.currentAnimation.Draw(spriteBatch, draw_pos, obj.anchorPoint,
         obj.effects, obj.angle, changed_scale);
+        obj.currentAnimation.CurrentFrame = currentFrame;
     }
 
 }

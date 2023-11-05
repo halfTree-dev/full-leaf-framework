@@ -5,6 +5,7 @@ AnimatedSprite.cs
 */
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace full_leaf_framework.Visual;
@@ -30,6 +31,8 @@ public class AnimatedSprite {
     /// 当前对应帧
     /// </summary>
     private int currentFrame;
+    public int CurrentFrame { get => currentFrame;
+    set => currentFrame = value; }
     /// <summary>
     /// 总帧数
     /// </summary>
@@ -123,6 +126,7 @@ public class AnimatedSprite {
     /// <param name="anchorPoint">锚点</param>
     /// <param name="effects">绘制附加效果</param>
     /// <param name="angle">旋转角度</param>
+    /// <param name="scale">缩放比值</param>
     public void Draw(SpriteBatch spriteBatch, Vector2 location, Vector2 anchorPoint,
     SpriteEffects effects = SpriteEffects.None, float angle = 0, float scale = 1) {
         int currentRow = currentFrame / columns;
@@ -141,6 +145,42 @@ public class AnimatedSprite {
         通过origin决定图片的中心位置，然后根据location将图片绘制，接着再以这个中心位置进行scale
         所以Camera只需要给出转化后的pos即可，无需其他处理
         */
+    }
+
+}
+
+/// <summary>
+/// 动画信息对象
+/// </summary>
+public class AnimationInfo {
+
+    /// <summary>
+    /// 资源位置
+    /// </summary>
+    public string location;
+    /// <summary>
+    /// 行数
+    /// </summary>
+    public int rows;
+    /// <summary>
+    /// 列数
+    /// </summary>
+    public int column;
+    /// <summary>
+    /// 帧间隔时间
+    /// </summary>
+    public float frameDelay;
+    /// <summary>
+    /// 起始帧
+    /// </summary>
+    public int startFrame;
+
+    /// <summary>
+    /// 返回动画对象
+    /// </summary>
+    public AnimatedSprite ReturnAnimation(ContentManager Content) {
+        return new AnimatedSprite(Content.Load<Texture2D>(location), rows,
+        column, frameDelay, startFrame);
     }
 
 }

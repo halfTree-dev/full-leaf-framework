@@ -1,0 +1,76 @@
+{
+    "comments": "一个完整的地图Json应当包括如下的元素:精灵图集的信息,地图本身的地块，地图的大小",
+    "comments2": "地块对应的瓦片载入数据,单个瓦片的大小",
+    "comments3": "建筑物的列表和它们的数据描述.接下来是一个Sample:",
+
+    "spriteInfos":[
+        {
+            "unitName":"Set1",
+            "location":"Map/SampleFolder/SampleSprite",
+            "rows":2,
+            "column":2
+        },
+        {
+            "unitName":"Set2",
+            "location":"Map/SampleFolder/SampleSprite2",
+            "rows":2,
+            "column":2
+        }
+    ],
+    "tileWidth":30,
+    "tileHeight":30,
+    "comments4":"请注意,这里的width和height表示的是在游戏地图上的地块大小",
+
+    "mapWidth":10,
+    "mapHeight":5,
+    "mapInfos":[
+        ["#", "#", "#", "#", "#", "#", "#", "#", "#", "#"],
+        ["#", "#", "#", "#", "#", "#", "#", "#", "#", "#"],
+        ["#", "#", "#", "#", "#", "#", ".", ".", "#", "#"],
+        ["#", "#", "#", "#", "#", "#", "#", "#", "#", "#"],
+        ["#", "#", "#", "#", "#", "#", "#", "#", "#", "#"]
+    ],
+
+    "tileInfos":[
+        {
+            "tileClass":"full_leaf_framework.Scene.Tile",
+            "comments6":"要初始化的瓦片对象名",
+            "tileName":"#",
+            "usedSprite":"Set1",
+            "usedFrameL":0,
+            "usedFrameR":0,
+            "frameDelay":0,
+            "startFrame":0
+        },
+        {
+            "tileClass":"full_leaf_framework.Scene.Tile",
+            "tileName":".",
+            "usedSprite":"Set2",
+            "usedFrameL":0,
+            "usedFrameR":0,
+            "frameDelay":0,
+            "startFrame":0,
+            "comments5":"认为瓦片中心为(0, 0),相对坐标啦"
+        }
+    ],
+
+    "buildingInfos":[
+        {
+            "buildingClass":"full_leaf_framework.Scene.Building",
+            "spriteInfo":{
+                "location":"Map/SampleFolder/SampleSprite",
+                "rows":1,
+                "column":2,
+                "frameDelay":0.2,
+                "startFrame":0
+            },
+            "posX":50,
+            "posY":50,
+            "anchorPointX":0,
+            "anchorPointY":0,
+            "sizeScale":1,
+            "angle":0,
+            "layer":1
+        }
+    ]
+}

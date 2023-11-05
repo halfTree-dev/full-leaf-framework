@@ -47,6 +47,10 @@ public class Drawable {
     /// 绘制的优先级，越小越高，越容易绘制在底层
     /// </summary>
     public int layer;
+    /// <summary>
+    /// 强制绘制动画的某一帧（-1时不强制，默认值）
+    /// </summary>
+    public int settledFrame = -1;
 
     /// <summary>
     /// 创建Drawable对象
@@ -59,7 +63,7 @@ public class Drawable {
     /// <param name="size">动画在游戏内表现的实际大小的倍率</param>
     /// <param name="layer">绘制的优先级，越小越高，越容易绘制在底层</param>
     public Drawable(AnimatedSprite currentAnimation, Vector2 pos, Vector2 anchorPoint, float sizeScale,
-    float angle = 0f, SpriteEffects effects = SpriteEffects.None, int layer = 0) {
+    float angle = 0f, SpriteEffects effects = SpriteEffects.None, int layer = 10) {
         this.currentAnimation = currentAnimation;
         this.pos = pos;
         this.anchorPoint = anchorPoint;

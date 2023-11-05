@@ -4,10 +4,15 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>D:/C# Project/full-leaf-framework/Content/TileMap/tilemap.png</File>
+    <File>D:/C# Project/full-leaf-framework/Content/TileMap/tiles1.png</File>
+    <File>D:/C# Project/full-leaf-framework/Content/TileMap/tiles2.png</File>
     <File>D:/C# Project/full-leaf-framework/Content/Characters/test.png</File>
     <File>D:/C# Project/full-leaf-framework/Content/Fonts/debugFont.spritefont</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
   </DestFiles>
 </SourceFileCollection>
