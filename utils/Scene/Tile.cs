@@ -60,13 +60,14 @@ public class Tile {
     /// <param name="usedFrameR">使用帧（结尾）</param>
     /// <param name="currentFrame">当前帧</param>
     /// <param name="frameDelay">帧之间的延迟时间</param>
-    public void BeginTile(AnimatedSprite usedSprite, int usedFrameL, int usedFrameR, int currentFrame, float frameDelay) {
-        this.UsedSprite = usedSprite;
-        this.UsedFrameL = usedFrameL;
-        this.UsedFrameR = usedFrameR;
-        this.CurrentFrame = currentFrame;
-        this.FrameDelay = frameDelay;
+    public virtual void BeginTile(AnimatedSprite usedSprite, int usedFrameL, int usedFrameR, int currentFrame, float frameDelay, string[] extArugs) {
+        UsedSprite = usedSprite;
+        UsedFrameL = usedFrameL;
+        UsedFrameR = usedFrameR;
+        CurrentFrame = currentFrame;
+        FrameDelay = frameDelay;
         CurrentDelay = frameDelay;
+        // 向继承类的瓦片中进行额外传值使用string[]的extArugs
     }
 
     /// <summary>

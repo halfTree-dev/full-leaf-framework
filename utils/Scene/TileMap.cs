@@ -114,7 +114,7 @@ public class TileMap {
                             if (tileInfo.usedSprite == spriteInfo.unitName) {
                                 // 找到图集，那么创建瓦片
                                 tile.BeginTile(spriteInfo.texture, tileInfo.usedFrameL,
-                                tileInfo.usedFrameR, tileInfo.startFrame, tileInfo.frameDelay);
+                                tileInfo.usedFrameR, tileInfo.startFrame, tileInfo.frameDelay, tileInfo.extArugs);
                                 // 对每个Tile对象生成Drawable
                                 tile.drawable = new Drawable(tile.UsedSprite, new Vector2(j * tileWidth, i * tileHeight),
                                 new Vector2(-tile.UsedSprite.Width / 2, -tile.UsedSprite.Height / 2),

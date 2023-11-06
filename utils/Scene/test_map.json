@@ -34,16 +34,18 @@
             "usedFrameL":0,
             "usedFrameR":3,
             "frameDelay":0.5,
-            "startFrame":0
+            "startFrame":0,
+            "extArugs":[]
         },
         {
-            "tileClass":"full_leaf_framework.Scene.Tile",
+            "tileClass":"full_leaf_framework.Scene.ChildTile",
             "tileName":".",
             "usedSprite":"warmColors",
             "usedFrameL":0,
             "usedFrameR":3,
             "frameDelay":0.5,
-            "startFrame":1
+            "startFrame":1,
+            "extArugs":["114514"]
         }
     ],
 

@@ -121,6 +121,10 @@ public class TileInfo {
     /// 开始帧
     /// </summary>
     public int startFrame;
+    /// <summary>
+    /// 额外瓦片信息
+    /// </summary>
+    public string[] extArugs;
 
 }
 
