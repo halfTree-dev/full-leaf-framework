@@ -15,7 +15,7 @@ public class ChildTile : Tile {
     {
         base.BeginTile(usedSprite, usedFrameL, usedFrameR, currentFrame, frameDelay, extArugs);
         Console.WriteLine("我是一个特殊的瓦片类！");
-        Console.WriteLine("我读取了额外信息: " + extArugs);
+        Console.WriteLine("我读取了额外信息: " + extArugs[0]);
     }
 
     public override void Update(GameTime gameTime)
@@ -25,3 +25,8 @@ public class ChildTile : Tile {
     }
 
 }
+
+/*
+那么Building也是同理，
+只要设计继承类，然后创建的时候创建之就行
+*/

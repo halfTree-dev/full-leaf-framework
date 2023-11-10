@@ -5,6 +5,7 @@
 
 using Microsoft.Xna.Framework;
 using full_leaf_framework.Visual;
+using full_leaf_framework.Physics;
 using Newtonsoft.Json;
 using System.IO;
 
@@ -40,6 +41,10 @@ public class TileMapInfo {
     /// </summary>
     public string[][] mapInfos;
     /// <summary>
+    /// 瓦片将会在的图层
+    /// </summary>
+    public int layer;
+    /// <summary>
     /// 瓦片信息列表
     /// </summary>
     public TileInfo[] tileInfos;
@@ -47,6 +52,10 @@ public class TileMapInfo {
     /// 建筑信息列表
     /// </summary>
     public BuildingInfo[] buildingInfos;
+    /// <summary>
+    /// 瓦片物理信息列表
+    /// </summary>
+    public TilePhysicsInfo[] tilePhysics;
 
     /// <summary>
     /// 创建一个TileMapInfo对象并且从指定路径读取数据
@@ -192,5 +201,42 @@ public class BuildingInfo {
     /// 绘制图层
     /// </summary>
     public int layer;
+
+}
+
+/// <summary>
+/// 瓦片物理效果信息
+/// </summary>
+public class TilePhysicsInfo {
+
+    /// <summary>
+    /// 瓦片在图表中的符号表示
+    /// </summary>
+    public string tileName;
+
+    /// <summary>
+    /// 碰撞箱向量信息
+    /// </summary>
+    public VectorInfo[] collisionBox;
+
+    /// <summary>
+    /// 碰撞箱所在的图层
+    /// </summary>
+    public int collisionLayer;
+
+    /// <summary>
+    /// 获取多边形类型的碰撞箱区域，是相对坐标
+    /// 注意：返回值可以是空值，当没有设置碰撞箱时就是
+    /// </summary>
+    public Polygon GetCollisionBox() {
+        if (collisionBox == null) {
+            return null;
+        }
+        Vector2[] points = new Vector2[collisionBox.Length];
+        for (int i = 0; i < collisionBox.Length; i++) {
+            points[i] = collisionBox[i].GetVector2();
+        }
+        return new Polygon(points);
+    }
 
 }

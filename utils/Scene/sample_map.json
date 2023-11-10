@@ -72,5 +72,21 @@
             "angle":0,
             "layer":1
         }
+    ],
+
+    "tilePhysics":[
+        {
+            "comments7":"在这里设置不同瓦片的碰撞箱，同时设置其作用的图层",
+            "comments8":"注意，瓦片的左上角是(0,0)，然后设置的碰撞区域不得大过瓦片大小",
+            "tileName":"#",
+            "collisionBox":[],
+            "collisionLayer":1
+        },
+        {
+            "tileName":".",
+            "collisionBox":[],
+            "collisionLayer":2
+        }
     ]
+
 }

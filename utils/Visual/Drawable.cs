@@ -41,6 +41,7 @@ public class Drawable {
     /// 绘制锚点，
     /// 当绘制时，这个点会在指定的绘制坐标处，
     /// 需要注意的是，图片的中心是(0,0)
+    /// 还有需要注意的是，这个锚点的坐标是图片缩放前的
     /// </summary>
     public Vector2 anchorPoint;
     /// <summary>

@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace full_leaf_framework.Scene;
 
@@ -44,6 +45,12 @@ public class TileMap {
     public int MapHeight { get => mapHeight; }
 
     /// <summary>
+    /// 瓦片将会在的图层
+    /// </summary>
+    private int layer;
+    public int Layer { get => layer; }
+
+    /// <summary>
     /// 瓦片集合
     /// </summary>
     public Tile[][] tiles;
@@ -53,8 +60,15 @@ public class TileMap {
 
     /// <summary>
     /// 建筑物集合
+    /// 这是动态列表，所以你随时可以加入新的建筑物
     /// </summary>
-    public Building[] buildings;
+    public List<Building> buildings;
+
+    /// <summary>
+    /// 瓦片效果集合
+    /// 可以给瓦片规定碰撞体积，然后由它来判定
+    /// </summary>
+    public TilePhysics tilePhysics;
 
     private ContentManager Content;
 
@@ -70,6 +84,7 @@ public class TileMap {
         tileHeight = tileMapInfo.tileHeight;
         mapWidth = tileMapInfo.mapWidth;
         mapHeight = tileMapInfo.mapHeight;
+        layer = tileMapInfo.layer;
         // 填充基本数据
         LoadSprites(tileMapInfo);
         LoadTiles(tileMapInfo);
@@ -118,7 +133,7 @@ public class TileMap {
                                 // 对每个Tile对象生成Drawable
                                 tile.drawable = new Drawable(tile.UsedSprite, new Vector2(j * tileWidth, i * tileHeight),
                                 new Vector2(-tile.UsedSprite.Width / 2, -tile.UsedSprite.Height / 2),
-                                tileWidth / tile.UsedSprite.Width, 0, SpriteEffects.None, 0);
+                                tileWidth / tile.UsedSprite.Width, 0, SpriteEffects.None, layer);
                             }
                         }
                         tiles[i][j] = tile;
@@ -132,7 +147,7 @@ public class TileMap {
     /// 读取建筑物
     /// </summary>
     private void LoadBuildings(TileMapInfo tileMapInfo) {
-        buildings = new Building[tileMapInfo.buildingInfos.Length];
+        buildings = new List<Building>();
         // 创建建筑列表
         Assembly assembly = Assembly.GetExecutingAssembly();
         // 获取当前程序集（为了创建建筑物）
@@ -144,7 +159,7 @@ public class TileMap {
             building.StartBuilding(currentInfo.spriteInfo.ReturnAnimation(Content),
             new Vector2(currentInfo.posX, currentInfo.posY), new Vector2(currentInfo.anchorPointX, currentInfo.anchorPointY),
             currentInfo.sizeScale, currentInfo.angle, SpriteEffects.None, currentInfo.layer);
-            buildings[i] = building;
+            buildings.Add(building);
         }
     }
 
