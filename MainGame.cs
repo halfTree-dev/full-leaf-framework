@@ -96,6 +96,14 @@ public class MainGame : Game
         if (inputManager.GetTrackingKey(Keys.E).fired) {
             float time = (float)gameTime.TotalGameTime.TotalSeconds;
             tileMap = new TileMap("utils/Scene/test_map.json", Content);
+            Polygon polygon1 = new Polygon(new Vector2[4] { new Vector2(32,32),
+            new Vector2(32,70), new Vector2(70,70), new Vector2(70,32) });
+            Polygon polygon2 = new Polygon(new Vector2[4] { new Vector2(-16,-48),
+            new Vector2(16,70), new Vector2(50,80), new Vector2(50,-32) });
+            Polygon polygon3 = new Polygon(new Vector2[3] { new Vector2(32,80),
+            new Vector2(232,280), new Vector2(32,280) });
+            Console.WriteLine(tileMap.IsCollision(polygon1, 2) + " - " + tileMap.IsCollision(polygon2, 2)
+            + " - " + tileMap.IsCollision(polygon3, 2) + " - " + tileMap.IsCollision(polygon1, 1));
             Console.WriteLine((float)gameTime.TotalGameTime.TotalSeconds - time);
         }
         // 添加绘制物体

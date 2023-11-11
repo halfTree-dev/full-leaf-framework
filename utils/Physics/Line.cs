@@ -210,5 +210,25 @@ public class Line : Shape {
         // 生成投影
     }
 
+    /// <summary>
+    /// 获取该多直线最小的AABB外接长方形，
+    /// AABB长方形为两对对边分别平行于两个坐标轴的长方形，
+    /// 需要注意的是，由于Xna的矩形只能以int作顶点坐标，所以这不是严格的外接，
+    /// 不过这个功能本来就用作粗略运算，所以不要在意这么多。
+    /// </summary>
+    public override Rectangle GetSmallestAABBRectangle() {
+        float minX = points[0].X;
+        float maxX = points[0].X;
+        float minY = points[0].Y;
+        float maxY = points[0].Y;
+        for (int i = 0; i < points.Length; i++) {
+            if (points[i].X > maxX) { maxX = points[i].X; }
+            else if (points[i].X < minX) { minX = points[i].X; }
+            if (points[i].Y > maxY) { maxY = points[i].Y; }
+            else if (points[i].Y < minY) { minY = points[i].Y; }
+        }
+        return new Rectangle((int)minX, (int)minY, (int)(maxX - minX), (int)(maxY - minY));
+    }
+
 }
 

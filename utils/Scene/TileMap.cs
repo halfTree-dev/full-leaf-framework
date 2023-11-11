@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Reflection;
 using System.Collections.Generic;
+using full_leaf_framework.Physics;
 
 namespace full_leaf_framework.Scene;
 
@@ -89,6 +90,7 @@ public class TileMap {
         LoadSprites(tileMapInfo);
         LoadTiles(tileMapInfo);
         LoadBuildings(tileMapInfo);
+        LoadPhysics(tileMapInfo);
         // 读取相关资源
     }
 
@@ -163,6 +165,13 @@ public class TileMap {
         }
     }
 
+    /// <summary>
+    /// 读取瓦片地图的物理信息
+    /// </summary>
+    private void LoadPhysics(TileMapInfo tileMapInfo) {
+        tilePhysics = new TilePhysics(this, tileMapInfo);
+    }
+
     #endregion
 
     /// <summary>
@@ -177,6 +186,15 @@ public class TileMap {
         foreach (Building building in buildings) {
             building.Update(gameTime);
         }
+    }
+
+    /// <summary>
+    /// 检测任意图形和瓦片地图的瓦片是否存在碰撞
+    /// </summary>
+    /// <param name="shape">任意图形</param>
+    /// <param name="collisionLayer">碰撞图层</param>
+    public bool IsCollision(Shape shape, int collisionLayer) {
+        return tilePhysics.IsCollision(shape, collisionLayer);
     }
 
     /// <summary>

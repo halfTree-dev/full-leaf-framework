@@ -126,4 +126,18 @@ public class Circle : Shape {
         return crossLine;
     }
 
+    /// <summary>
+    /// 获取该圆最小的AABB外接长方形，
+    /// AABB长方形为两对对边分别平行于两个坐标轴的长方形，
+    /// 需要注意的是，由于Xna的矩形只能以int作顶点坐标，所以这不是严格的外接，
+    /// 不过这个功能本来就用作粗略运算，所以不要在意这么多。
+    /// </summary>
+    public override Rectangle GetSmallestAABBRectangle() {
+        float minX = points[0].X - radius;
+        float maxX = points[0].X + radius;
+        float minY = points[0].Y - radius;
+        float maxY = points[0].Y + radius;
+        return new Rectangle((int)minX, (int)minY, (int)(maxX - minX), (int)(maxY - minY));
+    }
+
 }

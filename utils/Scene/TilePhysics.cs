@@ -5,8 +5,8 @@
 需要注意的是这个物理系统只管瓦片的物理效果，不管建筑物的
 */
 
-using System.Numerics;
 using full_leaf_framework.Physics;
+using Microsoft.Xna.Framework;
 
 namespace full_leaf_framework.Scene;
 
@@ -52,7 +52,8 @@ public class TilePhysics {
                 foreach (TilePhysicsInfo tilePhysicsInfo in tileMapInfo.tilePhysics) {
                     if (currentTile == tilePhysicsInfo.tileName) {
                         Polygon collisionArea = tilePhysicsInfo.GetCollisionBox();
-                        collisionArea.Translate(shiftPos);
+                        if (collisionArea != null)
+                            collisionArea.Translate(shiftPos);
                         // 创建相应的碰撞区域
                         collisionBoxs[i][j] = new CollisionBox(collisionArea, tilePhysicsInfo.collisionLayer);
                         break;
@@ -60,6 +61,53 @@ public class TilePhysics {
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// 判断是否碰撞
+    /// </summary>
+    public bool IsCollision(Shape shape, int collisionLayer) {
+        bool result = false;
+        int[] favoriteArea = GetFavouriteArea(shape);
+        for (int i = favoriteArea[0]; i <= favoriteArea[2]; i++) {
+            for (int j = favoriteArea[1]; j <= favoriteArea[3]; j++) {
+                if (collisionBoxs[j][i].collisionLayer == collisionLayer
+                && collisionBoxs[j][i].collisionArea != null)
+                    result = shape.IsCollision(collisionBoxs[j][i].collisionArea) || result;
+            }
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// 计算一个图形的感兴趣区域
+    /// </summary>
+    /// <param name="shape">目标多边形</param>
+    /// <returns>感兴趣区域对应的瓦片索引</returns>
+    private int[] GetFavouriteArea(Shape shape) {
+        Rectangle favouriteArea = shape.GetSmallestAABBRectangle();
+        // 瓦片索引对应：左上角i 左上角j 右下角i 右下角j
+        float leftEdge = (float)favouriteArea.X / tileMap.TileWidth;
+        float rightEdge = (float)(favouriteArea.X + favouriteArea.Width) / tileMap.TileWidth;
+        float upEdge = (float)favouriteArea.Y / tileMap.TileHeight;
+        float downEdge = (float)(favouriteArea.Y + favouriteArea.Height) / tileMap.TileHeight;
+        int[] result = new int[4] {(int)leftEdge, (int)upEdge, (int)rightEdge + 1, (int)downEdge + 1};
+        // 算出对应瓦片索引
+        result[0] = LimitTheValue(result[0], 0, tileMap.MapWidth - 1);
+        result[2] = LimitTheValue(result[2], 0, tileMap.MapWidth - 1);
+        result[1] = LimitTheValue(result[1], 0, tileMap.MapHeight - 1);
+        result[3] = LimitTheValue(result[3], 0, tileMap.MapHeight - 1);
+        // 对指定值做限制
+        return result;
+    }
+
+    /// <summary>
+    /// 限制某个值在一个范围内（闭区间）
+    /// </summary>
+    private int LimitTheValue(int value, int minValue, int maxValue) {
+        int result = value > maxValue ? maxValue : value;
+        result = result < minValue ? minValue : result;
+        return result;
     }
 
 }

@@ -303,7 +303,7 @@ public class Polygon : Shape {
     /// 需要注意的是，由于Xna的矩形只能以int作顶点坐标，所以这不是严格的外接，
     /// 不过这个功能本来就用作粗略运算，所以不要在意这么多。
     /// </summary>
-    public Rectangle GetSmallestAABBRectangle() {
+    public override Rectangle GetSmallestAABBRectangle() {
         float minX = points[0].X;
         float maxX = points[0].X;
         float minY = points[0].Y;

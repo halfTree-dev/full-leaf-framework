@@ -77,5 +77,9 @@ public abstract class Shape {
     /// 判断是否碰撞
     /// </summary>
     public abstract bool IsCollision(Polygon polygon);
+    /// <summary>
+    /// 获取该多直线最小的AABB外接长方形
+    /// </summary>
+    public abstract Rectangle GetSmallestAABBRectangle();
 
 }
