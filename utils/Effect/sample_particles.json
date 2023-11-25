@@ -1,0 +1,47 @@
+{
+    "comments":"如此的粒子Json文件包含一些基本的要素，比如说",
+    "comments2":"粒子图集的信息，指定粒子的动画信息，和不同粒子发生器的基本参数",
+    "comments3":"不同的粒子可以有不同的行为模式，可以采取派生类的方式做到",
+
+    "spriteInfos":[
+        {
+            "unitName":"Set1",
+            "location":"Map/SampleFolder/SampleSprite",
+            "rows":2,
+            "column":2
+        },
+        {
+            "unitName":"Set2",
+            "location":"Map/SampleFolder/SampleSprite2",
+            "rows":2,
+            "column":2
+        }
+    ],
+
+    "particleInfos":[
+        {
+            "comments4":"描述单个粒子，它的动画信息，生成的粒子种类--决定它的运动逻辑",
+            "particleClass":"full_leaf_framework.Effect.Particle",
+            "particleName":"testParticle",
+            "usedSprite":"Set1",
+            "usedFrameL":0,
+            "usedFrameR":0,
+            "frameDelay":0,
+            "startFrame":0,
+            "sizeScale":1
+        }
+    ],
+
+    "burstInfos":[
+        {
+            "comment5":"描述单次粒子生成动作，包含生成粒子种类，数目，速度、角度、生命周期的取值范围",
+            "burstName":"testBurst",
+            "burstType":"testParticle",
+            "particleCount":1,
+            "velocityRange":[100, 200],
+            "angleRange":[0, 6.28],
+            "lifeTimeRange":[1, 2]
+        }
+    ]
+
+}
