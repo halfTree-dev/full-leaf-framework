@@ -28,7 +28,12 @@
             "usedFrameR":0,
             "frameDelay":0,
             "startFrame":0,
-            "sizeScale":1
+            "anchorPointX":0,
+            "anchorPointY":0,
+            "sizeScale":1,
+            "angle":0,
+            "layer":1,
+            "extArugs":["114514"]
         }
     ],
 
