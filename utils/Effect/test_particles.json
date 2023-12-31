@@ -1,0 +1,63 @@
+{
+    "spriteInfos":[
+        {
+            "unitName":"TheOnlySet",
+            "location":"Particle/particles",
+            "rows":2,
+            "column":4
+        }
+    ],
+
+    "particleInfos":[
+        {
+            "particleClass":"full_leaf_framework.Effect.Particle",
+            "particleName":"warm_dust",
+            "usedSprite":"TheOnlySet",
+            "usedFrameL":0,
+            "usedFrameR":3,
+            "frameDelay":0.2,
+            "startFrame":0,
+            "anchorPointX":0,
+            "anchorPointY":0,
+            "sizeScale":1,
+            "angle":0,
+            "layer":30,
+            "extArugs":["114514"]
+        },
+        {
+            "particleClass":"full_leaf_framework.Effect.Particle",
+            "particleName":"cold_dust",
+            "usedSprite":"TheOnlySet",
+            "usedFrameL":4,
+            "usedFrameR":7,
+            "frameDelay":0.4,
+            "startFrame":4,
+            "anchorPointX":0,
+            "anchorPointY":0,
+            "sizeScale":1,
+            "angle":0,
+            "layer":30,
+            "extArugs":["114514"]
+        }
+    ],
+
+    "burstInfos":[
+        {
+            "burstName":"testBurst1",
+            "burstType":"warm_dust",
+            "particleCount":60,
+            "velocityRange":[80, 160],
+            "angleRange":[0, 3.14],
+            "lifeTimeRange":[0.5, 2]
+        },
+        {
+            "burstName":"testBurst2",
+            "burstType":"cold_dust",
+            "particleCount":60,
+            "velocityRange":[50, 90],
+            "angleRange":[3.14, 6.28],
+            "lifeTimeRange":[1, 4]
+        }
+    ]
+
+}

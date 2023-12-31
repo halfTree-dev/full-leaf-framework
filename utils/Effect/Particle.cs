@@ -13,8 +13,13 @@ namespace full_leaf_framework.Effect;
 /// <summary>
 /// 单个粒子
 /// </summary>
-public class Particle : Drawable
+public class Particle
 {
+
+    /// <summary>
+    /// 向外展现的绘制对象
+    /// </summary>
+    public Drawable drawable;
 
     /// <summary>
     /// 上级控制器
@@ -66,14 +71,19 @@ public class Particle : Drawable
     public float FrameDelay { get => frameDelay; set => frameDelay = value; }
     public float CurrentDelay { get => currentDelay; set => currentDelay = value; }
 
-    public Particle(ParticleController particleController, AnimatedSprite currentAnimation, Vector2 pos, Vector2 anchorPoint, float sizeScale, Vector2 velocity,
-                    float lifeTime, string[] extArugs, float angle = 0, SpriteEffects effects = SpriteEffects.None, int layer = 10) : base(currentAnimation, pos, anchorPoint, sizeScale, angle, effects, layer) {
+
+    /// <summary>
+    /// 填充粒子的基本内容
+    /// </summary>
+    public virtual void BeginParticle(ParticleController particleController, AnimatedSprite currentAnimation, Vector2 pos, Vector2 anchorPoint, float sizeScale, Vector2 velocity,
+                    float lifeTime, string[] extArugs, float angle = 0, SpriteEffects effects = SpriteEffects.None, int layer = 10) {
+        drawable = new Drawable(currentAnimation, pos, anchorPoint, sizeScale, angle, effects, layer);
         controller = particleController;
         this.velocity = velocity;
         this.lifeTime = lifeTime;
         maxLifeTime = lifeTime;
         // 在设置BeginAnimation前锁定动画
-        settledFrame = 0;
+        drawable.settledFrame = 0;
         CurrentDelay = float.MaxValue;
         // extArugs用于给继承类额外传值
     }
@@ -98,7 +108,7 @@ public class Particle : Drawable
     /// </summary>
     public virtual void Update(GameTime gameTime) {
         // 更新位置
-        pos += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+        drawable.pos += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
         // 检查生命周期
         lifeTime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
         if (lifeTime <= 0f) { controller.particles.Remove(this); return; }
@@ -112,7 +122,12 @@ public class Particle : Drawable
             }
             CurrentDelay = FrameDelay;
         }
-        settledFrame = CurrentFrame;
+        drawable.settledFrame = CurrentFrame;
     }
 
 }
+
+/*
+可以通过继承Particle类，
+通过其子类达到特殊的效果！
+*/

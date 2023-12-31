@@ -6,7 +6,7 @@ using full_leaf_framework.Visual;
 using full_leaf_framework.Physics;
 using full_leaf_framework.Scene;
 using System;
-
+using full_leaf_framework.Effect;
 
 namespace full_leaf_framework;
 
@@ -27,6 +27,8 @@ public class MainGame : Game
     public Drawable test;
     public Drawable test2;
 
+    public ParticleController particleController;
+
     public MainGame()
     {
         graphics = new GraphicsDeviceManager(this)
@@ -43,8 +45,8 @@ public class MainGame : Game
     {
         // TODO: Add your initialization logic here
         inputManager = new InputManager();
-        inputManager.InsertTrackingKeys(new Keys[9] {Keys.A, Keys.D, Keys.W, Keys.S,
-        Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.E});
+        inputManager.InsertTrackingKeys(new Keys[11] {Keys.A, Keys.D, Keys.W, Keys.S,
+        Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.E, Keys.O, Keys.P});
         base.Initialize();
     }
 
@@ -60,6 +62,7 @@ public class MainGame : Game
         test2 = new Drawable(new AnimatedSprite(Content.Load<Texture2D>("Characters/test")), new Vector2(100, 0),
         new Vector2(0, -50), 1);
         tileMap = new TileMap("utils/Scene/test_map.json", Content);
+        particleController = new ParticleController("utils/Effect/test_particles.json", Content);
         // TODO: use this.Content to load your game content here
     }
 
@@ -106,12 +109,20 @@ public class MainGame : Game
             + " - " + tileMap.IsCollision(polygon3, 2) + " - " + tileMap.IsCollision(polygon1, 1));
             Console.WriteLine((float)gameTime.TotalGameTime.TotalSeconds - time);
         }
+        if (inputManager.GetTrackingKey(Keys.O).fired) {
+            particleController.Burst("testBurst1", new Vector2(0, 0));
+        }
+        if (inputManager.GetTrackingKey(Keys.P).fired) {
+            particleController.Burst("testBurst2", new Vector2(0, 0));
+        }
         // 添加绘制物体
         // camera.insertObject(test);
         // camera.insertObject(test2);
         // TODO: Add your update logic here
         tileMap.Update(gameTime);
+        particleController.Update(gameTime);
         tileMap.Draw(camera);
+        particleController.Draw(camera);
 
         base.Update(gameTime);
     }
