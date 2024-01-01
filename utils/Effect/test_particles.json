@@ -10,11 +10,11 @@
 
     "particleInfos":[
         {
-            "particleClass":"full_leaf_framework.Effect.Particle",
+            "particleClass":"full_leaf_framework.Effect.ChildParticle",
             "particleName":"warm_dust",
             "usedSprite":"TheOnlySet",
             "usedFrameL":0,
-            "usedFrameR":3,
+            "usedFrameR":7,
             "frameDelay":0.2,
             "startFrame":0,
             "anchorPointX":0,
@@ -22,7 +22,7 @@
             "sizeScale":1,
             "angle":0,
             "layer":30,
-            "extArugs":["114514"]
+            "extArugs":["0.1047", "0.2094"]
         },
         {
             "particleClass":"full_leaf_framework.Effect.Particle",
@@ -45,10 +45,10 @@
         {
             "burstName":"testBurst1",
             "burstType":"warm_dust",
-            "particleCount":60,
-            "velocityRange":[80, 160],
-            "angleRange":[0, 3.14],
-            "lifeTimeRange":[0.5, 2]
+            "particleCount":150,
+            "velocityRange":[80, 590],
+            "angleRange":[0, 6.28],
+            "lifeTimeRange":[3, 6.5]
         },
         {
             "burstName":"testBurst2",
