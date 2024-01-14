@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using full_leaf_framework.Input;
+using full_leaf_framework.Interact;
 using full_leaf_framework.Visual;
 using full_leaf_framework.Physics;
 using full_leaf_framework.Scene;

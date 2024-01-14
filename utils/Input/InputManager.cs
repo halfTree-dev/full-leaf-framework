@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 
-namespace full_leaf_framework.Input;
+namespace full_leaf_framework.Interact;
 
 /// <summary>
 /// 输入控制器
