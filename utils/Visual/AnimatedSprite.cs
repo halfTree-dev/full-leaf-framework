@@ -152,7 +152,7 @@ public class AnimatedSprite {
 /// <summary>
 /// 动画信息对象
 /// </summary>
-public class AnimationInfo {
+public class AnimationSpriteInfo {
 
     /// <summary>
     /// 资源位置

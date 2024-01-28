@@ -53,7 +53,7 @@
 
     "buildingInfos":[
         {
-            "buildingClass":"full_leaf_framework.Scene.Building",
+            "buildingClass":"full_leaf_framework.Scene.TrackingBuilding",
             "spriteInfo":{
                 "location":"TileMap/tilemap",
                 "rows":1,
@@ -62,9 +62,9 @@
                 "startFrame":0
             },
             "posX":0,
-            "posY":160,
-            "anchorPointX":-64,
-            "anchorPointY":-32,
+            "posY":0,
+            "anchorPointX":0,
+            "anchorPointY":0,
             "sizeScale":1,
             "angle":0,
             "layer":5

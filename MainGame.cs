@@ -27,6 +27,8 @@ public class MainGame : Game
     public Drawable test;
     public Drawable test2;
 
+    public static AnimationTrackController trackController;
+
     public ParticleController particleController;
 
     public MainGame()
@@ -45,8 +47,8 @@ public class MainGame : Game
     {
         // TODO: Add your initialization logic here
         inputManager = new InputManager();
-        inputManager.InsertTrackingKeys(new Keys[11] {Keys.A, Keys.D, Keys.W, Keys.S,
-        Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.E, Keys.O, Keys.P});
+        inputManager.InsertTrackingKeys(new Keys[12] {Keys.A, Keys.D, Keys.W, Keys.S,
+        Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.E, Keys.O, Keys.P, Keys.R});
         base.Initialize();
     }
 
@@ -61,6 +63,7 @@ public class MainGame : Game
         new Vector2(0, 50), 1);
         test2 = new Drawable(new AnimatedSprite(Content.Load<Texture2D>("Characters/test")), new Vector2(100, 0),
         new Vector2(0, -50), 1);
+        trackController = AnimationInfo.LoadAnimationInfo("utils/Visual/sample_animation.json");
         tileMap = new TileMap("utils/Scene/test_map.json", Content);
         particleController = new ParticleController("utils/Effect/test_particles.json", Content);
         // TODO: use this.Content to load your game content here

@@ -1,0 +1,125 @@
+{
+    "comment1":"很明显，这个Json是用来储存动画信息的，请务必按照下列格式编辑动画",
+
+    "trackInfos":[
+        {
+            "name":"SampleAnimation1",
+            "animationMovement":{
+                "tracks":[
+                    {
+                        "bezierCurve":{
+                            "controllPoints":[
+                                {"X":0, "Y":0},
+                                {"X":200, "Y":-50},
+                                {"X":300, "Y":-20},
+                                {"X":300, "Y":200}
+                            ]
+                        },
+                        "durationTime":[0, 3.0]
+                    },
+                    {
+                        "bezierCurve":{
+                            "controllPoints":[
+                                {"X":300, "Y":200},
+                                {"X":250, "Y":350},
+                                {"X":100, "Y":-20},
+                                {"X":0, "Y":0}
+                            ]
+                        },
+                        "durationTime":[3.0, 6.0]
+                    }
+                ],
+                "timeReflectMode":"sin",
+                "maxTime":6
+            },
+            "animationScale":{
+                "changeActions":[
+                    {
+                        "changeMotion":[1, 1.5],
+                        "durationTime":[0, 3.0]
+                    },
+                    {
+                        "changeMotion":[1.5, 1],
+                        "durationTime":[3.0, 6.0]
+                    }
+                ],
+                "timeReflectMode":"sin",
+                "maxTime":6
+            },
+            "animationSpin":{
+                "changeActions":[
+                    {
+                        "changeMotion":[0, 2.14],
+                        "durationTime":[0, 3.0]
+                    },
+                    {
+                        "changeMotion":[2.14, 3.14],
+                        "durationTime":[3.0, 6.0]
+                    }
+                ],
+                "timeReflectMode":"sin",
+                "maxTime":6
+            }
+        },
+        {
+            "name":"SampleAnimation2",
+            "animationMovement":{
+                "tracks":[
+                    {
+                        "bezierCurve":{
+                            "controllPoints":[
+                                {"X":0, "Y":0},
+                                {"X":200, "Y":-50},
+                                {"X":300, "Y":-20},
+                                {"X":300, "Y":200}
+                            ]
+                        },
+                        "durationTime":[0, 3.0]
+                    },
+                    {
+                        "bezierCurve":{
+                            "controllPoints":[
+                                {"X":300, "Y":200},
+                                {"X":250, "Y":350},
+                                {"X":100, "Y":-20},
+                                {"X":0, "Y":0}
+                            ]
+                        },
+                        "durationTime":[3.0, 6.0]
+                    }
+                ],
+                "timeReflectMode":"linear",
+                "maxTime":6
+            },
+            "animationScale":{
+                "changeActions":[
+                    {
+                        "changeMotion":[1, 1.5],
+                        "durationTime":[0, 3.0]
+                    },
+                    {
+                        "changeMotion":[1.5, 1],
+                        "durationTime":[3.0, 6.0]
+                    }
+                ],
+                "timeReflectMode":"linear",
+                "maxTime":6
+            },
+            "animationSpin":{
+                "changeActions":[
+                    {
+                        "changeMotion":[0, 3.14],
+                        "durationTime":[0, 3.0]
+                    },
+                    {
+                        "changeMotion":[3.14, 6.28],
+                        "durationTime":[3.0, 6.0]
+                    }
+                ],
+                "timeReflectMode":"linear",
+                "maxTime":6
+            }
+        }
+    ]
+
+}

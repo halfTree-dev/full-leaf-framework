@@ -15,9 +15,25 @@ namespace full_leaf_framework.Interact;
 /// <summary>
 /// 平视信息显示的控件
 /// </summary>
-public interface HudUnit {
+public interface IHudUnit {
 
     public void Update(GameTime gameTime);
     public void Draw(Camera camera);
+
+}
+
+/// <summary>
+/// 图像
+/// </summary>
+public class Image {
+
+    /// <summary>
+    /// 要显示的图像
+    /// </summary>
+    public Drawable drawable;
+    /// <summary>
+    /// 动画信息
+    /// </summary>
+    public AnimationTrack animationTrack;
 
 }

@@ -17,6 +17,6 @@ public class Hud {
     /// <summary>
     /// 控件列表
     /// </summary>
-    public List<HudUnit> hudUnits;
+    public List<IHudUnit> hudUnits;
 
 }
