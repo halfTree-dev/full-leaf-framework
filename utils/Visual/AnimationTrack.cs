@@ -44,6 +44,17 @@ public class AnimationTrack {
         };
     }
 
+    /// <summary>
+    /// 用当前的动画参数修改Drawable类型，使其呈现动画效果
+    /// </summary>
+    /// <param name="drawable">要被赋予动画效果的对象</param>
+    public void AffectDrawable(Drawable drawable, float time) {
+        AnimationResult result = ReturnAnimationResult(time);
+        drawable.pos = result.pos;
+        drawable.angle = result.angle;
+        drawable.sizeScale = result.scale;
+    }
+
 }
 
 /// <summary>

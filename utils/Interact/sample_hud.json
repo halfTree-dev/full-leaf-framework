@@ -1,0 +1,76 @@
+{
+    "comments1":"这是一个储存菜单栏信息的json文件，通过读取它，可以读取一个菜单的信息",
+
+    "comments2":"hudUnits储存这个菜单中所有的元件信息",
+    "hudUnits":[
+        {
+            "name":"SampleName",
+            "hudClass":"full_leaf_framework.Interact.Image",
+            "drawableInfo":{
+                "spriteInfo":{
+                    "location":"Map/SampleFolder/SampleSprite",
+                    "rows":1,
+                    "column":2,
+                    "frameDelay":0.2,
+                    "startFrame":0
+                },
+                "posX":50,
+                "posY":50,
+                "anchorPointX":0,
+                "anchorPointY":0,
+                "sizeScale":1,
+                "angle":0,
+                "layer":1
+            },
+            "collisionBox":[
+                {"X":0, "Y":0},
+                {"X":100, "Y":0},
+                {"X":100, "Y":50},
+                {"X":0, "Y":50}
+            ],
+            "comments3":"每个元件中，元件的名称，类别，绘制对象和碰撞箱的部分必须定义，其他参数使用extArgus传入",
+            "extArugs":[]
+        }
+    ],
+    "animationTracks":{
+        "locations":[
+            "utils/Visual/sample_animation.json"
+        ],
+        "comments4":"储存在locations数组中的动画轨迹信息会被读取，在接下来可以用到"
+    },
+    "initialize":[
+        {
+            "type":"add_event",
+            "target":"@a",
+            "object":"full_leaf_framework.Interact.Hud.SampleFunction",
+            "handler":"idle"
+        },
+        {
+            "type":"add_animation",
+            "target":"@a",
+            "object":"SampleAniamtion",
+            "handler":"current"
+        }
+    ],
+    "comments5":"使用以下的格式指定命令，可以向已有的元件中传递委托绑定事件，添加动画",
+    "comments6":"自己搞一个Hud的继承类，在里面写好相应的方法，传递委托的时候会根据方法名称创建相应的委托",
+    "commands":[
+        {
+            "name":"SampleRmvCommand",
+            "sequence":[
+                {
+                    "type":"rmv_event",
+                    "target":"@a",
+                    "object":"full_leaf_framework.Interact.Hud.SampleFunction",
+                    "handler":"idle"
+                },
+                {
+                    "type":"rmv_animation",
+                    "target":"@a",
+                    "object":"SampleAniamtion",
+                    "handler":"current"
+                }
+            ]
+        }
+    ]
+}
