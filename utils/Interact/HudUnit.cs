@@ -9,6 +9,7 @@ HudUnit本身只是一个接口，真正表现功能还得是它的继承类
 using full_leaf_framework.Visual;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using static full_leaf_framework.Interact.Hud;
 
 namespace full_leaf_framework.Interact;
 
@@ -18,15 +19,29 @@ namespace full_leaf_framework.Interact;
 public interface IHudUnit {
 
     /// <summary>
+    /// 设置控件名称
+    /// </summary>
+    public void SetName(string name);
+    /// <summary>
     /// 获取控件名称
     /// </summary>
     public string GetName();
+    /// <summary>
+    /// 设置可绘制对象
+    /// </summary>
+    public void SetDrawObject(Drawable drawable);
     /// <summary>
     /// 将指定委托绑定到控件的事件上
     /// </summary>
     /// <param name="handleEvent">委托</param>
     /// <param name="handler">控件事件名称</param>
-    public void SetEventToHandler(Hud.MenuHandleEvent handleEvent, string handler);
+    public void SetEventToHandler(MenuHandleEvent handleEvent, string handler);
+    /// <summary>
+    /// 将控件的事件从委托上移除
+    /// </summary>
+    /// <param name="handleEvent">委托</param>
+    /// <param name="handler">控件事件名称</param>
+    public void RemoveEventFromHandler(MenuHandleEvent handleEvent, string handler);
     /// <summary>
     /// 为控件设置动画轨迹
     /// </summary>
@@ -69,6 +84,9 @@ public class Image : IHudUnit {
     /// </summary>
     public float animationTime = 0f;
 
+    // 这些是菜单控件的委托，会被控件在指定的条件下执行的
+    public MenuHandleEvent idle;
+
     public void Draw(Camera camera) {
         camera.insertObject(drawable);
     }
@@ -81,6 +99,18 @@ public class Image : IHudUnit {
         return name;
     }
 
+    public void RemoveEventFromHandler(MenuHandleEvent handleEvent, string handler)
+    {
+        switch (handler) {
+            case "idle":
+                if (idle is null) { return; }
+                else { idle -= handleEvent; }
+                break;
+            default:
+                break;
+        }
+    }
+
     public void SetAnimationTime(float time) {
         animationTime = time;
     }
@@ -90,13 +120,30 @@ public class Image : IHudUnit {
         this.animationTrack = animationTrack;
     }
 
-    public void SetEventToHandler(Hud.MenuHandleEvent handleEvent, string handler)
+    public void SetDrawObject(Drawable drawable)
     {
-        throw new System.NotImplementedException();
+        this.drawable = drawable;
+    }
+
+    public void SetEventToHandler(MenuHandleEvent handleEvent, string handler)
+    {
+        switch (handler) {
+            case "idle":
+                if (idle is null) { idle = new MenuHandleEvent(handleEvent);}
+                else { idle += handleEvent; }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void SetName(string name) {
+        this.name = name;
     }
 
     public void Update(GameTime gameTime) {
         // 简单地赋予其动画
         animationTrack.AffectDrawable(drawable, animationTime);
+        if (idle is not null) { idle(this); }
     }
 }

@@ -1,6 +1,9 @@
 {
     "comments1":"这是一个储存菜单栏信息的json文件，通过读取它，可以读取一个菜单的信息",
 
+    "name":"testHud",
+    "hudType":"full_leaf_framework.Interact.Hud",
+
     "comments2":"hudUnits储存这个菜单中所有的元件信息",
     "hudUnits":[
         {
@@ -29,26 +32,22 @@
                 {"X":0, "Y":50}
             ],
             "comments3":"每个元件中，元件的名称，类别，绘制对象和碰撞箱的部分必须定义，其他参数使用extArgus传入",
-            "extArugs":[]
+            "extArgus":[]
         }
     ],
-    "animationTracks":{
-        "locations":[
-            "utils/Visual/sample_animation.json"
-        ],
-        "comments4":"储存在locations数组中的动画轨迹信息会被读取，在接下来可以用到"
-    },
+    "animationTracks":"utils/Visual/sample_animation.json",
+    "comments4":"储存在animationTracks的动画轨迹信息会被读取，在接下来可以用到",
     "initialize":[
         {
             "type":"add_event",
             "target":"@a",
-            "object":"full_leaf_framework.Interact.Hud.SampleFunction",
+            "content":"full_leaf_framework.Interact.Hud.SampleFunction",
             "handler":"idle"
         },
         {
             "type":"add_animation",
             "target":"@a",
-            "object":"SampleAniamtion",
+            "content":"SampleAniamtion",
             "handler":"current"
         }
     ],
@@ -61,16 +60,17 @@
                 {
                     "type":"rmv_event",
                     "target":"@a",
-                    "object":"full_leaf_framework.Interact.Hud.SampleFunction",
+                    "content":"full_leaf_framework.Interact.Hud.SampleFunction",
                     "handler":"idle"
                 },
                 {
                     "type":"rmv_animation",
                     "target":"@a",
-                    "object":"SampleAniamtion",
+                    "content":"SampleAniamtion",
                     "handler":"current"
                 }
             ]
         }
-    ]
+    ],
+    "extArgus":[]
 }
