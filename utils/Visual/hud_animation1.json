@@ -1,0 +1,44 @@
+{
+    "trackInfos":[
+        {
+            "name":"initGo",
+            "animationMovement":{
+                "tracks":[
+                    {
+                        "bezierCurve":{
+                            "controllPoints":[
+                                {"X":0, "Y":0},
+                                {"X":200, "Y":0},
+                                {"X":200, "Y":100}
+                            ]
+                        },
+                        "durationTime":[0, 10.0]
+                    }
+                ],
+                "timeReflectMode":"sin",
+                "maxTime":10
+            },
+            "animationScale":{
+                "changeActions":[
+                    {
+                        "changeMotion":[1, 2.5],
+                        "durationTime":[0, 10.0]
+                    }
+                ],
+                "timeReflectMode":"sin",
+                "maxTime":10
+            },
+            "animationSpin":{
+                "changeActions":[
+                    {
+                        "changeMotion":[0, 0],
+                        "durationTime":[0, 10.0]
+                    }
+                ],
+                "timeReflectMode":"sin",
+                "maxTime":10
+            }
+        }
+    ]
+
+}

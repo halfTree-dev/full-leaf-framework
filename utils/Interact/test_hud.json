@@ -1,0 +1,79 @@
+{
+    "name":"testHud",
+    "hudType":"full_leaf_framework.Interact.Menu",
+    "hudUnits":[
+        {
+            "name":"bigTest",
+            "hudClass":"full_leaf_framework.Interact.Image",
+            "drawableInfo":{
+                "spriteInfo":{
+                    "location":"Hud/menu_test",
+                    "rows":1,
+                    "column":1,
+                    "frameDelay":0,
+                    "startFrame":0
+                },
+                "posX":0,
+                "posY":0,
+                "anchorPointX":-100,
+                "anchorPointY":-60,
+                "sizeScale":1,
+                "angle":0,
+                "layer":30
+            },
+            "collisionBox":[
+                {"X":0, "Y":0},
+                {"X":200, "Y":0},
+                {"X":200, "Y":120},
+                {"X":0, "Y":120}
+            ],
+            "extArgus":["a Test Message"]
+        }
+    ],
+    "animationTracks":"utils/Visual/hud_animation1.json",
+    "initialize":[
+        {
+            "type":"add_event",
+            "target":"bigTest",
+            "content":"AnimationTick",
+            "handler":"idle"
+        },
+        {
+            "type":"add_animation",
+            "target":"bigTest",
+            "content":"initGo",
+            "handler":"current"
+        }
+    ],
+    "commands":[
+        {
+            "name":"no_animation",
+            "sequence":[
+                {
+                    "type":"rmv_event",
+                    "target":"bigTest",
+                    "content":"AnimationTick",
+                    "handler":"idle"
+                },
+                {
+                    "type":"rmv_animation",
+                    "target":"bigTest",
+                    "content":"",
+                    "handler":"current"
+                }
+            ]
+        },
+        {
+            "name":"pause_animation",
+            "sequence":[
+                {
+                    "type":"rmv_event",
+                    "target":"bigTest",
+                    "content":"AnimationTick",
+                    "handler":"idle"
+                }
+            ]
+        }
+    ],
+    "extArgus":[]
+}

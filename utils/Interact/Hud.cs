@@ -5,6 +5,7 @@ Hud，即平视信息显示，可以在游戏进行过程中显示游戏进行�
 实际使用的时候，必须将Hud【继承】出来，因为你自己要写方法对吧。
 */
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using full_leaf_framework.Visual;
@@ -22,10 +23,11 @@ public class Hud {
     /// 菜单的名字
     /// </summary>
     public string name;
+
     /// <summary>
     /// 控件列表
     /// </summary>
-    public List<IHudUnit> hudUnits;
+    public IHudUnit[] hudUnits;
     /// <summary>
     /// 动画轨迹控制器
     /// </summary>
@@ -47,9 +49,19 @@ public class Hud {
     }
 
     /// <summary>
+    /// 运行命令
+    /// </summary>
+    internal void RunCommandSequence(string commandName) {
+        try {
+            hudCommandController.RunCommandSequence(commandName, this);
+        }
+        catch (Exception e) { Console.WriteLine(e); }
+    }
+
+    /// <summary>
     /// 更新菜单
     /// </summary>
-    public void Update(GameTime gameTime) {
+    internal void Update(GameTime gameTime) {
         foreach (IHudUnit hudUnit in hudUnits) {
             hudUnit.Update(gameTime);
         }
@@ -58,7 +70,7 @@ public class Hud {
     /// <summary>
     /// 绘制菜单
     /// </summary>
-    public void Draw(Camera camera) {
+    internal void Draw(Camera camera) {
         foreach (IHudUnit hudUnit in hudUnits) {
             hudUnit.Draw(camera);
         }
@@ -85,7 +97,7 @@ public class HudCommandController {
     /// </summary>
     /// <param name="name">命令名称</param>
     /// <param name="sequences">命令行</param>
-    public void AddCommandSequence(string name, HudCommandSequence[] sequences) {
+    internal void AddCommandSequence(string name, HudCommandSequence[] sequences) {
         commands.Add(name, sequences);
     }
 
@@ -93,7 +105,7 @@ public class HudCommandController {
     /// 移除菜单命令
     /// </summary>
     /// <param name="name">命令名称</param>
-    public void RemoveCommandSequence(string name) {
+    internal void RemoveCommandSequence(string name) {
         commands.Remove(name);
     }
 
@@ -101,7 +113,7 @@ public class HudCommandController {
     /// 运行菜单命令
     /// </summary>
     /// <param name="name">命令名称</param>
-    public void RunCommandSequence(string name, Hud hud) {
+    internal void RunCommandSequence(string name, Hud hud) {
         var sequences = commands[name];
         foreach (HudCommandSequence sequence in sequences) {
             sequence.RunCommand(hud);
@@ -150,11 +162,11 @@ public class HudCommandSequence {
         if (targetUnit == null) { return; }
         switch (type) {
             case "add_event":
-                var handleEvent = method.CreateDelegate(typeof(MenuHandleEvent));
+                var handleEvent = method.CreateDelegate(typeof(MenuHandleEvent), hud);
                 targetUnit.SetEventToHandler((MenuHandleEvent)handleEvent, handler);
                 break;
             case "rmv_event":
-                var delEvent = method.CreateDelegate(typeof(MenuHandleEvent));
+                var delEvent = method.CreateDelegate(typeof(MenuHandleEvent), hud);
                 targetUnit.RemoveEventFromHandler((MenuHandleEvent)delEvent, handler);
                 break;
             case "add_animation":

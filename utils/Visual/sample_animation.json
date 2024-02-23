@@ -1,6 +1,6 @@
 {
     "comment1":"很明显，这个Json是用来储存动画信息的，请务必按照下列格式编辑动画",
-
+    "comment2":"即便你的动画不包括一些动作，也请不要设置空参数~",
     "trackInfos":[
         {
             "name":"SampleAnimation1",

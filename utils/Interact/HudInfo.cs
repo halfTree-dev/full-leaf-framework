@@ -4,6 +4,7 @@ HudInfo 就是为了读取Hud信息而创建的类
 
 using System.IO;
 using System.Reflection;
+using full_leaf_framework.Physics;
 using full_leaf_framework.Visual;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -106,8 +107,19 @@ public class HudUnitInfo {
         Drawable hudDrawable = new Drawable(drawableInfo.spriteInfo.ReturnAnimation(Content),
         new Vector2(drawableInfo.posX, drawableInfo.posY), new Vector2(drawableInfo.anchorPointX, drawableInfo.anchorPointY),
         drawableInfo.sizeScale, drawableInfo.angle, SpriteEffects.None, drawableInfo.layer);
+        hudUnit.SetCollsionBox(ReturnCollisionBox());
         hudUnit.SetDrawObject(hudDrawable);
+        hudUnit.HandleExtArgus(extArgus);
         return hudUnit;
+    }
+
+    private Polygon ReturnCollisionBox() {
+        var points = new Vector2[collisionBox.Length];
+        for (int i = 0; i < points.Length; i++) {
+            points[i] = collisionBox[i].ReturnVector2();
+        }
+        Polygon result = new Polygon(points);
+        return result;
     }
 
 }

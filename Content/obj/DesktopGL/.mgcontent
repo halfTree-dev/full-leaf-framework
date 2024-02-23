@@ -4,6 +4,7 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>D:/C# Project/full-leaf-framework/Content/Hud/menu_test.png</File>
     <File>D:/C# Project/full-leaf-framework/Content/Particle/particles.png</File>
     <File>D:/C# Project/full-leaf-framework/Content/TileMap/tilemap.png</File>
     <File>D:/C# Project/full-leaf-framework/Content/TileMap/tiles1.png</File>

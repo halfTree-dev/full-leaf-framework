@@ -27,6 +27,8 @@ public class MainGame : Game
     public Drawable test;
     public Drawable test2;
 
+    public HudController hudController;
+
     public static AnimationTrackController trackController;
 
     public ParticleController particleController;
@@ -67,6 +69,11 @@ public class MainGame : Game
         tileMap = new TileMap("utils/Scene/test_map.json", Content);
         particleController = new ParticleController("utils/Effect/test_particles.json", Content);
         // TODO: use this.Content to load your game content here
+        // 读取菜单
+        Camera hudCamera = new Camera(spriteBatch, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
+        new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+        hudController = new HudController(Content, hudCamera);
+        hudController.AddHud("utils/Interact/test_hud.json", true, true);
     }
 
     protected override void Update(GameTime gameTime)
@@ -111,12 +118,20 @@ public class MainGame : Game
             Console.WriteLine(tileMap.IsCollision(polygon1, 2) + " - " + tileMap.IsCollision(polygon2, 2)
             + " - " + tileMap.IsCollision(polygon3, 2) + " - " + tileMap.IsCollision(polygon1, 1));
             Console.WriteLine((float)gameTime.TotalGameTime.TotalSeconds - time);
+            // Reload Hud
+            Camera hudCamera = new Camera(spriteBatch, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
+            new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+            hudController = new HudController(Content, hudCamera);
+            hudController.AddHud("utils/Interact/test_hud.json", true, true);
+            Console.WriteLine("Reload Hud");
         }
         if (inputManager.GetTrackingKey(Keys.O).fired) {
             particleController.Burst("testBurst1", new Vector2(0, 0));
+            hudController.RunHudCommandSequence("testHud", "no_animation");
         }
         if (inputManager.GetTrackingKey(Keys.P).fired) {
             particleController.Burst("testBurst2", new Vector2(0, 0));
+            hudController.RunHudCommandSequence("testHud", "pause_animation");
         }
         // 添加绘制物体
         // camera.insertObject(test);
@@ -126,6 +141,8 @@ public class MainGame : Game
         particleController.Update(gameTime);
         tileMap.Draw(camera);
         particleController.Draw(camera);
+        hudController.Update(gameTime);
+        hudController.InsertDrawObjects();
 
         base.Update(gameTime);
     }
@@ -135,6 +152,7 @@ public class MainGame : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
         spriteBatch.Begin();
         camera.Draw();
+        hudController.Draw();
         spriteBatch.End();
         // TODO: Add your drawing code here
 

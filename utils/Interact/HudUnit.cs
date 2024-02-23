@@ -6,6 +6,8 @@ HudUnit，平视信息界面中的单个控件，
 HudUnit本身只是一个接口，真正表现功能还得是它的继承类
 */
 
+using System;
+using full_leaf_framework.Physics;
 using full_leaf_framework.Visual;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -26,6 +28,14 @@ public interface IHudUnit {
     /// 获取控件名称
     /// </summary>
     public string GetName();
+    /// <summary>
+    /// 设置控件的碰撞箱
+    /// </summary>
+    public void SetCollsionBox(Polygon polygon);
+    /// <summary>
+    /// 获取控件的碰撞箱
+    /// </summary>
+    public Polygon GetCollisionBox();
     /// <summary>
     /// 设置可绘制对象
     /// </summary>
@@ -62,6 +72,10 @@ public interface IHudUnit {
     /// 绘制控件
     /// </summary>
     public void Draw(Camera camera);
+    /// <summary>
+    /// 处理额外参数
+    /// </summary>
+    public void HandleExtArgus(object[] extArgus);
 
 }
 
@@ -83,6 +97,10 @@ public class Image : IHudUnit {
     /// 动画时间
     /// </summary>
     public float animationTime = 0f;
+    /// <summary>
+    /// 控件的碰撞箱
+    /// </summary>
+    public Polygon collisionBox;
 
     // 这些是菜单控件的委托，会被控件在指定的条件下执行的
     public MenuHandleEvent idle;
@@ -95,16 +113,29 @@ public class Image : IHudUnit {
         return animationTime;
     }
 
+    public Polygon GetCollisionBox() {
+        return collisionBox;
+    }
+
     public string GetName() {
         return name;
     }
 
-    public void RemoveEventFromHandler(MenuHandleEvent handleEvent, string handler)
-    {
+    public void HandleExtArgus(object[] extArgus) {
+    }
+
+    public void RemoveEventFromHandler(MenuHandleEvent handleEvent, string handler) {
         switch (handler) {
             case "idle":
                 if (idle is null) { return; }
-                else { idle -= handleEvent; }
+                else {
+                    Delegate[] delegates = idle.GetInvocationList();
+                    foreach (Delegate @delegate in delegates) {
+                        if (((MenuHandleEvent)@delegate.Target).Method.Name == handleEvent.Method.Name) {
+                            idle -= (MenuHandleEvent)@delegate;
+                        }
+                    }
+                }
                 break;
             default:
                 break;
@@ -115,18 +146,19 @@ public class Image : IHudUnit {
         animationTime = time;
     }
 
-    public void SetAnimationTrack(AnimationTrack animationTrack)
-    {
+    public void SetAnimationTrack(AnimationTrack animationTrack) {
         this.animationTrack = animationTrack;
     }
 
-    public void SetDrawObject(Drawable drawable)
-    {
+    public void SetCollsionBox(Polygon polygon) {
+        collisionBox = polygon;
+    }
+
+    public void SetDrawObject(Drawable drawable) {
         this.drawable = drawable;
     }
 
-    public void SetEventToHandler(MenuHandleEvent handleEvent, string handler)
-    {
+    public void SetEventToHandler(MenuHandleEvent handleEvent, string handler) {
         switch (handler) {
             case "idle":
                 if (idle is null) { idle = new MenuHandleEvent(handleEvent);}
@@ -143,7 +175,8 @@ public class Image : IHudUnit {
 
     public void Update(GameTime gameTime) {
         // 简单地赋予其动画
-        animationTrack.AffectDrawable(drawable, animationTime);
+        if (animationTrack is not null)
+            animationTrack.AffectDrawable(drawable, animationTime);
         if (idle is not null) { idle(this); }
     }
 }
