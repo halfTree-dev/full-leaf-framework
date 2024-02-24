@@ -8,20 +8,57 @@
                         "bezierCurve":{
                             "controllPoints":[
                                 {"X":0, "Y":0},
-                                {"X":200, "Y":0},
-                                {"X":200, "Y":100}
+                                {"X":200, "Y":0}
                             ]
                         },
+                        "durationTime":[0, 1.5]
+                    }
+                ],
+                "timeReflectMode":"sin",
+                "maxTime":1.5
+            },
+            "animationScale":{
+                "changeActions":[
+                    {
+                        "changeMotion":[1, 1.2],
+                        "durationTime":[0, 1.5]
+                    }
+                ],
+                "timeReflectMode":"smooth",
+                "maxTime":1.5
+            },
+            "animationSpin":{
+                "changeActions":[
+                    {
+                        "changeMotion":[0, 0],
                         "durationTime":[0, 10.0]
                     }
                 ],
                 "timeReflectMode":"sin",
                 "maxTime":10
+            }
+        },
+        {
+            "name":"initButtonGo",
+            "animationMovement":{
+                "tracks":[
+                    {
+                        "bezierCurve":{
+                            "controllPoints":[
+                                {"X":800, "Y":480},
+                                {"X":600, "Y":480}
+                            ]
+                        },
+                        "durationTime":[0, 1.0]
+                    }
+                ],
+                "timeReflectMode":"smooth",
+                "maxTime":1
             },
             "animationScale":{
                 "changeActions":[
                     {
-                        "changeMotion":[1, 2.5],
+                        "changeMotion":[1, 1],
                         "durationTime":[0, 10.0]
                     }
                 ],

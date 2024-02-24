@@ -111,6 +111,15 @@ public class AnimationMovement {
                     (track.durationTime[1] - track.durationTime[0]) * MathF.PI / 2) * (track.durationTime[1] - track.durationTime[0]);
                     // 在本段持续时间之内时，返回本段的轨迹
                 }
+                if (timeReflectMode == "rsin") {
+                    time = track.durationTime[0] + (1 - MathF.Cos((time - track.durationTime[0]) /
+                    (track.durationTime[1] - track.durationTime[0]) * MathF.PI / 2)) * (track.durationTime[1] - track.durationTime[0]);
+                }
+                if (timeReflectMode == "smooth") {
+                    float dTime = (time - track.durationTime[0]) / (track.durationTime[1] - track.durationTime[0]);
+                    float actualTime = MathF.Pow(dTime, 5) * 6 - MathF.Pow(dTime, 4) * 15 + MathF.Pow(dTime, 3) * 10;
+                    time = track.durationTime[0] + actualTime * (track.durationTime[1] - track.durationTime[0]);
+                }
                 result = track.bezierCurve.ReturnTrackPoint((time - track.durationTime[0])
                 / (track.durationTime[1] - track.durationTime[0]));
                 break;
@@ -194,7 +203,7 @@ public class AnimationChange {
     public ChangeAction[] changeActions;
     /// <summary>
     /// 时间的映射方式，控制动画在不同时间的播放速度
-    /// 例如：linear(默认),sin
+    /// 例如：linear(默认),sin,rsin(倒转sin，先慢后快),smooth(中间快，两端慢)
     /// </summary>
     public string timeReflectMode;
     /// <summary>
@@ -211,10 +220,19 @@ public class AnimationChange {
         float result = 1f;
         foreach (ChangeAction changeAction in changeActions) {
             if (time >= changeAction.durationTime[0] && time <= changeAction.durationTime[1]) {
+                // 计算时间映射关系
                 if (timeReflectMode == "sin") {
-                    // 计算时间映射关系
                     time = changeAction.durationTime[0] + MathF.Sin((time - changeAction.durationTime[0]) /
                     (changeAction.durationTime[1] - changeAction.durationTime[0]) * MathF.PI / 2) * (changeAction.durationTime[1] - changeAction.durationTime[0]);
+                }
+                if (timeReflectMode == "rsin") {
+                    time = changeAction.durationTime[0] + (1 - MathF.Cos((time - changeAction.durationTime[0]) /
+                    (changeAction.durationTime[1] - changeAction.durationTime[0]) * MathF.PI / 2)) * (changeAction.durationTime[1] - changeAction.durationTime[0]);
+                }
+                if (timeReflectMode == "smooth") {
+                    float dTime = (time - changeAction.durationTime[0]) / (changeAction.durationTime[1] - changeAction.durationTime[0]);
+                    float actualTime = MathF.Pow(dTime, 5) * 6 - MathF.Pow(dTime, 4) * 15 + MathF.Pow(dTime, 3) * 10;
+                    time = changeAction.durationTime[0] + actualTime * (changeAction.durationTime[1] - changeAction.durationTime[0]);
                 }
                 // 在本段持续时间之内时，返回本段的缩放变化值
                 result = changeAction.changeMotion[0] + (time - changeAction.durationTime[0]) /

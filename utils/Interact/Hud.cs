@@ -61,9 +61,9 @@ public class Hud {
     /// <summary>
     /// 更新菜单
     /// </summary>
-    internal void Update(GameTime gameTime) {
+    internal void Update(GameTime gameTime, InputManager input, Camera camera) {
         foreach (IHudUnit hudUnit in hudUnits) {
-            hudUnit.Update(gameTime);
+            hudUnit.Update(gameTime, input, camera);
         }
     }
 

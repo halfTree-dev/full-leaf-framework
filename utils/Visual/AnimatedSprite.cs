@@ -128,15 +128,24 @@ public class AnimatedSprite {
     /// <param name="angle">旋转角度</param>
     /// <param name="scale">缩放比值</param>
     public void Draw(SpriteBatch spriteBatch, Vector2 location, Vector2 anchorPoint,
-    SpriteEffects effects = SpriteEffects.None, float angle = 0, float scale = 1) {
+    SpriteEffects effects = SpriteEffects.None, float angle = 0, float scale = 1, Rectangle? drawArea = null) {
         int currentRow = currentFrame / columns;
         int currentColumn = currentFrame % columns;
         // 截取对应图集中的单个精灵
-        Rectangle sourceRectangle = new Rectangle(width * currentColumn,
-        height * currentRow, width, height);
+        Rectangle sourceRectangle;
+        if (drawArea == null) {
+            sourceRectangle = new Rectangle(width * currentColumn,
+            height * currentRow, width, height);
+        }
+        else {
+            // 改变截取区域
+            Rectangle interceptArea = (Rectangle)drawArea;
+            sourceRectangle = new Rectangle(width * currentColumn + interceptArea.X,
+            height * currentRow + interceptArea.Y, interceptArea.Width, interceptArea.Height);
+        }
         // 绘制它（锚点引起的坐标改变被提前处理）
         spriteBatch.Draw(texture, location,
-        sourceRectangle, Color.White, angle, new Vector2(width / 2, height / 2) + anchorPoint,
+        sourceRectangle, Color.White, angle, new Vector2(sourceRectangle.Width / 2, sourceRectangle.Height / 2) + anchorPoint,
         scale, effects, 1);
         // 破案了，spriteBatch默认是居中绘制，好吧，我输了，居然花了许久去考虑这一点
         // 又破案了，原来origin居然还会决定绘制的中心位置，我去，我居然还花了这么久调坐标

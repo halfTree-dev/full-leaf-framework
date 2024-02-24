@@ -142,11 +142,11 @@ public class HudController {
     /// <summary>
     /// 更新菜单
     /// </summary>
-    public void Update(GameTime gameTime) {
+    public void Update(GameTime gameTime, InputManager inputManager) {
         foreach (string key in huds.Keys) {
             if (hudStatus.ContainsKey(key)) {
                 if (hudStatus[key].isActive) {
-                    huds[key].Update(gameTime);
+                    huds[key].Update(gameTime, inputManager, camera);
                 }
             }
         }

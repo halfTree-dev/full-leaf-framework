@@ -141,7 +141,7 @@ public class MainGame : Game
         particleController.Update(gameTime);
         tileMap.Draw(camera);
         particleController.Draw(camera);
-        hudController.Update(gameTime);
+        hudController.Update(gameTime, inputManager);
         hudController.InsertDrawObjects();
 
         base.Update(gameTime);

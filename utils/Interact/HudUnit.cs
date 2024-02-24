@@ -67,7 +67,7 @@ public interface IHudUnit {
     /// <summary>
     /// 更新控件
     /// </summary>
-    public void Update(GameTime gameTime);
+    public void Update(GameTime gameTime, InputManager input, Camera camera);
     /// <summary>
     /// 绘制控件
     /// </summary>
@@ -124,7 +124,7 @@ public class Image : IHudUnit {
     public void HandleExtArgus(object[] extArgus) {
     }
 
-    public void RemoveEventFromHandler(MenuHandleEvent handleEvent, string handler) {
+    public virtual void RemoveEventFromHandler(MenuHandleEvent handleEvent, string handler) {
         switch (handler) {
             case "idle":
                 if (idle is null) { return; }
@@ -158,7 +158,7 @@ public class Image : IHudUnit {
         this.drawable = drawable;
     }
 
-    public void SetEventToHandler(MenuHandleEvent handleEvent, string handler) {
+    public virtual void SetEventToHandler(MenuHandleEvent handleEvent, string handler) {
         switch (handler) {
             case "idle":
                 if (idle is null) { idle = new MenuHandleEvent(handleEvent);}
@@ -173,10 +173,102 @@ public class Image : IHudUnit {
         this.name = name;
     }
 
-    public void Update(GameTime gameTime) {
+    public virtual void Update(GameTime gameTime, InputManager input, Camera camera) {
         // 简单地赋予其动画
         if (animationTrack is not null)
             animationTrack.AffectDrawable(drawable, animationTime);
         if (idle is not null) { idle(this); }
     }
+}
+
+public class Button : Image, IHudUnit {
+
+    /// <summary>
+    /// 当鼠标指针不与碰撞箱重合时
+    /// </summary>
+    public MenuHandleEvent notFocus;
+    /// <summary>
+    /// 当鼠标指针与碰撞箱重合时
+    /// </summary>
+    public MenuHandleEvent focus;
+    /// <summary>
+    /// 按钮被点击
+    /// </summary>
+    public MenuHandleEvent fired;
+    /// <summary>
+    /// 按钮被长按
+    /// </summary>
+    public MenuHandleEvent hold;
+
+    public override void SetEventToHandler(MenuHandleEvent handleEvent, string handler) {
+        base.SetEventToHandler(handleEvent, handler);
+        switch (handler) {
+            case "notFocus":
+                if (notFocus is null) { notFocus = new MenuHandleEvent(handleEvent);}
+                else { notFocus += handleEvent; }
+                break;
+            case "focus":
+                if (focus is null) { focus = new MenuHandleEvent(handleEvent);}
+                else { focus += handleEvent; }
+                break;
+            case "fired":
+                if (fired is null) { fired = new MenuHandleEvent(handleEvent);}
+                else { fired += handleEvent; }
+                break;
+            case "hold":
+                if (hold is null) { hold = new MenuHandleEvent(handleEvent);}
+                else { hold += handleEvent; }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public override void RemoveEventFromHandler(MenuHandleEvent handleEvent, string handler) {
+        base.RemoveEventFromHandler(handleEvent, handler);
+        MenuHandleEvent targetEvent = null;
+        Delegate[] delegates = null;
+        switch (handler) {
+            case "notFocus":
+                if (notFocus is null) { return; }
+                else { delegates = notFocus.GetInvocationList(); targetEvent = notFocus; }
+                break;
+            case "focus":
+                if (focus is null) { return; }
+                else { delegates = focus.GetInvocationList(); targetEvent = focus; }
+                break;
+            case "fired":
+                if (fired is null) { return; }
+                else { delegates = fired.GetInvocationList(); targetEvent = fired; }
+                break;
+            case "hold":
+                if (hold is null) { return; }
+                else { delegates = hold.GetInvocationList(); targetEvent = hold; }
+                break;
+            default:
+                break;
+        }
+        foreach (Delegate @delegate in delegates) {
+            if (((MenuHandleEvent)@delegate.Target).Method.Name == handleEvent.Method.Name && targetEvent is not null) {
+                targetEvent -= (MenuHandleEvent)@delegate;
+            }
+        }
+    }
+
+    public override void Update(GameTime gameTime, InputManager input, Camera camera) {
+        base.Update(gameTime, input, camera);
+        var mouse = input.GetTrackingMouse();
+        Vector2 mousePos = mouse.pos.ToVector2();
+        mousePos = camera.ReturnPointerPos(mousePos);
+        #warning 关于碰撞的判断出错！老远的问题了
+        if (collisionBox.IsCollision(new Polygon(new Rectangle((int)mousePos.X, (int)mousePos.Y, 1, 1)))) {
+            focus.Invoke(this);
+            if (mouse.firedLeft) { if (fired is not null) fired.Invoke(this); }
+            if (mouse.pressedLeft) { if (hold is not null ) hold.Invoke(this);  }
+        }
+        else {
+            notFocus.Invoke(this);
+        }
+    }
+
 }

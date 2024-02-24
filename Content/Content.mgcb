@@ -44,6 +44,18 @@
 /processorParam:TextureFormat=Color
 /build:Hud/menu_test.png
 
+#begin Hud/test_button.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Hud/test_button.png
+
 #begin Particle/particles.png
 /importer:TextureImporter
 /processor:TextureProcessor

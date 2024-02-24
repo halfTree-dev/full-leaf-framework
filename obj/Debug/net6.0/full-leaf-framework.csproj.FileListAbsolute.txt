@@ -31,3 +31,4 @@ D:\C# Project\full-leaf-framework\bin\Debug\net6.0\Content\TileMap\tiles1.xnb
 D:\C# Project\full-leaf-framework\bin\Debug\net6.0\Content\TileMap\tiles2.xnb
 D:\C# Project\full-leaf-framework\bin\Debug\net6.0\Content\Particle\particles.xnb
 D:\C# Project\full-leaf-framework\bin\Debug\net6.0\Content\Hud\menu_test.xnb
+D:\C# Project\full-leaf-framework\bin\Debug\net6.0\Content\Hud\test_button.xnb
