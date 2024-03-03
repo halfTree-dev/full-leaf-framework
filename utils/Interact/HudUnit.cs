@@ -260,7 +260,6 @@ public class Button : Image, IHudUnit {
         var mouse = input.GetTrackingMouse();
         Vector2 mousePos = mouse.pos.ToVector2();
         mousePos = camera.ReturnPointerPos(mousePos);
-        #warning 关于碰撞的判断出错！老远的问题了
         if (collisionBox.IsCollision(new Polygon(new Rectangle((int)mousePos.X, (int)mousePos.Y, 1, 1)))) {
             focus.Invoke(this);
             if (mouse.firedLeft) { if (fired is not null) fired.Invoke(this); }
