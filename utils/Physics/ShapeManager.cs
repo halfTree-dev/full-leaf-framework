@@ -9,6 +9,14 @@ using Microsoft.Xna.Framework;
 
 namespace full_leaf_framework.Physics;
 
+public interface IShape {
+    public void Translate(Vector2 shiftPos);
+    public void Rotate(float angle);
+    public void Rotate(Vector2 center, float angle);
+    public float GetArea();
+    public Rectangle GetSmallestAABBRectangle();
+}
+
 /// <summary>
 /// 形状管理器
 /// 管理形状之间的种内/间关系
@@ -108,6 +116,48 @@ public class ShapeManager {
     }
 
     /// <summary>
+    /// 获取点到多边形最近点的投影轴
+    /// </summary>
+    private static Line GetNearestAxisFromPolygon(Vector2 point, Polygon polygon) {
+        float nowDistance = float.MaxValue;
+        Line axis = new Line(Vector2.Zero, Vector2.Zero);
+        // 对每一条边做判断
+        Line[] edges = polygon.GetAllEdges();
+        foreach (Line edge in edges) {
+            float distance = GetDistanceFromPointToLine(point, edge);
+            if (distance < nowDistance) {
+                nowDistance = distance;
+                axis = ReturnVerticleLine(edge, Vector2.Zero);
+                // 发现距离边最近，投影轴为边的法向量
+            }
+        }
+        // 对每一个点做判断
+        foreach (Vector2 polygonPoint in polygon.Points) {
+            float distance = Vector2.Distance(polygonPoint, point);
+            if (distance < nowDistance) {
+                nowDistance = distance;
+                var pointer = point - polygonPoint;
+                pointer.Normalize();
+                axis = new Line(Vector2.Zero, pointer);
+                // 发现距离点最近，那么点之间的向量为投影轴
+            }
+        }
+        return axis;
+    }
+
+    /// <summary>
+    /// 获取点到直线距离
+    /// </summary>
+    private static float GetDistanceFromPointToLine(Vector2 point, Line line) {
+        // 获取三角形面积
+        Polygon triangle = new Polygon(new Vector2[3] {point, line.point1, line.point2});
+        float area = triangle.GetArea();
+        // 获取底面长度
+        float edgeLength = Vector2.Distance(line.point1, line.point2);
+        return 2 * area / edgeLength;
+    }
+
+    /// <summary>
     /// 判断两个多边形是否发生碰撞
     /// </summary>
     public static bool IsCollision(Polygon polygon1, Polygon polygon2) {
@@ -132,8 +182,21 @@ public class ShapeManager {
         return Vector2.Distance(circle1.center, circle2.center) <= circle1.radius + circle2.radius;
     }
 
+    /// <summary>
+    /// 判断圆与多边形之间是否发生碰撞
+    /// </summary>
     public static bool IsCollision(Polygon polygon, Circle circle) {
-        throw new NotImplementedException();
+        var allVerticles = new Line[polygon.VerticleLines.Length + 1];
+        Array.Copy(polygon.VerticleLines, 0, allVerticles, 0, polygon.VerticleLines.Length);
+        allVerticles[allVerticles.Length - 1] = GetNearestAxisFromPolygon(circle.center, polygon);
+        foreach (Line verticle in allVerticles) {
+            float[] cast1 = GetProjectLengthRange(polygon, verticle);
+            float[] cast2 = GetProjectLengthRange(circle, verticle);
+            if (!IsTwoProjectionIntersect(cast1, cast2)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

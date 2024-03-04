@@ -49,14 +49,14 @@ namespace full_leaf_framework.Physics;
 /// <summary>
 /// 多边形
 /// </summary>
-public class Polygon {
+public class Polygon : IShape {
 
     private Vector2[] points;
     /// <summary>
     /// 投影轴列表
     /// </summary>
     private Line[] verticleLines;
-    public Vector2[] Points { get => points; set => points = value; }
+    public Vector2[] Points { get => points; }
     public Line[] VerticleLines { get => verticleLines; }
 
     /// <summary>
@@ -64,7 +64,7 @@ public class Polygon {
     /// </summary>
     /// <param name="rectangle">矩形</param>
     public Polygon(Rectangle rectangle) {
-        Points = new Vector2[4] {
+        points = new Vector2[4] {
             new Vector2(rectangle.X, rectangle.Y),
             new Vector2(rectangle.X + rectangle.Width, rectangle.Y),
             new Vector2(rectangle.X + rectangle.Width, rectangle.Y + rectangle.Height),
@@ -78,9 +78,10 @@ public class Polygon {
     /// </summary>
     /// <param name="points">顶点</param>
     public Polygon(Vector2[] points) {
-        this.Points = new Vector2[points.Length];
+        if (points.Length <= 1) { throw new Exception("多边形的顶点数应当大于1"); }
+        this.points = new Vector2[points.Length];
         for (int i = 0; i < points.Length; i++) {
-            this.Points[i] = new Vector2(points[i].X, points[i].Y);
+            this.points[i] = new Vector2(points[i].X, points[i].Y);
         }
         FillVerticleLines();
     }
@@ -99,8 +100,18 @@ public class Polygon {
         // 所有的投影轴都过原点，且与某一条边垂直
     }
 
-    public bool IsPointInside(Vector2 point) {
-        throw new NotImplementedException();
+    /// <summary>
+    /// 获取多边形的所有边
+    /// </summary>
+    /// <returns></returns>
+    public Line[] GetAllEdges() {
+        Line[] edges = new Line[Points.Length];
+        for (int i = 0; i < Points.Length - 1; i++) {
+            var edge = new Line(Points[i], Points[i + 1]);
+            edges[i] = edge;
+        }
+        edges[Points.Length - 1] = new Line(Points[Points.Length - 1], Points[0]);
+        return edges;
     }
 
     /// <summary>
@@ -112,6 +123,7 @@ public class Polygon {
         for (int i = 0; i < Points.Length; i++) {
             Points[i] = ShapeManager.RotateAroundPoint(Points[i], rotateCenter, angle);
         }
+        FillVerticleLines();
     }
 
     /// <summary>
@@ -122,6 +134,7 @@ public class Polygon {
         for (int i = 0; i < Points.Length; i++) {
             Points[i] = ShapeManager.RotateAroundPoint(Points[i], center, angle);
         }
+        FillVerticleLines();
     }
 
     /// <summary>
@@ -226,4 +239,14 @@ public class Polygon {
         return new Rectangle((int)minX, (int)minY, (int)(maxX - minX), (int)(maxY - minY));
     }
 
+    /// <summary>
+    /// 平移图形
+    /// </summary>
+    /// <param name="shiftPos">偏移量</param>
+    public void Translate(Vector2 shiftPos)
+    {
+        for (int i = 0; i < points.Length; i++) {
+            points[i] += shiftPos;
+        }
+    }
 }

@@ -6,7 +6,7 @@ namespace full_leaf_framework.Physics;
 /// <summary>
 /// 圆形
 /// </summary>
-public class Circle {
+public class Circle : IShape {
 
     /// <summary>
     /// 圆心
@@ -42,6 +42,13 @@ public class Circle {
     }
 
     /// <summary>
+    /// 围绕指定旋转中心旋转
+    /// </summary>
+    public void Rotate(Vector2 center, float angle) {
+        this.center = ShapeManager.RotateAroundPoint(this.center, center, angle);
+    }
+
+    /// <summary>
     /// 获取图形面积
     /// </summary>
     public float GetArea() {
@@ -62,4 +69,11 @@ public class Circle {
         return new Rectangle((int)minX, (int)minY, (int)(maxX - minX), (int)(maxY - minY));
     }
 
+    /// <summary>
+    /// 平移
+    /// </summary>
+    /// <param name="shiftPos">偏移量</param>
+    public void Translate(Vector2 shiftPos) {
+        center += shiftPos;
+    }
 }

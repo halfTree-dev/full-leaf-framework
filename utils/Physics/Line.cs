@@ -6,7 +6,7 @@ namespace full_leaf_framework.Physics;
 /// <summary>
 /// 线段
 /// </summary>
-public class Line {
+public class Line : IShape {
 
     /// <summary>
     /// 端点1
@@ -34,10 +34,6 @@ public class Line {
     public void Translate(Vector2 swiftPos) {
         point1 += swiftPos;
         point2 += swiftPos;
-    }
-
-    public bool IsPointInside(Vector2 point) {
-        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -85,5 +81,11 @@ public class Line {
         return new Rectangle((int)minX, (int)minY, (int)(maxX - minX), (int)(maxY - minY));
     }
 
+    /// <summary>
+    /// 获取面积...你是认真的？你和线段谈面积？该方法恒返回0
+    /// </summary>
+    public float GetArea() {
+        return 0;
+    }
 }
 
