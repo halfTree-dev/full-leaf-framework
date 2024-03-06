@@ -49,8 +49,9 @@ public class MainGame : Game
     {
         // TODO: Add your initialization logic here
         inputManager = new InputManager();
-        inputManager.InsertTrackingKeys(new Keys[12] {Keys.A, Keys.D, Keys.W, Keys.S,
-        Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.E, Keys.O, Keys.P, Keys.R});
+        inputManager.InsertTrackingKeys(new Keys[16] {Keys.A, Keys.D, Keys.W, Keys.S,
+        Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.E, Keys.O, Keys.P, Keys.R, Keys.M,
+        Keys.D1, Keys.D2, Keys.D3});
         base.Initialize();
     }
 
@@ -73,7 +74,8 @@ public class MainGame : Game
         Camera hudCamera = new Camera(spriteBatch, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
         new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
         hudController = new HudController(Content, hudCamera);
-        hudController.AddHud("utils/Interact/test_hud.json", true, true);
+        hudController.AddHud("utils/Interact/test_hud.json", false, false);
+        hudController.AddHud("utils/Interact/collision_hud.json", true, true);
     }
 
     protected override void Update(GameTime gameTime)
@@ -122,7 +124,8 @@ public class MainGame : Game
             Camera hudCamera = new Camera(spriteBatch, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
             new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
             hudController = new HudController(Content, hudCamera);
-            hudController.AddHud("utils/Interact/test_hud.json", true, true);
+            hudController.AddHud("utils/Interact/test_hud.json", false, false);
+            hudController.AddHud("utils/Interact/collision_hud.json", true, true);
             Console.WriteLine("Reload Hud");
         }
         if (inputManager.GetTrackingKey(Keys.O).fired) {
@@ -132,6 +135,9 @@ public class MainGame : Game
         if (inputManager.GetTrackingKey(Keys.P).fired) {
             particleController.Burst("testBurst2", new Vector2(0, 0));
             hudController.RunHudCommandSequence("testHud", "pause_animation");
+        }
+        if (inputManager.GetTrackingKey(Keys.M).fired) {
+            ((CollisionTestMenu)hudController["collisionHud"]).GetCollisionStatus();
         }
         // 添加绘制物体
         // camera.insertObject(test);
@@ -158,4 +164,21 @@ public class MainGame : Game
 
         base.Draw(gameTime);
     }
+}
+
+public class PolygonTest {
+
+    public Polygon[] preSets;
+    public Circle testCircle;
+
+    public PolygonTest() {
+        preSets = new Polygon[4] {
+            new Polygon(new Vector2[3] { new Vector2(0, 0), new Vector2(100, 0), new Vector2(100, 100) }),
+            new Polygon(new Vector2[4] { new Vector2(0, 0), new Vector2(100, 0), new Vector2(100, 100), new Vector2(0, 100) }),
+            new Polygon(new Vector2[5] { new Vector2(0, 0), new Vector2(60, 0), new Vector2(100, 50), new Vector2(60, 100), new Vector2(0, 100) }),
+            new Polygon(new Vector2[6] { new Vector2(0, 0), new Vector2(50, 0), new Vector2(100, 50), new Vector2(100, 100), new Vector2(50, 100), new Vector2(0, 50) })
+        };
+        testCircle = new Circle(new Vector2(50, 50), 50);
+    }
+
 }

@@ -11,6 +11,7 @@ using full_leaf_framework.Physics;
 using full_leaf_framework.Visual;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using static full_leaf_framework.Interact.Hud;
 
 namespace full_leaf_framework.Interact;
@@ -121,7 +122,7 @@ public class Image : IHudUnit {
         return name;
     }
 
-    public void HandleExtArgus(object[] extArgus) {
+    public virtual void HandleExtArgus(object[] extArgus) {
     }
 
     public virtual void RemoveEventFromHandler(MenuHandleEvent handleEvent, string handler) {
@@ -260,7 +261,7 @@ public class Button : Image, IHudUnit {
         var mouse = input.GetTrackingMouse();
         Vector2 mousePos = mouse.pos.ToVector2();
         mousePos = camera.ReturnPointerPos(mousePos);
-        if (collisionBox.IsCollision(new Polygon(new Rectangle((int)mousePos.X, (int)mousePos.Y, 1, 1)))) {
+        if (ShapeManager.IsCollision(collisionBox, new Polygon(new Rectangle((int)mousePos.X, (int)mousePos.Y, 1, 1)))) {
             focus.Invoke(this);
             if (mouse.firedLeft) { if (fired is not null) fired.Invoke(this); }
             if (mouse.pressedLeft) { if (hold is not null ) hold.Invoke(this);  }
@@ -268,6 +269,38 @@ public class Button : Image, IHudUnit {
         else {
             notFocus.Invoke(this);
         }
+    }
+
+}
+
+public class TestPolygon : Image {
+
+    public int showingPolygon = 0;
+    public Keys activeKey;
+
+    public override void Update(GameTime gameTime, InputManager input, Camera camera)
+    {
+        base.Update(gameTime, input, camera);
+        if (input.GetTrackingKey(activeKey).pressed) {
+            var mouse = input.GetTrackingMouse();
+            drawable.pos = mouse.pos.ToVector2();
+        }
+        drawable.settledFrame = showingPolygon;
+    }
+
+    public override void HandleExtArgus(object[] extArgus)
+    {
+        base.HandleExtArgus(extArgus);
+        if ((long)extArgus[0] == 1) {
+            activeKey = Keys.D1;
+        }
+        else if ((long)extArgus[0] == 2) {
+            activeKey = Keys.D2;
+        }
+        else {
+            activeKey = Keys.D3;
+        }
+        showingPolygon = Convert.ToInt32((long)extArgus[1]);
     }
 
 }

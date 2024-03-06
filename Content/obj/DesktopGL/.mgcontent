@@ -4,6 +4,11 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>D:/C# Project/full-leaf-framework/Content/TestObjects/c1.png</File>
+    <File>D:/C# Project/full-leaf-framework/Content/TestObjects/p1.png</File>
+    <File>D:/C# Project/full-leaf-framework/Content/TestObjects/p2.png</File>
+    <File>D:/C# Project/full-leaf-framework/Content/TestObjects/p3.png</File>
+    <File>D:/C# Project/full-leaf-framework/Content/TestObjects/p4.png</File>
     <File>D:/C# Project/full-leaf-framework/Content/Hud/test_button.png</File>
     <File>D:/C# Project/full-leaf-framework/Content/Hud/menu_test.png</File>
     <File>D:/C# Project/full-leaf-framework/Content/Particle/particles.png</File>
@@ -14,6 +19,7 @@
     <File>D:/C# Project/full-leaf-framework/Content/Fonts/debugFont.spritefont</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
   </DestFiles>
 </SourceFileCollection>

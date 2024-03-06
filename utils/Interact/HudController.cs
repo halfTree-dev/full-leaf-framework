@@ -52,7 +52,6 @@ public class HudController {
         this.camera = camera;
     }
 
-    /*
     /// <summary>
     /// 获取指定名称的Hud
     /// </summary>
@@ -64,7 +63,6 @@ public class HudController {
             return null;
         }
     }
-    */
 
     /// <summary>
     /// 在控制器中加入一个Hud
