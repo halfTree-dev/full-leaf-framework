@@ -4,8 +4,8 @@ Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Siz
 "D:/C# Project/full-leaf-framework/Content/Hud/menu_test.png","D:/C# Project/full-leaf-framework/Content/bin/DesktopGL/Content/Hud/menu_test.xnb","TextureProcessor","Texture2DContent",989,96085,3.292107
 "D:/C# Project/full-leaf-framework/Content/Hud/test_button.png","D:/C# Project/full-leaf-framework/Content/bin/DesktopGL/Content/Hud/test_button.xnb","TextureProcessor","Texture2DContent",1080,192085,2.5611591
 "D:/C# Project/full-leaf-framework/Content/Particle/particles.png","D:/C# Project/full-leaf-framework/Content/bin/DesktopGL/Content/Particle/particles.xnb","TextureProcessor","Texture2DContent",174,885,2.8377292
-"D:/C# Project/full-leaf-framework/Content/TestObjects/c1.png","D:/C# Project/full-leaf-framework/Content/bin/DesktopGL/Content/TestObjects/c1.xnb","TextureProcessor","Texture2DContent",622,40085,3.13648
-"D:/C# Project/full-leaf-framework/Content/TestObjects/p1.png","D:/C# Project/full-leaf-framework/Content/bin/DesktopGL/Content/TestObjects/p1.xnb","TextureProcessor","Texture2DContent",1562,160085,0.459627
+"D:/C# Project/full-leaf-framework/Content/TestObjects/c1.png","D:/C# Project/full-leaf-framework/Content/bin/DesktopGL/Content/TestObjects/c1.xnb","TextureProcessor","Texture2DContent",622,40085,5.850692
+"D:/C# Project/full-leaf-framework/Content/TestObjects/p1.png","D:/C# Project/full-leaf-framework/Content/bin/DesktopGL/Content/TestObjects/p1.xnb","TextureProcessor","Texture2DContent",1562,160085,1.3185209
 "D:/C# Project/full-leaf-framework/Content/TileMap/tilemap.png","D:/C# Project/full-leaf-framework/Content/bin/DesktopGL/Content/TileMap/tilemap.xnb","TextureProcessor","Texture2DContent",608,32853,0.0264906
 "D:/C# Project/full-leaf-framework/Content/TileMap/tiles1.png","D:/C# Project/full-leaf-framework/Content/bin/DesktopGL/Content/TileMap/tiles1.xnb","TextureProcessor","Texture2DContent",291,16469,0.0884374
 "D:/C# Project/full-leaf-framework/Content/TileMap/tiles2.png","D:/C# Project/full-leaf-framework/Content/bin/DesktopGL/Content/TileMap/tiles2.xnb","TextureProcessor","Texture2DContent",296,16469,0.1892636

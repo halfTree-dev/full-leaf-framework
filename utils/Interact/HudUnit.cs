@@ -261,7 +261,7 @@ public class Button : Image, IHudUnit {
         var mouse = input.GetTrackingMouse();
         Vector2 mousePos = mouse.pos.ToVector2();
         mousePos = camera.ReturnPointerPos(mousePos);
-        if (ShapeManager.IsCollision(collisionBox, new Polygon(new Rectangle((int)mousePos.X, (int)mousePos.Y, 1, 1)))) {
+        if (ShapeManager.IsCollision(collisionBox, new Circle(mouse.pos.ToVector2(), 1))) {
             focus.Invoke(this);
             if (mouse.firedLeft) { if (fired is not null) fired.Invoke(this); }
             if (mouse.pressedLeft) { if (hold is not null ) hold.Invoke(this);  }

@@ -74,7 +74,7 @@ public class MainGame : Game
         Camera hudCamera = new Camera(spriteBatch, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
         new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
         hudController = new HudController(Content, hudCamera);
-        hudController.AddHud("utils/Interact/test_hud.json", false, false);
+        hudController.AddHud("utils/Interact/test_hud.json", true, true);
         hudController.AddHud("utils/Interact/collision_hud.json", true, true);
     }
 
@@ -124,7 +124,7 @@ public class MainGame : Game
             Camera hudCamera = new Camera(spriteBatch, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
             new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
             hudController = new HudController(Content, hudCamera);
-            hudController.AddHud("utils/Interact/test_hud.json", false, false);
+            hudController.AddHud("utils/Interact/test_hud.json", true, true);
             hudController.AddHud("utils/Interact/collision_hud.json", true, true);
             Console.WriteLine("Reload Hud");
         }
