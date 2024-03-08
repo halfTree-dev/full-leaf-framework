@@ -59,6 +59,20 @@
                 ],
                 "timeReflectMode":"sin",
                 "maxTime":6
+            },
+            "animationTransparency":{
+                "changeActions":[
+                    {
+                        "changeMotion":[0, 1],
+                        "durationTime":[0, 3.0]
+                    },
+                    {
+                        "changeMotion":[1, 0],
+                        "durationTime":[3.0, 6.0]
+                    }
+                ],
+                "timeReflectMode":"sin",
+                "maxTime":6
             }
         },
         {
@@ -117,6 +131,20 @@
                     }
                 ],
                 "timeReflectMode":"linear",
+                "maxTime":6
+            },
+            "animationTransparency":{
+                "changeActions":[
+                    {
+                        "changeMotion":[0, 1],
+                        "durationTime":[0, 3.0]
+                    },
+                    {
+                        "changeMotion":[1, 0],
+                        "durationTime":[3.0, 6.0]
+                    }
+                ],
+                "timeReflectMode":"sin",
                 "maxTime":6
             }
         }

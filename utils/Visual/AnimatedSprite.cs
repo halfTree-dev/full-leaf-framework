@@ -127,8 +127,9 @@ public class AnimatedSprite {
     /// <param name="effects">绘制附加效果</param>
     /// <param name="angle">旋转角度</param>
     /// <param name="scale">缩放比值</param>
+    /// <param name="transparency">透明度（0为完全透明，1为完全不透明）</param>
     public void Draw(SpriteBatch spriteBatch, Vector2 location, Vector2 anchorPoint,
-    SpriteEffects effects = SpriteEffects.None, float angle = 0, float scale = 1, Rectangle? drawArea = null) {
+    SpriteEffects effects = SpriteEffects.None, float angle = 0, float scale = 1, Rectangle? drawArea = null, float transparency = 1) {
         int currentRow = currentFrame / columns;
         int currentColumn = currentFrame % columns;
         // 截取对应图集中的单个精灵
@@ -145,8 +146,8 @@ public class AnimatedSprite {
         }
         // 绘制它（锚点引起的坐标改变被提前处理）
         spriteBatch.Draw(texture, location,
-        sourceRectangle, Color.White, angle, new Vector2(sourceRectangle.Width / 2, sourceRectangle.Height / 2) + anchorPoint,
-        scale, effects, 1);
+        sourceRectangle, new Color(Color.White, transparency), angle,
+        new Vector2(sourceRectangle.Width / 2, sourceRectangle.Height / 2) + anchorPoint, scale, effects, 1);
         // 破案了，spriteBatch默认是居中绘制，好吧，我输了，居然花了许久去考虑这一点
         // 又破案了，原来origin居然还会决定绘制的中心位置，我去，我居然还花了这么久调坐标
         /*

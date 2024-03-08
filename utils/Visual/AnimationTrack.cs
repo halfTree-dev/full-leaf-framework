@@ -26,6 +26,10 @@ public class AnimationTrack {
     /// 动画旋转信息
     /// </summary>
     internal AnimationChange animationSpin;
+    /// <summary>
+    /// 动画透明度信息
+    /// </summary>
+    internal AnimationChange animationTransparency;
 
     /// <summary>
     /// 动画信息的名字
@@ -40,7 +44,8 @@ public class AnimationTrack {
         return new AnimationResult() {
             pos = animationMovement.ReturnTrackPoint(time),
             scale = animationScale.ReturnCurrentValue(time),
-            angle = animationSpin.ReturnCurrentValue(time)
+            angle = animationSpin.ReturnCurrentValue(time),
+            transparency = animationTransparency.ReturnCurrentValue(time)
         };
     }
 
@@ -53,6 +58,7 @@ public class AnimationTrack {
         drawable.pos = result.pos;
         drawable.angle = result.angle;
         drawable.sizeScale = result.scale;
+        drawable.transparency = result.transparency;
     }
 
 }
@@ -73,6 +79,10 @@ public struct AnimationResult {
     /// 动画对象缩放值
     /// </summary>
     public float scale;
+    /// <summary>
+    /// 动画对象透明度
+    /// </summary>
+    public float transparency;
 
 }
 

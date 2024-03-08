@@ -192,7 +192,7 @@ public class Camera {
         }
         // 绘制的坐标（注：提前处理锚点，根据锚点更改绘制位置）
         obj.currentAnimation.Draw(spriteBatch, draw_pos, obj.anchorPoint,
-        obj.effects, obj.angle, changed_scale, obj.drawArea);
+        obj.effects, obj.angle, changed_scale, obj.drawArea, obj.transparency);
         obj.currentAnimation.CurrentFrame = currentFrame;
     }
 

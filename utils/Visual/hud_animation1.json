@@ -36,6 +36,16 @@
                 ],
                 "timeReflectMode":"sin",
                 "maxTime":10
+            },
+            "animationTransparency":{
+                "changeActions":[
+                    {
+                        "changeMotion":[0, 1],
+                        "durationTime":[0, 10.0]
+                    }
+                ],
+                "timeReflectMode":"sin",
+                "maxTime":10
             }
         },
         {
@@ -69,6 +79,16 @@
                 "changeActions":[
                     {
                         "changeMotion":[0, 0],
+                        "durationTime":[0, 10.0]
+                    }
+                ],
+                "timeReflectMode":"sin",
+                "maxTime":10
+            },
+            "animationTransparency":{
+                "changeActions":[
+                    {
+                        "changeMotion":[0, 1],
                         "durationTime":[0, 10.0]
                     }
                 ],

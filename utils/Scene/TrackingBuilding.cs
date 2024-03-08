@@ -46,6 +46,7 @@ public class TrackingBuilding : Building
         drawable.pos = result.pos;
         drawable.angle = result.angle;
         drawable.sizeScale = result.scale;
+        drawable.transparency = result.transparency;
         if (existTime > track.animationMovement.maxTime){
             existTime = 0f;
         }

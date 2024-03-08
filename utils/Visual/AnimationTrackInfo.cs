@@ -26,8 +26,9 @@ public class AnimationInfo {
         string jsonContent = File.ReadAllText(location);
         AnimationInfo animationInfo = JsonConvert.DeserializeObject<AnimationInfo>(jsonContent);
         // 读取Json信息
-        AnimationTrackController controller = new AnimationTrackController();
-        controller.tracks = new AnimationTrack[animationInfo.trackInfos.Length];
+        AnimationTrackController controller = new AnimationTrackController {
+            tracks = new AnimationTrack[animationInfo.trackInfos.Length]
+        };
         // 实例化Conroller对象
         for (int i = 0; i < animationInfo.trackInfos.Length; i++) {
             controller.tracks[i] = new AnimationTrack() {
@@ -35,7 +36,8 @@ public class AnimationInfo {
                 animationMovement = animationInfo.trackInfos[i].
                     animationMovement.ReturnAnimationMovement(),
                 animationScale = animationInfo.trackInfos[i].animationScale,
-                animationSpin = animationInfo.trackInfos[i].animationSpin
+                animationSpin = animationInfo.trackInfos[i].animationSpin,
+                animationTransparency = animationInfo.trackInfos[i].animationTransparency
             };
             // 填充动画信息
         }
@@ -53,6 +55,7 @@ public class AnimationTrackInfo {
     public AnimationMovementInfo animationMovement;
     public AnimationChange animationScale;
     public AnimationChange animationSpin;
+    public AnimationChange animationTransparency;
 
 }
 
