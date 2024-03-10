@@ -1,5 +1,6 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
 "D:/C# Project/full-leaf-framework/Content/Characters/test.png","D:/C# Project/full-leaf-framework/Content/bin/DesktopGL/Content/Characters/test.xnb","TextureProcessor","Texture2DContent",405,40085,4.4511166
+"D:/C# Project/full-leaf-framework/Content/Fonts/bmfontTest_0.png","D:/C# Project/full-leaf-framework/Content/bin/DesktopGL/Content/Fonts/bmfontTest_0.xnb","TextureProcessor","Texture2DContent",6644,262229,1.6588389
 "D:/C# Project/full-leaf-framework/Content/Fonts/debugFont.spritefont","D:/C# Project/full-leaf-framework/Content/bin/DesktopGL/Content/Fonts/debugFont.xnb","FontDescriptionProcessor","SpriteFontContent",2068,21535,5.9572797
 "D:/C# Project/full-leaf-framework/Content/Hud/menu_test.png","D:/C# Project/full-leaf-framework/Content/bin/DesktopGL/Content/Hud/menu_test.xnb","TextureProcessor","Texture2DContent",989,96085,3.292107
 "D:/C# Project/full-leaf-framework/Content/Hud/test_button.png","D:/C# Project/full-leaf-framework/Content/bin/DesktopGL/Content/Hud/test_button.xnb","TextureProcessor","Texture2DContent",1080,192085,2.5611591

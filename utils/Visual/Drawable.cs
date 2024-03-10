@@ -75,7 +75,7 @@ public class Drawable {
     /// <param name="layer">绘制的优先级，越小越高，越容易绘制在底层</param>
     /// <param name="drawArea">截取动画帧上的绘制区域，当值为null，绘制一帧动画的全部，否则以单帧动画左上角为(0,0)截取相应区域</param>
     /// <param name="transparency">透明度（0为完全透明，1为完全不透明）</param>
-    public Drawable(AnimatedSprite currentAnimation, Vector2 pos, Vector2 anchorPoint, float sizeScale,
+    public Drawable(AnimatedSprite currentAnimation, Vector2 pos, Vector2 anchorPoint, float sizeScale = 1f,
     float angle = 0f, SpriteEffects effects = SpriteEffects.None, int layer = 10, Rectangle? drawArea = null, float transparency = 1f) {
         this.currentAnimation = currentAnimation;
         this.pos = pos;

@@ -4,6 +4,7 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>D:/C# Project/full-leaf-framework/Content/Fonts/bmfontTest_0.png</File>
     <File>D:/C# Project/full-leaf-framework/Content/TestObjects/c1.png</File>
     <File>D:/C# Project/full-leaf-framework/Content/TestObjects/p1.png</File>
     <File>D:/C# Project/full-leaf-framework/Content/TestObjects/p2.png</File>
@@ -19,7 +20,6 @@
     <File>D:/C# Project/full-leaf-framework/Content/Fonts/debugFont.spritefont</File>
   </SourceFiles>
   <DestFiles>
-    <File xsi:nil="true" />
     <File xsi:nil="true" />
   </DestFiles>
 </SourceFileCollection>

@@ -32,6 +32,7 @@ public class MainGame : Game
     public static AnimationTrackController trackController;
 
     public ParticleController particleController;
+    public BmfontController bmfontController;
 
     public MainGame()
     {
@@ -76,6 +77,7 @@ public class MainGame : Game
         hudController = new HudController(Content, hudCamera);
         hudController.AddHud("utils/Interact/test_hud.json", true, true);
         hudController.AddHud("utils/Interact/collision_hud.json", true, true);
+        bmfontController = new BmfontController("Fonts", "bmfontTest", Content);
     }
 
     protected override void Update(GameTime gameTime)
@@ -149,7 +151,13 @@ public class MainGame : Game
         particleController.Draw(camera);
         hudController.Update(gameTime, inputManager);
         hudController.InsertDrawObjects();
-
+        // 测试BmFont
+        bmfontController.InsertDrawObjects(camera, new string[2] { "你好，世界！", "Hello, BMFont!"},
+        new Vector2(0, 100), BmfontDrawable.TranslateMethod.Middle, 1, true);
+        bmfontController.InsertDrawObjects(camera, new string[2] { "你好，世界！", "Hello, BMFont!"},
+        new Vector2(-350, 100), BmfontDrawable.TranslateMethod.Left, 1, false, transparency : 0.75f);
+        bmfontController.InsertDrawObjects(camera, new string[2] { "你好，世界！", "Hello, BMFont!"},
+        new Vector2(350, 100), BmfontDrawable.TranslateMethod.Right, 0.75f, true, transparency : 0.5f);
         base.Update(gameTime);
     }
 
