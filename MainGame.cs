@@ -75,8 +75,10 @@ public class MainGame : Game
         Camera hudCamera = new Camera(spriteBatch, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
         new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
         hudController = new HudController(Content, hudCamera);
-        hudController.AddHud("utils/Interact/test_hud.json", true, true);
-        hudController.AddHud("utils/Interact/collision_hud.json", true, true);
+        Menu menu = (Menu)hudController.AddHud("utils/Interact/test_hud.json", true, true);
+        menu.FillMenu(inputManager, hudCamera);
+        CollisionTestMenu cMenu = (CollisionTestMenu)hudController.AddHud("utils/Interact/collision_hud.json", true, true);
+        cMenu.FillCollisionTestMenu(inputManager);
         bmfontController = new BmfontController("Fonts", "bmfontTest", Content);
     }
 
@@ -126,8 +128,10 @@ public class MainGame : Game
             Camera hudCamera = new Camera(spriteBatch, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
             new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
             hudController = new HudController(Content, hudCamera);
-            hudController.AddHud("utils/Interact/test_hud.json", true, true);
-            hudController.AddHud("utils/Interact/collision_hud.json", true, true);
+            Menu menu = (Menu)hudController.AddHud("utils/Interact/test_hud.json", true, true);
+            menu.FillMenu(inputManager, hudCamera);
+            CollisionTestMenu cMenu = (CollisionTestMenu)hudController.AddHud("utils/Interact/collision_hud.json", true, true);
+            cMenu.FillCollisionTestMenu(inputManager);
             Console.WriteLine("Reload Hud");
         }
         if (inputManager.GetTrackingKey(Keys.O).fired) {
@@ -149,7 +153,7 @@ public class MainGame : Game
         particleController.Update(gameTime);
         tileMap.Draw(camera);
         particleController.Draw(camera);
-        hudController.Update(gameTime, inputManager);
+        hudController.Update(gameTime);
         hudController.InsertDrawObjects();
         // 测试BmFont
         bmfontController.InsertDrawObjects(camera, new string[2] { "你好，世界！", "Hello, BMFont!"},

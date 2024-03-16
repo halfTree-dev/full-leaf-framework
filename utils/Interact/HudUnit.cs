@@ -68,7 +68,7 @@ public interface IHudUnit {
     /// <summary>
     /// 更新控件
     /// </summary>
-    public void Update(GameTime gameTime, InputManager input, Camera camera);
+    public void Update(GameTime gameTime);
     /// <summary>
     /// 绘制控件
     /// </summary>
@@ -174,7 +174,7 @@ public class Image : IHudUnit {
         this.name = name;
     }
 
-    public virtual void Update(GameTime gameTime, InputManager input, Camera camera) {
+    public virtual void Update(GameTime gameTime) {
         // 简单地赋予其动画
         if (animationTrack is not null)
             animationTrack.AffectDrawable(drawable, animationTime);
@@ -256,19 +256,9 @@ public class Button : Image, IHudUnit {
         }
     }
 
-    public override void Update(GameTime gameTime, InputManager input, Camera camera) {
-        base.Update(gameTime, input, camera);
-        var mouse = input.GetTrackingMouse();
-        Vector2 mousePos = mouse.pos.ToVector2();
-        mousePos = camera.ReturnPointerPos(mousePos);
-        if (ShapeManager.IsCollision(collisionBox, new Circle(mouse.pos.ToVector2(), 1))) {
-            focus.Invoke(this);
-            if (mouse.firedLeft) { if (fired is not null) fired.Invoke(this); }
-            if (mouse.pressedLeft) { if (hold is not null ) hold.Invoke(this);  }
-        }
-        else {
-            notFocus.Invoke(this);
-        }
+    public override void Update(GameTime gameTime) {
+        base.Update(gameTime);
+
     }
 
 }
@@ -278,18 +268,11 @@ public class TestPolygon : Image {
     public int showingPolygon = 0;
     public Keys activeKey;
 
-    public override void Update(GameTime gameTime, InputManager input, Camera camera)
-    {
-        base.Update(gameTime, input, camera);
-        if (input.GetTrackingKey(activeKey).pressed) {
-            var mouse = input.GetTrackingMouse();
-            drawable.pos = mouse.pos.ToVector2();
-        }
-        drawable.settledFrame = showingPolygon;
+    public override void Update(GameTime gameTime) {
+        base.Update(gameTime);
     }
 
-    public override void HandleExtArgus(object[] extArgus)
-    {
+    public override void HandleExtArgus(object[] extArgus) {
         base.HandleExtArgus(extArgus);
         if ((long)extArgus[0] == 1) {
             activeKey = Keys.D1;

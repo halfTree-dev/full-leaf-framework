@@ -85,7 +85,26 @@
         }
     ],
     "animationTracks":"utils/Visual/hud_animation1.json",
-    "initialize":[],
+    "initialize":[
+        {
+            "type":"add_event",
+            "target":"polygon",
+            "content":"MoveShapePosition",
+            "handler":"idle"
+        },
+        {
+            "type":"add_event",
+            "target":"polygon2",
+            "content":"MoveShapePosition",
+            "handler":"idle"
+        },
+        {
+            "type":"add_event",
+            "target":"circle",
+            "content":"MoveShapePosition",
+            "handler":"idle"
+        }
+    ],
     "commands":[],
     "extArgus":[]
 }

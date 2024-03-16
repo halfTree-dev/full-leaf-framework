@@ -81,6 +81,12 @@
         {
             "type":"add_event",
             "target":"buttonTest",
+            "content":"ButtonActiveEvent",
+            "handler":"idle"
+        },
+        {
+            "type":"add_event",
+            "target":"buttonTest",
             "content":"ClickOn",
             "handler":"fired"
         },

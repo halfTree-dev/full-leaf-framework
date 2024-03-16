@@ -7,6 +7,21 @@ public class CollisionTestMenu : Hud {
 
     private PolygonTest testcase;
 
+    public InputManager inputManager;
+
+    public void FillCollisionTestMenu(InputManager inputManager) {
+        this.inputManager = inputManager;
+    }
+
+    public void MoveShapePosition(IHudUnit hudUnit) {
+        var polygonTest = (TestPolygon)hudUnit;
+        if (inputManager.GetTrackingKey(polygonTest.activeKey).pressed) {
+            var mouse = inputManager.GetTrackingMouse();
+            polygonTest.drawable.pos = mouse.pos.ToVector2();
+        }
+        polygonTest.drawable.settledFrame = polygonTest.showingPolygon;
+    }
+
     public void GetCollisionStatus() {
         testcase = new PolygonTest();
         var test1 = testcase.preSets[((TestPolygon)hudUnits[0]).showingPolygon];

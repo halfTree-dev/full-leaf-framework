@@ -28,6 +28,7 @@ public class Hud {
     /// 控件列表
     /// </summary>
     public IHudUnit[] hudUnits;
+    // #warning 应当允许在过程中自己添加菜单项目
     /// <summary>
     /// 动画轨迹控制器
     /// </summary>
@@ -41,6 +42,14 @@ public class Hud {
     /// 菜单事件的委托
     /// </summary>
     public delegate void MenuHandleEvent(IHudUnit unit);
+
+    /*
+    特别注意：
+    不要为Hud对象编写有参数的构造函数！
+    Hud的创建使用CreateInstance()方法，默认不传入参数，
+    有参数的构造函数的菜单会因为找不到相应的构造函数而没法创建。
+    */
+
 
     /// <summary>
     /// 提供额外参数后的处理
@@ -61,9 +70,9 @@ public class Hud {
     /// <summary>
     /// 更新菜单
     /// </summary>
-    internal void Update(GameTime gameTime, InputManager input, Camera camera) {
+    internal void Update(GameTime gameTime) {
         foreach (IHudUnit hudUnit in hudUnits) {
-            hudUnit.Update(gameTime, input, camera);
+            hudUnit.Update(gameTime);
         }
     }
 

@@ -70,7 +70,8 @@ public class HudController {
     /// <param name="location">读取该Hud的Json路径</param>
     /// <param name="isActive">Hud是否被激活</param>
     /// <param name="isVisible">Hud是否可见</param>
-    public void AddHud(string location, bool isActive = true, bool isVisible = true) {
+    /// <returns>返回刚刚生成的菜单对象，请自行为其填充参数</returns>
+    public Hud AddHud(string location, bool isActive = true, bool isVisible = true) {
         HudStatus status = new HudStatus() {
             isActive = isActive,
             isVisible = isVisible
@@ -78,6 +79,7 @@ public class HudController {
         Hud hud = CreateHud(location, Content);
         huds.Add(hud.name, hud);
         hudStatus.Add(hud.name, status);
+        return hud;
     }
 
     /// <summary>
@@ -140,11 +142,11 @@ public class HudController {
     /// <summary>
     /// 更新菜单
     /// </summary>
-    public void Update(GameTime gameTime, InputManager inputManager) {
+    public void Update(GameTime gameTime) {
         foreach (string key in huds.Keys) {
             if (hudStatus.ContainsKey(key)) {
                 if (hudStatus[key].isActive) {
-                    huds[key].Update(gameTime, inputManager, camera);
+                    huds[key].Update(gameTime);
                 }
             }
         }

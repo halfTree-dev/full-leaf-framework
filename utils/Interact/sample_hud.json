@@ -72,5 +72,35 @@
             ]
         }
     ],
+    "preSets":[
+        {
+            "name":"SampleName",
+            "hudClass":"full_leaf_framework.Interact.Image",
+            "drawableInfo":{
+                "spriteInfo":{
+                    "location":"Map/SampleFolder/SampleSprite",
+                    "rows":1,
+                    "column":2,
+                    "frameDelay":0.2,
+                    "startFrame":0
+                },
+                "posX":50,
+                "posY":50,
+                "anchorPointX":0,
+                "anchorPointY":0,
+                "sizeScale":1,
+                "angle":0,
+                "layer":1
+            },
+            "collisionBox":[
+                {"X":0, "Y":0},
+                {"X":100, "Y":0},
+                {"X":100, "Y":50},
+                {"X":0, "Y":50}
+            ],
+            "comments7":"你可以预先定义好一个控件的模板，然后在菜单中中途加入它们",
+            "extArgus":[]
+        }
+    ],
     "extArgus":[]
 }
