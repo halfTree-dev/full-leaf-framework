@@ -148,7 +148,7 @@ public class Image : IHudUnit {
     }
 
     public void SetAnimationTrack(AnimationTrack animationTrack) {
-        this.animationTrack = animationTrack;
+        this.animationTrack = animationTrack.TranslateTrack(drawable.pos);
     }
 
     public void SetCollsionBox(Polygon polygon) {

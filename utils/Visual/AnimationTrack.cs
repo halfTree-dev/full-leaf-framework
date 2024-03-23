@@ -5,6 +5,7 @@ AnimationTrack 动画进行信息
 */
 
 using System;
+using Newtonsoft.Json;
 using Microsoft.Xna.Framework;
 
 namespace full_leaf_framework.Visual;
@@ -17,19 +18,19 @@ public class AnimationTrack {
     /// <summary>
     /// 动画位移信息
     /// </summary>
-    internal AnimationMovement animationMovement;
+    public AnimationMovement animationMovement;
     /// <summary>
     /// 动画缩放信息
     /// </summary>
-    internal AnimationChange animationScale;
+    public AnimationChange animationScale;
     /// <summary>
     /// 动画旋转信息
     /// </summary>
-    internal AnimationChange animationSpin;
+    public AnimationChange animationSpin;
     /// <summary>
     /// 动画透明度信息
     /// </summary>
-    internal AnimationChange animationTransparency;
+    public AnimationChange animationTransparency;
 
     /// <summary>
     /// 动画信息的名字
@@ -59,6 +60,29 @@ public class AnimationTrack {
         drawable.angle = result.angle;
         drawable.sizeScale = result.scale;
         drawable.transparency = result.transparency;
+    }
+
+    /// <summary>
+    /// 平移该动画对象，并返回其深拷贝
+    /// </summary>
+    public AnimationTrack TranslateTrack(Vector2 swiftPos) {
+        var result = DeepCopyTrack(this);
+        foreach (var track in result.animationMovement.tracks) {
+            for (int i = 0; i < track.bezierCurve.controllPoints.Length; i++) {
+                track.bezierCurve.controllPoints[i] += swiftPos;
+            }
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// 返回一个动画轨迹的深拷贝，用Json方法
+    /// </summary>
+    private AnimationTrack DeepCopyTrack(AnimationTrack translatedTrack) {
+        // 序列化
+        string json = JsonConvert.SerializeObject(translatedTrack);
+        // 反序列化
+        return JsonConvert.DeserializeObject<AnimationTrack>(json);
     }
 
 }

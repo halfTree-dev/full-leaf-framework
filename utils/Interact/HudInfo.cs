@@ -43,6 +43,10 @@ public class HudInfo {
     /// </summary>
     public HudCommandSequenceInfo[] commands;
     /// <summary>
+    /// 控件预设模板
+    /// </summary>
+    public HudUnitInfo[] preSets;
+    /// <summary>
     /// 额外参数
     /// </summary>
     public object[] extArgus;
@@ -104,11 +108,19 @@ public class HudUnitInfo {
     public IHudUnit ReturnHudUnit(Assembly assembly, ContentManager Content) {
         dynamic hudUnit = assembly.CreateInstance(hudClass);
         hudUnit.SetName(name);
-        Drawable hudDrawable = new Drawable(drawableInfo.spriteInfo.ReturnAnimation(Content),
-        new Vector2(drawableInfo.posX, drawableInfo.posY), new Vector2(drawableInfo.anchorPointX, drawableInfo.anchorPointY),
-        drawableInfo.sizeScale, drawableInfo.angle, SpriteEffects.None, drawableInfo.layer);
+        if (drawableInfo is not null) {
+            AnimatedSprite animatedSprite = null;
+            if (drawableInfo.spriteInfo.location is not null) {
+                if (drawableInfo.spriteInfo.location.Length > 0) {
+                    animatedSprite = drawableInfo.spriteInfo.ReturnAnimation(Content);
+                }
+            }
+            Drawable hudDrawable = new Drawable(animatedSprite,
+            new Vector2(drawableInfo.posX, drawableInfo.posY), new Vector2(drawableInfo.anchorPointX, drawableInfo.anchorPointY),
+            drawableInfo.sizeScale, drawableInfo.angle, SpriteEffects.None, drawableInfo.layer);
+            hudUnit.SetDrawObject(hudDrawable);
+        }
         hudUnit.SetCollsionBox(ReturnCollisionBox());
-        hudUnit.SetDrawObject(hudDrawable);
         hudUnit.HandleExtArgus(extArgus);
         return hudUnit;
     }

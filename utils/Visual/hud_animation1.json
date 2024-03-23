@@ -55,8 +55,8 @@
                     {
                         "bezierCurve":{
                             "controllPoints":[
-                                {"X":800, "Y":480},
-                                {"X":600, "Y":480}
+                                {"X":200, "Y":0},
+                                {"X":0, "Y":0}
                             ]
                         },
                         "durationTime":[0, 1.0]

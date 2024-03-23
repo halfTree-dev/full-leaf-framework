@@ -37,6 +37,7 @@
     ],
     "animationTracks":"utils/Visual/sample_animation.json",
     "comments4":"储存在animationTracks的动画轨迹信息会被读取，在接下来可以用到",
+    "comments42":"另请注意，我们编辑动画采用相对位置",
     "initialize":[
         {
             "type":"add_event",
