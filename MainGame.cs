@@ -34,6 +34,9 @@ public class MainGame : Game
     public ParticleController particleController;
     public BmfontController bmfontController;
 
+    public int newItemY = 0;
+    public int newItemCount = 0;
+
     public MainGame()
     {
         graphics = new GraphicsDeviceManager(this)
@@ -50,9 +53,9 @@ public class MainGame : Game
     {
         // TODO: Add your initialization logic here
         inputManager = new InputManager();
-        inputManager.InsertTrackingKeys(new Keys[16] {Keys.A, Keys.D, Keys.W, Keys.S,
+        inputManager.InsertTrackingKeys(new Keys[17] {Keys.A, Keys.D, Keys.W, Keys.S,
         Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.E, Keys.O, Keys.P, Keys.R, Keys.M,
-        Keys.D1, Keys.D2, Keys.D3});
+        Keys.D1, Keys.D2, Keys.D3, Keys.Space});
         base.Initialize();
     }
 
@@ -132,6 +135,8 @@ public class MainGame : Game
             menu.FillMenu(inputManager, hudCamera);
             CollisionTestMenu cMenu = (CollisionTestMenu)hudController.AddHud("utils/Interact/collision_hud.json", true, true);
             cMenu.FillCollisionTestMenu(inputManager);
+            newItemY = 0;
+            newItemCount = 0;
             Console.WriteLine("Reload Hud");
         }
         if (inputManager.GetTrackingKey(Keys.O).fired) {
@@ -144,6 +149,14 @@ public class MainGame : Game
         }
         if (inputManager.GetTrackingKey(Keys.M).fired) {
             ((CollisionTestMenu)hudController["collisionHud"]).GetCollisionStatus();
+        }
+        if (inputManager.GetTrackingKey(Keys.Space).fired) {
+            Console.WriteLine(newItemY + " - " + newItemCount);
+            hudController.InsertHudObject("testHud", "newItem", "newItem" + newItemCount, new object[1] { newItemY });
+            hudController["testHud"].RunCommandSequence("add_animation", "newItem" + newItemCount, "initGo", "current");
+            hudController["testHud"].RunCommandSequence("add_event", "newItem" + newItemCount, "AnimationTick", "idle");
+            newItemY += 72;
+            newItemCount++;
         }
         // 添加绘制物体
         // camera.insertObject(test);

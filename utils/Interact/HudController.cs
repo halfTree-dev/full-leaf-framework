@@ -125,6 +125,7 @@ public class HudController {
             var initCommand = commandInfo.ReturnSequence();
             initCommand.RunCommand(hud);
         }
+        hud.preSets = hudInfo.preSets;
         return hud;
     }
 
@@ -136,6 +137,42 @@ public class HudController {
     public void RunHudCommandSequence(string hudName, string commandName) {
         if (hudStatus.ContainsKey(hudName) && huds.ContainsKey(hudName)) {
             huds[hudName].RunCommandSequence(commandName);
+        }
+    }
+
+    /// <summary>
+    /// 使用预设模板为菜单添加新控件
+    /// </summary>
+    /// <param name="hudName">对应菜单的名称</param>
+    /// <param name="originName">控件本来的名字</param>
+    /// <param name="changedName">更改过后的名字</param>
+    /// <param name="extArgus">额外参数</param>
+    public void InsertHudObject(string hudName, string originName, string changedName, object[] extArgus = null) {
+        if (huds.ContainsKey(hudName)) {
+            var hud = huds[hudName];
+            foreach (HudUnitInfo info in hud.preSets) {
+                if (info.name == originName) {
+                    var newHudUnit = info.ReturnHudUnit(assembly, Content, extArgus);
+                    newHudUnit.SetName(changedName);
+                    hud.hudUnits.Add(newHudUnit);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 从菜单中移除指定控件
+    /// </summary>
+    /// <param name="hudName">对应菜单的名称</param>
+    /// <param name="unitName">控件的名字</param>
+    public void RemoveHudObject(string hudName, string unitName) {
+        if (huds.ContainsKey(hudName)) {
+            var hud = huds[hudName];
+            foreach (var unit in hud.hudUnits) {
+                if (unit.GetName() == hudName) {
+                    hud.hudUnits.Remove(unit);
+                }
+            }
         }
     }
 

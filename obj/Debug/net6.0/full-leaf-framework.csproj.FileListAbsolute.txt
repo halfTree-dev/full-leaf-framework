@@ -35,3 +35,4 @@ D:\C# Project\full-leaf-framework\bin\Debug\net6.0\Content\Hud\test_button.xnb
 D:\C# Project\full-leaf-framework\bin\Debug\net6.0\Content\TestObjects\c1.xnb
 D:\C# Project\full-leaf-framework\bin\Debug\net6.0\Content\TestObjects\p1.xnb
 D:\C# Project\full-leaf-framework\bin\Debug\net6.0\Content\Fonts\bmfontTest_0.xnb
+D:\C# Project\full-leaf-framework\bin\Debug\net6.0\Content\Hud\new_unit.xnb
