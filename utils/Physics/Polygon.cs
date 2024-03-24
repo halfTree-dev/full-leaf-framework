@@ -49,8 +49,15 @@ namespace full_leaf_framework.Physics;
 /// <summary>
 /// 多边形
 /// </summary>
-public class Polygon : Shape {
+public class Polygon : IShape {
 
+    private Vector2[] points;
+    /// <summary>
+    /// 投影轴列表
+    /// </summary>
+    private Line[] verticleLines;
+    public Vector2[] Points { get => points; }
+    public Line[] VerticleLines { get => verticleLines; }
 
     /// <summary>
     /// 创建一个矩形
@@ -63,6 +70,7 @@ public class Polygon : Shape {
             new Vector2(rectangle.X + rectangle.Width, rectangle.Y + rectangle.Height),
             new Vector2(rectangle.X, rectangle.Y + rectangle.Height)
         };
+        FillVerticleLines();
     }
 
     /// <summary>
@@ -70,149 +78,63 @@ public class Polygon : Shape {
     /// </summary>
     /// <param name="points">顶点</param>
     public Polygon(Vector2[] points) {
+        if (points.Length <= 1) { throw new Exception("多边形的顶点数应当大于1"); }
         this.points = new Vector2[points.Length];
         for (int i = 0; i < points.Length; i++) {
             this.points[i] = new Vector2(points[i].X, points[i].Y);
         }
-    }
-
-    // 实现抽象类Shape
-
-    public override bool IsCollision(Line line)
-    {
-        bool result = true;
-        Line verticalLine; Line projectLine; Line targetProjectLine;
-        // 如果能找到一个分隔轴使得投影点不在投影线段上即可断定点在多边形外部
-        for (int i = 0; i < points.Length - 1; i++) {
-            verticalLine = new Line(points[i], points[i + 1]).SpawnVerticalLine(Vector2.Zero);
-            // 对每一条边创建一个投影轴
-            projectLine = GetWidestProjectLine(verticalLine, this);
-            // 对指定直线投影
-            targetProjectLine = line.Project(verticalLine);
-            if (!targetProjectLine.IsCollision(projectLine)) {
-                result = false; // 在多边形外部
-            }
-            if (i == points.Length - 2) {
-                // 首尾相接的线段也算
-                verticalLine = new Line(points[i + 1], points[0]).SpawnVerticalLine(Vector2.Zero);
-                projectLine = GetWidestProjectLine(verticalLine, this);
-                targetProjectLine = line.Project(verticalLine);
-                if (!targetProjectLine.IsCollision(projectLine)) {
-                    result = false; // 在多边形外部
-                }
-            }
-        }
-        // 除了对于多边形本身的判断，还有将直线作为分割线的判断
-        verticalLine = line.SpawnVerticalLine(Vector2.Zero);
-        projectLine = GetWidestProjectLine(verticalLine, this);
-        targetProjectLine = line.Project(verticalLine);
-        if (!targetProjectLine.IsCollision(projectLine)) {
-            result = false; // 在多边形外部
-        }
-        return result;
-    }
-
-    public override bool IsCollision(Circle circle)
-    {
-        // 大山拔腿就跑
-        return circle.IsCollision(this);
-    }
-
-    public override bool IsCollision(Polygon polygon)
-    {
-        bool result = true;
-        Line verticalLine; Line projectLine; Line targetProjectLine;
-        // 如果能找到一个分隔轴使得投影点不在投影线段上即可断定点在多边形外部
-        for (int i = 0; i < points.Length - 1; i++) {
-            verticalLine = new Line(points[i], points[i + 1]).SpawnVerticalLine(Vector2.Zero);
-            // 对每一条边创建一个投影轴
-            projectLine = GetWidestProjectLine(verticalLine, this);
-            targetProjectLine = GetWidestProjectLine(verticalLine, polygon);
-            // 对两个多边形的直线分别投影
-            if (!targetProjectLine.IsCollision(projectLine)) {
-                result = false; // 有所分离
-            }
-            if (i == points.Length - 2) {
-                // 首尾相接的线段也算
-                verticalLine = new Line(points[i + 1], points[0]).SpawnVerticalLine(Vector2.Zero);
-                projectLine = GetWidestProjectLine(verticalLine, this);
-                targetProjectLine = GetWidestProjectLine(verticalLine, polygon);
-                if (!targetProjectLine.IsCollision(projectLine)) {
-                    result = false; // 在多边形外部
-                }
-            }
-        }
-        // 对另外一个多边形再来一次
-        for (int i = 0; i < polygon.points.Length - 1; i++) {
-            verticalLine = new Line(polygon.points[i], polygon.points[i + 1]).SpawnVerticalLine(Vector2.Zero);
-            // 对每一条边创建一个投影轴
-            projectLine = GetWidestProjectLine(verticalLine, this);
-            targetProjectLine = GetWidestProjectLine(verticalLine, polygon);
-            // 对两个多边形的直线分别投影
-            if (!targetProjectLine.IsCollision(projectLine)) {
-                result = false; // 有所分离
-            }
-            if (i == polygon.points.Length - 2) {
-                // 首尾相接的线段也算
-                verticalLine = new Line(polygon.points[i + 1], polygon.points[0]).SpawnVerticalLine(Vector2.Zero);
-                projectLine = GetWidestProjectLine(verticalLine, this);
-                targetProjectLine = GetWidestProjectLine(verticalLine, polygon);
-                if (!targetProjectLine.IsCollision(projectLine)) {
-                    result = false; // 在多边形外部
-                }
-            }
-        }
-        return result;
-    }
-
-    public override bool IsPointInside(Vector2 point)
-    {
-        bool result = true;
-        // 如果能找到一个分隔轴使得投影点不在投影线段上即可断定点在多边形外部
-        for (int i = 0; i < points.Length - 1; i++) {
-            Line verticalLine = new Line(points[i], points[i + 1]).SpawnVerticalLine(Vector2.Zero);
-            // 对每一条边创建一个投影轴
-            Line projectLine = GetWidestProjectLine(verticalLine, this);
-            // 对指定直线投影
-            if (!projectLine.IsPointInside(point)) {
-                result = false; // 在多边形外部
-            }
-        }
-        return result;
+        FillVerticleLines();
     }
 
     /// <summary>
-    /// 获取多边形的最宽的投影线
+    /// 创建多边形的所有投影轴
     /// </summary>
-    /// <param name="verticalLine">投影面</param>
-    /// <param name="polygon">多边形</param>
-    public static Line GetWidestProjectLine(Line verticalLine, Polygon polygon) {
-        // 对每一条边创建一个投影轴
-        Vector2 pointL = verticalLine.ProjectPoint(polygon.points[0]);
-        Vector2 pointR = verticalLine.ProjectPoint(polygon.points[1]);
-        // 由两个point决定最广投影线
-        for (int j = 2; j < polygon.points.Length; j++) {
-            Vector2 currentPoint = verticalLine.ProjectPoint(polygon.points[j]);
-            // 如果这个点带来的投影范围更广，取代之
-            if (Vector2.Distance(currentPoint, pointL) > Vector2.Distance(currentPoint, pointR) &&
-            Vector2.Distance(currentPoint, pointL) > Vector2.Distance(pointL, pointR)) {
-                pointR = currentPoint;
-            }
-            if (Vector2.Distance(currentPoint, pointR) >= Vector2.Distance(currentPoint, pointL) &&
-            Vector2.Distance(currentPoint, pointR) > Vector2.Distance(pointL, pointR)) {
-                pointL = currentPoint;
-            }
+    private void FillVerticleLines() {
+        verticleLines = new Line[Points.Length];
+        for (int i = 0; i < Points.Length - 1; i++) {
+            var edge = new Line(Points[i], Points[i + 1]);
+            verticleLines[i] = ShapeManager.ReturnVerticleLine(edge, Vector2.Zero);
         }
-        // 决定最广投影线
-        Line projectLine = new Line(pointL, pointR);
-        return projectLine;
+        verticleLines[Points.Length - 1] = ShapeManager.ReturnVerticleLine
+        (new Line(Points[Points.Length - 1], Points[0]), Vector2.Zero);
+        // 所有的投影轴都过原点，且与某一条边垂直
     }
 
-    public override void Rotate(float angle)
+    /// <summary>
+    /// 获取多边形的所有边
+    /// </summary>
+    /// <returns></returns>
+    public Line[] GetAllEdges() {
+        Line[] edges = new Line[Points.Length];
+        for (int i = 0; i < Points.Length - 1; i++) {
+            var edge = new Line(Points[i], Points[i + 1]);
+            edges[i] = edge;
+        }
+        edges[Points.Length - 1] = new Line(Points[Points.Length - 1], Points[0]);
+        return edges;
+    }
+
+    /// <summary>
+    /// 围绕重心旋转
+    /// </summary>
+    public void Rotate(float angle)
     {
-        Vector2 rotateCenter = GetCOG();
-        // 获取重心作为旋转中心
-        Rotate(angle, rotateCenter);
+        Vector2 rotateCenter = GetCenterOfGravity();
+        for (int i = 0; i < Points.Length; i++) {
+            Points[i] = ShapeManager.RotateAroundPoint(Points[i], rotateCenter, angle);
+        }
+        FillVerticleLines();
+    }
+
+    /// <summary>
+    /// 围绕旋转中心旋转
+    /// </summary>
+    public void Rotate(Vector2 center, float angle)
+    {
+        for (int i = 0; i < Points.Length; i++) {
+            Points[i] = ShapeManager.RotateAroundPoint(Points[i], center, angle);
+        }
+        FillVerticleLines();
     }
 
     /// <summary>
@@ -231,7 +153,7 @@ public class Polygon : Shape {
     /// <summary>
     /// 获取多边形重心
     /// </summary>
-    public Vector2 GetCOG() {
+    public Vector2 GetCenterOfGravity() {
         Polygon[] triangles = GetSplitTriangles();
         Vector2 COG = new Vector2(0, 0);
         float areaSum = 0;
@@ -242,7 +164,7 @@ public class Polygon : Shape {
             float areaThis = GetTriangleArea(triangle);
             areaSum += areaThis;
             // 将多边形分解为若干三角形
-            Vector2 COGThis = GetTriangleCOG(triangle);
+            Vector2 COGThis = GetTriangleCenterOfGravity(triangle);
             COG += COGThis * areaThis;
             // 重心坐标加权面积
         }
@@ -253,7 +175,7 @@ public class Polygon : Shape {
     /// <summary>
     /// 返回三角形重心
     /// </summary>
-    private Vector2 GetTriangleCOG(Polygon triangle) {
+    private Vector2 GetTriangleCenterOfGravity(Polygon triangle) {
         Vector2[] trianglePoints = triangle.Points;
         if (trianglePoints.Length != 3) {
             throw new Exception("三角形必须只具有三个顶点：" + trianglePoints);
@@ -281,17 +203,17 @@ public class Polygon : Shape {
     /// </summary>
     private Polygon[] GetSplitTriangles() {
         Polygon[] result;
-        if (points.Length < 3) {
-            throw new Exception("不是平面图形，不可分割：" + points);
+        if (Points.Length < 3) {
+            throw new Exception("不是平面图形，不可分割：" + Points);
         }
-        if (points.Length == 3) {
+        if (Points.Length == 3) {
             result = new Polygon[1] { this };
         }
-        result = new Polygon[points.Length - 2];
+        result = new Polygon[Points.Length - 2];
         // 轮换遍历顶点
-        for (int i = 1; i < points.Length - 1; i++) {
-            result[i - 1] = new Polygon(new Vector2[3] { points[0],
-            points[i], points[i + 1]});
+        for (int i = 1; i < Points.Length - 1; i++) {
+            result[i - 1] = new Polygon(new Vector2[3] { Points[0],
+            Points[i], Points[i + 1]});
             // 开始点0和点1,2; 2,3; 3,4...每三点一组
         }
         return result;
@@ -303,18 +225,28 @@ public class Polygon : Shape {
     /// 需要注意的是，由于Xna的矩形只能以int作顶点坐标，所以这不是严格的外接，
     /// 不过这个功能本来就用作粗略运算，所以不要在意这么多。
     /// </summary>
-    public override Rectangle GetSmallestAABBRectangle() {
-        float minX = points[0].X;
-        float maxX = points[0].X;
-        float minY = points[0].Y;
-        float maxY = points[0].Y;
-        for (int i = 0; i < points.Length; i++) {
-            if (points[i].X > maxX) { maxX = points[i].X; }
-            else if (points[i].X < minX) { minX = points[i].X; }
-            if (points[i].Y > maxY) { maxY = points[i].Y; }
-            else if (points[i].Y < minY) { minY = points[i].Y; }
+    public Rectangle GetSmallestAABBRectangle() {
+        float minX = Points[0].X;
+        float maxX = Points[0].X;
+        float minY = Points[0].Y;
+        float maxY = Points[0].Y;
+        for (int i = 0; i < Points.Length; i++) {
+            if (Points[i].X > maxX) { maxX = Points[i].X; }
+            else if (Points[i].X < minX) { minX = Points[i].X; }
+            if (Points[i].Y > maxY) { maxY = Points[i].Y; }
+            else if (Points[i].Y < minY) { minY = Points[i].Y; }
         }
         return new Rectangle((int)minX, (int)minY, (int)(maxX - minX), (int)(maxY - minY));
     }
 
+    /// <summary>
+    /// 平移图形
+    /// </summary>
+    /// <param name="shiftPos">偏移量</param>
+    public void Translate(Vector2 shiftPos)
+    {
+        for (int i = 0; i < points.Length; i++) {
+            points[i] += shiftPos;
+        }
+    }
 }

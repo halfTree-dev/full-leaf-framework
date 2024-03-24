@@ -66,14 +66,32 @@ public class TilePhysics {
     /// <summary>
     /// 判断是否碰撞
     /// </summary>
-    public bool IsCollision(Shape shape, int collisionLayer) {
+    public bool IsCollision(Polygon shape, int collisionLayer)
+    {
         bool result = false;
         int[] favoriteArea = GetFavouriteArea(shape);
         for (int i = favoriteArea[0]; i <= favoriteArea[2]; i++) {
             for (int j = favoriteArea[1]; j <= favoriteArea[3]; j++) {
                 if (collisionBoxs[j][i].collisionLayer == collisionLayer
                 && collisionBoxs[j][i].collisionArea != null)
-                    result = shape.IsCollision(collisionBoxs[j][i].collisionArea) || result;
+                    result = ShapeManager.IsCollision(collisionBoxs[j][i].collisionArea, shape) || result;
+            }
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// 判断是否碰撞
+    /// </summary>
+    public bool IsCollision(Circle shape, int collisionLayer)
+    {
+        bool result = false;
+        int[] favoriteArea = GetFavouriteArea(shape);
+        for (int i = favoriteArea[0]; i <= favoriteArea[2]; i++) {
+            for (int j = favoriteArea[1]; j <= favoriteArea[3]; j++) {
+                if (collisionBoxs[j][i].collisionLayer == collisionLayer
+                && collisionBoxs[j][i].collisionArea != null)
+                    result = ShapeManager.IsCollision(collisionBoxs[j][i].collisionArea, shape) || result;
             }
         }
         return result;
@@ -84,7 +102,7 @@ public class TilePhysics {
     /// </summary>
     /// <param name="shape">目标多边形</param>
     /// <returns>感兴趣区域对应的瓦片索引</returns>
-    private int[] GetFavouriteArea(Shape shape) {
+    private int[] GetFavouriteArea(IShape shape) {
         Rectangle favouriteArea = shape.GetSmallestAABBRectangle();
         // 瓦片索引对应：左上角i 左上角j 右下角i 右下角j
         float leftEdge = (float)favouriteArea.X / tileMap.TileWidth;

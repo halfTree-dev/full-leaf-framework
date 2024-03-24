@@ -1,0 +1,101 @@
+{
+    "trackInfos":[
+        {
+            "name":"initGo",
+            "animationMovement":{
+                "tracks":[
+                    {
+                        "bezierCurve":{
+                            "controllPoints":[
+                                {"X":0, "Y":0},
+                                {"X":200, "Y":0}
+                            ]
+                        },
+                        "durationTime":[0, 1.5]
+                    }
+                ],
+                "timeReflectMode":"sin",
+                "maxTime":1.5
+            },
+            "animationScale":{
+                "changeActions":[
+                    {
+                        "changeMotion":[1, 1.2],
+                        "durationTime":[0, 1.5]
+                    }
+                ],
+                "timeReflectMode":"smooth",
+                "maxTime":1.5
+            },
+            "animationSpin":{
+                "changeActions":[
+                    {
+                        "changeMotion":[0, 0],
+                        "durationTime":[0, 10.0]
+                    }
+                ],
+                "timeReflectMode":"sin",
+                "maxTime":10
+            },
+            "animationTransparency":{
+                "changeActions":[
+                    {
+                        "changeMotion":[0, 1],
+                        "durationTime":[0, 10.0]
+                    }
+                ],
+                "timeReflectMode":"sin",
+                "maxTime":10
+            }
+        },
+        {
+            "name":"initButtonGo",
+            "animationMovement":{
+                "tracks":[
+                    {
+                        "bezierCurve":{
+                            "controllPoints":[
+                                {"X":200, "Y":0},
+                                {"X":0, "Y":0}
+                            ]
+                        },
+                        "durationTime":[0, 1.0]
+                    }
+                ],
+                "timeReflectMode":"smooth",
+                "maxTime":1
+            },
+            "animationScale":{
+                "changeActions":[
+                    {
+                        "changeMotion":[1, 1],
+                        "durationTime":[0, 10.0]
+                    }
+                ],
+                "timeReflectMode":"sin",
+                "maxTime":10
+            },
+            "animationSpin":{
+                "changeActions":[
+                    {
+                        "changeMotion":[0, 0],
+                        "durationTime":[0, 10.0]
+                    }
+                ],
+                "timeReflectMode":"sin",
+                "maxTime":10
+            },
+            "animationTransparency":{
+                "changeActions":[
+                    {
+                        "changeMotion":[0, 1],
+                        "durationTime":[0, 10.0]
+                    }
+                ],
+                "timeReflectMode":"sin",
+                "maxTime":10
+            }
+        }
+    ]
+
+}

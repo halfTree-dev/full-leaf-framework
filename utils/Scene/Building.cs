@@ -24,7 +24,7 @@ public class Building
     /// <summary>
     /// 填充一个建筑物
     /// </summary>
-    public void StartBuilding(AnimatedSprite currentAnimation,
+    public virtual void StartBuilding(AnimatedSprite currentAnimation,
         Vector2 pos,
         Vector2 anchorPoint,
         float sizeScale,

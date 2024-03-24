@@ -191,10 +191,19 @@ public class TileMap {
     /// <summary>
     /// 检测任意图形和瓦片地图的瓦片是否存在碰撞
     /// </summary>
-    /// <param name="shape">任意图形</param>
+    /// <param name="polygon">多边形</param>
     /// <param name="collisionLayer">碰撞图层</param>
-    public bool IsCollision(Shape shape, int collisionLayer) {
-        return tilePhysics.IsCollision(shape, collisionLayer);
+    public bool IsCollision(Polygon polygon, int collisionLayer) {
+        return tilePhysics.IsCollision(polygon, collisionLayer);
+    }
+
+    /// <summary>
+    /// 检测任意图形和瓦片地图的瓦片是否存在碰撞
+    /// </summary>
+    /// <param name="circle">圆形</param>
+    /// <param name="collisionLayer">碰撞图层</param>
+    public bool IsCollision(Circle circle, int collisionLayer) {
+        return tilePhysics.IsCollision(circle, collisionLayer);
     }
 
     /// <summary>

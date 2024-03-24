@@ -172,7 +172,7 @@ public class BuildingInfo {
     /// <summary>
     /// 动画信息
     /// </summary>
-    public AnimationInfo spriteInfo;
+    public AnimationSpriteInfo spriteInfo;
     /// <summary>
     /// 位置的X值
     /// </summary>

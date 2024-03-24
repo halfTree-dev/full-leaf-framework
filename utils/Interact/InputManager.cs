@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 
-namespace full_leaf_framework.Input;
+namespace full_leaf_framework.Interact;
 
 /// <summary>
 /// 输入控制器
@@ -335,6 +335,7 @@ public class TrackingMouse
                 firedLeft = true;
                 // 刚刚按下
             }
+            else { firedLeft = false;}
             holdTimeLeft += (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
         else
@@ -346,6 +347,7 @@ public class TrackingMouse
                 releasedLeft = true;
                 // 刚刚松开
             }
+            else { releasedLeft = false;}
             holdTimeLeft = 0f;
         }
         // 鼠标左键判定
@@ -358,6 +360,7 @@ public class TrackingMouse
                 firedRight = true;
                 // 刚刚按下
             }
+            else { firedRight = false; }
             holdTimeRight += (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
         else
@@ -369,6 +372,7 @@ public class TrackingMouse
                 releasedRight = true;
                 // 刚刚松开
             }
+            else { releasedRight = false; }
             holdTimeRight = 0f;
         }
         // 鼠标右键判定
