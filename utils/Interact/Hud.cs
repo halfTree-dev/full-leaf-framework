@@ -27,7 +27,7 @@ public class Hud {
     /// <summary>
     /// 控件列表
     /// </summary>
-    public IHudUnit[] hudUnits;
+    public List<IHudUnit> hudUnits;
     // #warning 应当允许在过程中自己添加菜单项目
     /// <summary>
     /// 动画轨迹控制器
@@ -37,6 +37,10 @@ public class Hud {
     /// 菜单命令控制器
     /// </summary>
     public HudCommandController hudCommandController;
+    /// <summary>
+    /// 控件预设模板
+    /// </summary>
+    public HudUnitInfo[] preSets;
 
     /// <summary>
     /// 菜单事件的委托
@@ -63,6 +67,16 @@ public class Hud {
     internal void RunCommandSequence(string commandName) {
         try {
             hudCommandController.RunCommandSequence(commandName, this);
+        }
+        catch (Exception e) { Console.WriteLine(e); }
+    }
+
+    /// <summary>
+    /// 传入指定参数并执行命令
+    /// </summary>
+    public void RunCommandSequence(string type, string target, string content, string handler) {
+        try {
+            hudCommandController.RunCommandSequence(type, target, content, handler, this);
         }
         catch (Exception e) { Console.WriteLine(e); }
     }
@@ -127,6 +141,16 @@ public class HudCommandController {
         foreach (HudCommandSequence sequence in sequences) {
             sequence.RunCommand(hud);
         }
+    }
+
+    internal void RunCommandSequence(string type, string target, string content, string handler, Hud hud) {
+        HudCommandSequence sequence = new HudCommandSequence() {
+            type = type,
+            content = content,
+            handler = handler,
+            target = target
+        };
+        sequence.RunCommand(hud);
     }
 
 }

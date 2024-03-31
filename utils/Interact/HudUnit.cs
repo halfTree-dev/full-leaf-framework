@@ -287,3 +287,19 @@ public class TestPolygon : Image {
     }
 
 }
+
+public class Card : Image {
+
+    public override void HandleExtArgus(object[] extArgus) {
+        base.HandleExtArgus(extArgus);
+        if (extArgus is not null) {
+            if (extArgus.Length > 0) {
+                int swiftPosY = (int)extArgus[0];
+                if (drawable is not null) {
+                    drawable.pos += new Vector2(0, swiftPosY);
+                }
+            }
+        }
+    }
+
+}

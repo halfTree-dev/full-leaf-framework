@@ -2,6 +2,7 @@
 HudInfo 就是为了读取Hud信息而创建的类
 */
 
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using full_leaf_framework.Physics;
@@ -61,10 +62,10 @@ public class HudInfo {
         return hudInfo;
     }
 
-    public IHudUnit[] ReturnHudUnits(Assembly assembly, ContentManager Content) {
-        IHudUnit[] result = new IHudUnit[hudUnits.Length];
-        for (int i = 0; i < result.Length; i++) {
-            result[i] = hudUnits[i].ReturnHudUnit(assembly, Content);
+    public List<IHudUnit> ReturnHudUnits(Assembly assembly, ContentManager Content, object[] externalExtArgus = null) {
+        List<IHudUnit> result = new List<IHudUnit>();
+        for (int i = 0; i < hudUnits.Length; i++) {
+            result.Add(hudUnits[i].ReturnHudUnit(assembly, Content, externalExtArgus));
         }
         return result;
     }
@@ -105,7 +106,7 @@ public class HudUnitInfo {
     /// </summary>
     public object[] extArgus;
 
-    public IHudUnit ReturnHudUnit(Assembly assembly, ContentManager Content) {
+    public IHudUnit ReturnHudUnit(Assembly assembly, ContentManager Content, object[] externalExtArgus = null) {
         dynamic hudUnit = assembly.CreateInstance(hudClass);
         hudUnit.SetName(name);
         if (drawableInfo is not null) {
@@ -121,7 +122,12 @@ public class HudUnitInfo {
             hudUnit.SetDrawObject(hudDrawable);
         }
         hudUnit.SetCollsionBox(ReturnCollisionBox());
-        hudUnit.HandleExtArgus(extArgus);
+        if (externalExtArgus is not null) {
+            hudUnit.HandleExtArgus(externalExtArgus);
+        }
+        else {
+            hudUnit.HandleExtArgus(extArgus);
+        }
         return hudUnit;
     }
 
