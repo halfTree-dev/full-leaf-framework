@@ -81,7 +81,7 @@ public class ParticleInfo {
     /// <summary>
     /// 起始缩放值
     /// </summary>
-    public int sizeScale;
+    public float sizeScale;
     /// <summary>
     /// 旋转角度
     /// </summary>

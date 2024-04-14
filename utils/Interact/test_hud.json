@@ -4,7 +4,7 @@
     "hudUnits":[
         {
             "name":"bigTest",
-            "hudClass":"full_leaf_framework.Interact.Image",
+            "hudClass":"full_leaf_framework.Interact.BasicUnit",
             "drawableInfo":{
                 "spriteInfo":{
                     "location":"Hud/menu_test",

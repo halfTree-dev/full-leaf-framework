@@ -7,6 +7,7 @@ HudUnit本身只是一个接口，真正表现功能还得是它的继承类
 */
 
 using System;
+using System.Reflection;
 using full_leaf_framework.Physics;
 using full_leaf_framework.Visual;
 using Microsoft.Xna.Framework;
@@ -81,9 +82,9 @@ public interface IHudUnit {
 }
 
 /// <summary>
-/// 图像
+/// 基本控件
 /// </summary>
-public class Image : IHudUnit {
+public class BasicUnit : IHudUnit {
 
     public string name;
     /// <summary>
@@ -126,20 +127,25 @@ public class Image : IHudUnit {
     }
 
     public virtual void RemoveEventFromHandler(MenuHandleEvent handleEvent, string handler) {
-        switch (handler) {
-            case "idle":
-                if (idle is null) { return; }
-                else {
-                    Delegate[] delegates = idle.GetInvocationList();
-                    foreach (Delegate @delegate in delegates) {
-                        if (((MenuHandleEvent)@delegate.Target).Method.Name == handleEvent.Method.Name) {
-                            idle -= (MenuHandleEvent)@delegate;
-                        }
+        try {
+            FieldInfo eventField = GetType().GetField(handler);
+            object unitEvents = eventField.GetValue(this);
+            // 获取handler所对应的事件
+            if (unitEvents is null) { return; }
+            else {
+                var unitEventsM = (MenuHandleEvent)unitEvents;
+                Delegate[] delegates = unitEventsM.GetInvocationList();
+                foreach (Delegate @delegate in delegates) {
+                    if (((MenuHandleEvent)@delegate.Target).Method.Name == handleEvent.Method.Name) {
+                        unitEventsM -= (MenuHandleEvent)@delegate;
+                        eventField.SetValue(this, unitEventsM);
                     }
                 }
-                break;
-            default:
-                break;
+            }
+        }
+        catch (Exception e) {
+            Console.WriteLine(e);
+            return;
         }
     }
 
@@ -160,13 +166,22 @@ public class Image : IHudUnit {
     }
 
     public virtual void SetEventToHandler(MenuHandleEvent handleEvent, string handler) {
-        switch (handler) {
-            case "idle":
-                if (idle is null) { idle = new MenuHandleEvent(handleEvent);}
-                else { idle += handleEvent; }
-                break;
-            default:
-                break;
+        try {
+            FieldInfo eventField = GetType().GetField(handler);
+            object unitEvents = eventField.GetValue(this);
+            // 获取handler所对应的事件
+            if (unitEvents is not null) {
+                var unitEventsM = (MenuHandleEvent)unitEvents;
+                unitEventsM += handleEvent;
+                eventField.SetValue(this, unitEventsM);
+            }
+            else {
+                eventField.SetValue(this, handleEvent);
+            }
+        }
+        catch (Exception e) {
+            Console.WriteLine(e);
+            return;
         }
     }
 
@@ -182,7 +197,7 @@ public class Image : IHudUnit {
     }
 }
 
-public class Button : Image, IHudUnit {
+public class Button : BasicUnit, IHudUnit {
 
     /// <summary>
     /// 当鼠标指针不与碰撞箱重合时
@@ -201,69 +216,13 @@ public class Button : Image, IHudUnit {
     /// </summary>
     public MenuHandleEvent hold;
 
-    public override void SetEventToHandler(MenuHandleEvent handleEvent, string handler) {
-        base.SetEventToHandler(handleEvent, handler);
-        switch (handler) {
-            case "notFocus":
-                if (notFocus is null) { notFocus = new MenuHandleEvent(handleEvent);}
-                else { notFocus += handleEvent; }
-                break;
-            case "focus":
-                if (focus is null) { focus = new MenuHandleEvent(handleEvent);}
-                else { focus += handleEvent; }
-                break;
-            case "fired":
-                if (fired is null) { fired = new MenuHandleEvent(handleEvent);}
-                else { fired += handleEvent; }
-                break;
-            case "hold":
-                if (hold is null) { hold = new MenuHandleEvent(handleEvent);}
-                else { hold += handleEvent; }
-                break;
-            default:
-                break;
-        }
-    }
-
-    public override void RemoveEventFromHandler(MenuHandleEvent handleEvent, string handler) {
-        base.RemoveEventFromHandler(handleEvent, handler);
-        MenuHandleEvent targetEvent = null;
-        Delegate[] delegates = null;
-        switch (handler) {
-            case "notFocus":
-                if (notFocus is null) { return; }
-                else { delegates = notFocus.GetInvocationList(); targetEvent = notFocus; }
-                break;
-            case "focus":
-                if (focus is null) { return; }
-                else { delegates = focus.GetInvocationList(); targetEvent = focus; }
-                break;
-            case "fired":
-                if (fired is null) { return; }
-                else { delegates = fired.GetInvocationList(); targetEvent = fired; }
-                break;
-            case "hold":
-                if (hold is null) { return; }
-                else { delegates = hold.GetInvocationList(); targetEvent = hold; }
-                break;
-            default:
-                break;
-        }
-        foreach (Delegate @delegate in delegates) {
-            if (((MenuHandleEvent)@delegate.Target).Method.Name == handleEvent.Method.Name && targetEvent is not null) {
-                targetEvent -= (MenuHandleEvent)@delegate;
-            }
-        }
-    }
-
     public override void Update(GameTime gameTime) {
         base.Update(gameTime);
-
     }
 
 }
 
-public class TestPolygon : Image {
+public class TestPolygon : BasicUnit {
 
     public int showingPolygon = 0;
     public Keys activeKey;
@@ -288,7 +247,7 @@ public class TestPolygon : Image {
 
 }
 
-public class Card : Image {
+public class Card : BasicUnit {
 
     public override void HandleExtArgus(object[] extArgus) {
         base.HandleExtArgus(extArgus);
