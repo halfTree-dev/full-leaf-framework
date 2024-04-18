@@ -50,6 +50,8 @@ using full_leaf_framework;
 
 [点击这里查看框架功能文档 (https://half_tree.gitee.io/posts/2024-03-29-full-leaf-framework-document.html)](https://half_tree.gitee.io/posts/2024-03-29-full-leaf-framework-document.html)
 
+[点击这里查看使用框架实现的的样例(https://gitee.com/half_tree/full-leaf-framework-samples)](https://gitee.com/half_tree/full-leaf-framework-samples)
+
 # 引用与感谢
 
 目前，在这个框架的编辑中，我引用了以下的代码：
