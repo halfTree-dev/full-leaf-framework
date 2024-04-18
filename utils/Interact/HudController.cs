@@ -147,7 +147,8 @@ public class HudController {
     /// <param name="originName">控件本来的名字</param>
     /// <param name="changedName">更改过后的名字</param>
     /// <param name="extArgus">额外参数</param>
-    public void InsertHudObject(string hudName, string originName, string changedName, object[] extArgus = null) {
+    /// <returns>生成的控件对象</returns>
+    public IHudUnit InsertHudObject(string hudName, string originName, string changedName, object[] extArgus = null) {
         if (huds.ContainsKey(hudName)) {
             var hud = huds[hudName];
             foreach (HudUnitInfo info in hud.preSets) {
@@ -155,9 +156,11 @@ public class HudController {
                     var newHudUnit = info.ReturnHudUnit(assembly, Content, extArgus);
                     newHudUnit.SetName(changedName);
                     hud.hudUnits.Add(newHudUnit);
+                    return newHudUnit;
                 }
             }
         }
+        return null;
     }
 
     /// <summary>
