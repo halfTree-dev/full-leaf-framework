@@ -1,12 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using full_leaf_framework.Interact;
-using full_leaf_framework.Visual;
-using full_leaf_framework.Physics;
-using full_leaf_framework.Scene;
-using System;
-using full_leaf_framework.Effect;
 
 namespace full_leaf_framework;
 
@@ -18,24 +12,6 @@ public class MainGame : Game
     // 窗口尺寸
     public static int SCREEN_WIDTH = 800;
     public static int SCREEN_HEIGHT = 600;
-
-    public static InputManager inputManager;
-    public static Camera camera;
-
-    public TileMap tileMap;
-
-    public Drawable test;
-    public Drawable test2;
-
-    public HudController hudController;
-
-    public static AnimationTrackController trackController;
-
-    public ParticleController particleController;
-    public BmfontController bmfontController;
-
-    public int newItemY = 0;
-    public int newItemCount = 0;
 
     public MainGame()
     {
@@ -51,130 +27,18 @@ public class MainGame : Game
 
     protected override void Initialize()
     {
-        // TODO: Add your initialization logic here
-        inputManager = new InputManager();
-        inputManager.InsertTrackingKeys(new Keys[17] {Keys.A, Keys.D, Keys.W, Keys.S,
-        Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.E, Keys.O, Keys.P, Keys.R, Keys.M,
-        Keys.D1, Keys.D2, Keys.D3, Keys.Space});
         base.Initialize();
     }
 
     protected override void LoadContent()
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
-        // 测试camera
-        camera = new Camera(spriteBatch, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
-        new Vector2(0, 0), new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
-        // 测试物体
-        test = new Drawable(new AnimatedSprite(Content.Load<Texture2D>("Characters/test")), new Vector2(0, 0),
-        new Vector2(0, 50), 1);
-        test2 = new Drawable(new AnimatedSprite(Content.Load<Texture2D>("Characters/test")), new Vector2(100, 0),
-        new Vector2(0, -50), 1);
-        trackController = AnimationInfo.LoadAnimationInfo("utils/Visual/sample_animation.json");
-        tileMap = new TileMap("utils/Scene/test_map.json", Content);
-        particleController = new ParticleController("utils/Effect/test_particles.json", Content);
-        // TODO: use this.Content to load your game content here
-        // 读取菜单
-        Camera hudCamera = new Camera(spriteBatch, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
-        new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
-        hudController = new HudController(Content, hudCamera);
-        Menu menu = (Menu)hudController.AddHud("utils/Interact/test_hud.json", true, true);
-        menu.FillMenu(inputManager, hudCamera);
-        CollisionTestMenu cMenu = (CollisionTestMenu)hudController.AddHud("utils/Interact/collision_hud.json", true, true);
-        cMenu.FillCollisionTestMenu(inputManager);
-        bmfontController = new BmfontController("Fonts", "bmfontTest", Content);
     }
 
     protected override void Update(GameTime gameTime)
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
-        inputManager.Update(gameTime);
-        // 操控摄像机
-        if (inputManager.GetTrackingKey(Keys.A).fired) {
-            camera.pos.X -= 20;
-        }
-        if (inputManager.GetTrackingKey(Keys.D).fired) {
-            camera.pos.X += 20;
-        }
-        if (inputManager.GetTrackingKey(Keys.S).fired) {
-            camera.pos.Y += 20;
-        }
-        if (inputManager.GetTrackingKey(Keys.W).fired) {
-            camera.pos.Y -= 20;
-        }
-        if (inputManager.GetTrackingKey(Keys.Up).fired) {
-            camera.scale += 0.1f;
-        }
-        if (inputManager.GetTrackingKey(Keys.Down).fired) {
-            camera.scale -= 0.1f;
-        }
-        if (inputManager.GetTrackingKey(Keys.Left).pressed) {
-            test.angle -= MathF.PI / 24;
-        }
-        if (inputManager.GetTrackingKey(Keys.Right).pressed) {
-            test.angle += MathF.PI / 24;
-        }
-        if (inputManager.GetTrackingKey(Keys.E).fired) {
-            float time = (float)gameTime.TotalGameTime.TotalSeconds;
-            tileMap = new TileMap("utils/Scene/test_map.json", Content);
-            Polygon polygon1 = new Polygon(new Vector2[4] { new Vector2(32,32),
-            new Vector2(32,70), new Vector2(70,70), new Vector2(70,32) });
-            Polygon polygon2 = new Polygon(new Vector2[4] { new Vector2(-16,-48),
-            new Vector2(16,70), new Vector2(50,80), new Vector2(50,-32) });
-            Polygon polygon3 = new Polygon(new Vector2[3] { new Vector2(32,80),
-            new Vector2(232,280), new Vector2(32,280) });
-            Console.WriteLine(tileMap.IsCollision(polygon1, 2) + " - " + tileMap.IsCollision(polygon2, 2)
-            + " - " + tileMap.IsCollision(polygon3, 2) + " - " + tileMap.IsCollision(polygon1, 1));
-            Console.WriteLine((float)gameTime.TotalGameTime.TotalSeconds - time);
-            // Reload Hud
-            Camera hudCamera = new Camera(spriteBatch, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
-            new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
-            hudController = new HudController(Content, hudCamera);
-            Menu menu = (Menu)hudController.AddHud("utils/Interact/test_hud.json", true, true);
-            menu.FillMenu(inputManager, hudCamera);
-            CollisionTestMenu cMenu = (CollisionTestMenu)hudController.AddHud("utils/Interact/collision_hud.json", true, true);
-            cMenu.FillCollisionTestMenu(inputManager);
-            newItemY = 0;
-            newItemCount = 0;
-            Console.WriteLine("Reload Hud");
-        }
-        if (inputManager.GetTrackingKey(Keys.O).fired) {
-            particleController.Burst("testBurst1", new Vector2(0, 0));
-            hudController.RunHudCommandSequence("testHud", "no_animation");
-        }
-        if (inputManager.GetTrackingKey(Keys.P).fired) {
-            particleController.Burst("testBurst2", new Vector2(0, 0));
-            hudController.RunHudCommandSequence("testHud", "pause_animation");
-        }
-        if (inputManager.GetTrackingKey(Keys.M).fired) {
-            ((CollisionTestMenu)hudController["collisionHud"]).GetCollisionStatus();
-        }
-        if (inputManager.GetTrackingKey(Keys.Space).fired) {
-            Console.WriteLine(newItemY + " - " + newItemCount);
-            hudController.InsertHudObject("testHud", "newItem", "newItem" + newItemCount, new object[1] { newItemY });
-            hudController["testHud"].RunCommandSequence("add_animation", "newItem" + newItemCount, "initGo", "current");
-            hudController["testHud"].RunCommandSequence("add_event", "newItem" + newItemCount, "AnimationTick", "idle");
-            newItemY += 72;
-            newItemCount++;
-        }
-        // 添加绘制物体
-        // camera.insertObject(test);
-        // camera.insertObject(test2);
-        // TODO: Add your update logic here
-        tileMap.Update(gameTime);
-        particleController.Update(gameTime);
-        tileMap.Draw(camera);
-        particleController.Draw(camera);
-        hudController.Update(gameTime);
-        hudController.InsertDrawObjects();
-        // 测试BmFont
-        bmfontController.InsertDrawObjects(camera, new string[2] { "你好，世界！", "Hello, BMFont!"},
-        new Vector2(0, 100), BmfontDrawable.TranslateMethod.Middle, 1, true);
-        bmfontController.InsertDrawObjects(camera, new string[2] { "你好，世界！", "Hello, BMFont!"},
-        new Vector2(-350, 100), BmfontDrawable.TranslateMethod.Left, 1, false, transparency : 0.75f);
-        bmfontController.InsertDrawObjects(camera, new string[2] { "你好，世界！", "Hello, BMFont!"},
-        new Vector2(350, 100), BmfontDrawable.TranslateMethod.Right, 0.75f, true, transparency : 0.5f);
         base.Update(gameTime);
     }
 
@@ -182,28 +46,7 @@ public class MainGame : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
         spriteBatch.Begin();
-        camera.Draw();
-        hudController.Draw();
         spriteBatch.End();
-        // TODO: Add your drawing code here
-
         base.Draw(gameTime);
     }
-}
-
-public class PolygonTest {
-
-    public Polygon[] preSets;
-    public Circle testCircle;
-
-    public PolygonTest() {
-        preSets = new Polygon[4] {
-            new Polygon(new Vector2[3] { new Vector2(0, 0), new Vector2(100, 0), new Vector2(100, 100) }),
-            new Polygon(new Vector2[4] { new Vector2(0, 0), new Vector2(100, 0), new Vector2(100, 100), new Vector2(0, 100) }),
-            new Polygon(new Vector2[5] { new Vector2(0, 0), new Vector2(60, 0), new Vector2(100, 50), new Vector2(60, 100), new Vector2(0, 100) }),
-            new Polygon(new Vector2[6] { new Vector2(0, 0), new Vector2(50, 0), new Vector2(100, 50), new Vector2(100, 100), new Vector2(50, 100), new Vector2(0, 50) })
-        };
-        testCircle = new Circle(new Vector2(50, 50), 50);
-    }
-
 }
