@@ -8,6 +8,7 @@ using full_leaf_framework.Visual;
 using full_leaf_framework.Physics;
 using Newtonsoft.Json;
 using System.IO;
+using System.Collections.Generic;
 
 namespace full_leaf_framework.Scene;
 
@@ -20,6 +21,10 @@ public class TileMapInfo {
     /// 精灵图集的信息
     /// </summary>
     public SpriteInfo[] spriteInfos;
+    /// <summary>
+    /// 精灵图集信息字典
+    /// </summary>
+    public Dictionary<string, SpriteInfo> spriteDic;
     /// <summary>
     /// 单个瓦片宽度
     /// </summary>
@@ -49,6 +54,10 @@ public class TileMapInfo {
     /// </summary>
     public TileInfo[] tileInfos;
     /// <summary>
+    /// 瓦片信息字典
+    /// </summary>
+    public Dictionary<string, TileInfo> tileDic;
+    /// <summary>
     /// 建筑信息列表
     /// </summary>
     public BuildingInfo[] buildingInfos;
@@ -56,6 +65,10 @@ public class TileMapInfo {
     /// 瓦片物理信息列表
     /// </summary>
     public TilePhysicsInfo[] tilePhysics;
+    /// <summary>
+    /// 瓦片物理信息字典
+    /// </summary>
+    public Dictionary<string, TilePhysicsInfo> tilePhysicsDic;
 
     /// <summary>
     /// 创建一个TileMapInfo对象并且从指定路径读取数据
@@ -64,7 +77,26 @@ public class TileMapInfo {
     public static TileMapInfo LoadTileMapInfo(string location) {
         string jsonContent = File.ReadAllText(location);
         TileMapInfo tileMapInfo = JsonConvert.DeserializeObject<TileMapInfo>(jsonContent);
+        tileMapInfo.InitializeDictionary();
         return tileMapInfo;
+    }
+
+    /// <summary>
+    /// 准备好各种字典
+    /// </summary>
+    public void InitializeDictionary() {
+        tileDic = new Dictionary<string, TileInfo>();
+        foreach (TileInfo tileInfo in tileInfos) {
+            tileDic.Add(tileInfo.tileName, tileInfo);
+        }
+        spriteDic = new Dictionary<string, SpriteInfo>();
+        foreach (SpriteInfo spriteInfo in spriteInfos) {
+            spriteDic.Add(spriteInfo.unitName, spriteInfo);
+        }
+        tilePhysicsDic = new Dictionary<string, TilePhysicsInfo>();
+        foreach (TilePhysicsInfo tilePhysicsInfo in tilePhysics) {
+            tilePhysicsDic.Add(tilePhysicsInfo.tileName, tilePhysicsInfo);
+        }
     }
 
 }
@@ -133,7 +165,7 @@ public class TileInfo {
     /// <summary>
     /// 额外瓦片信息
     /// </summary>
-    public string[] extArugs;
+    public object[] extArgus;
 
 }
 
@@ -201,6 +233,10 @@ public class BuildingInfo {
     /// 绘制图层
     /// </summary>
     public int layer;
+    /// <summary>
+    /// 额外参数
+    /// </summary>
+    public object[] extArgus;
 
 }
 

@@ -21,6 +21,16 @@ namespace full_leaf_framework.Scene;
 public class TileMap {
 
     /// <summary>
+    /// 瓦片地图信息
+    /// </summary>
+    private TileMapInfo tileMapInfo;
+
+    /// <summary>
+    /// 程序集
+    /// </summary>
+    private Assembly assembly;
+
+    /// <summary>
     /// 精灵图集信息
     /// </summary>
     private SpriteInfo[] spriteInfos;
@@ -78,7 +88,9 @@ public class TileMap {
     /// </summary>
     /// <param name="location">应当填入相对路径，从程序目录开始</param>
     public TileMap(string location, ContentManager Content) {
-        TileMapInfo tileMapInfo = TileMapInfo.LoadTileMapInfo(location);
+        assembly = Assembly.GetExecutingAssembly();
+        // 获取当前程序集（为了创建瓦片）
+        tileMapInfo = TileMapInfo.LoadTileMapInfo(location);
         this.Content = Content;
         // 以下是对数据的各项处理
         tileWidth = tileMapInfo.tileWidth;
@@ -88,7 +100,7 @@ public class TileMap {
         layer = tileMapInfo.layer;
         // 填充基本数据
         LoadSprites(tileMapInfo);
-        LoadTiles(tileMapInfo);
+        LoadTiles(tileMapInfo, tileMapInfo.mapInfos);
         LoadBuildings(tileMapInfo);
         LoadPhysics(tileMapInfo);
         // 读取相关资源
@@ -105,42 +117,42 @@ public class TileMap {
             spriteInfo.texture = new AnimatedSprite(Content.Load<Texture2D>(spriteInfo.location),
             spriteInfo.rows, spriteInfo.column);
         }
+        // SpriteInfos为引用类型，这相当于填充了tileInfos的信息
     }
 
     /// <summary>
     /// 读取瓦片
     /// </summary>
-    private void LoadTiles(TileMapInfo tileMapInfo) {
+    private void LoadTiles(TileMapInfo tileMapInfo, string[][] mapInfos) {
+        if (mapInfos is null) { return; }
+        if (mapInfos.Length == 0) { return; }
         // 用来参考的tile信息
         tiles = new Tile[mapHeight][];
         // 生成地图
-        Assembly assembly = Assembly.GetExecutingAssembly();
-        // 获取当前程序集（为了创建瓦片）
-        for (int i = 0; i < tileMapInfo.mapInfos.Length; i++) {
+        for (int i = 0; i < mapInfos.Length; i++) {
             tiles[i] = new Tile[mapWidth];
-            for (int j = 0; j < tileMapInfo.mapInfos[i].Length; j++) {
+            for (int j = 0; j < mapInfos[i].Length; j++) {
                 // 用tileMapInfo[i][j]表示第i+1行j+1列的瓦片
-                // 从tileInfos里查找与字符相匹配的瓦片类型
-                foreach (TileInfo tileInfo in tileMapInfo.tileInfos) {
-                    if (tileInfo.tileName == tileMapInfo.mapInfos[i][j]) {
-                        // 找到了，然后将对应的Tile按照类名初始化
-                        // 必须填写类的完全限定名，这点应当在Json中体现
-                        dynamic obj = assembly.CreateInstance(tileInfo.tileClass);
-                        Tile tile = (Tile)obj;
-                        foreach (SpriteInfo spriteInfo in spriteInfos) {
-                            if (tileInfo.usedSprite == spriteInfo.unitName) {
-                                // 找到图集，那么创建瓦片
-                                tile.BeginTile(spriteInfo.texture, tileInfo.usedFrameL,
-                                tileInfo.usedFrameR, tileInfo.startFrame, tileInfo.frameDelay, tileInfo.extArugs);
-                                // 对每个Tile对象生成Drawable
-                                tile.drawable = new Drawable(tile.UsedSprite, new Vector2(j * tileWidth, i * tileHeight),
-                                new Vector2(-tile.UsedSprite.Width / 2, -tile.UsedSprite.Height / 2),
-                                tileWidth / tile.UsedSprite.Width, 0, SpriteEffects.None, layer);
-                            }
-                        }
-                        tiles[i][j] = tile;
-                    }
+                // 从字典里查找与字符相匹配的瓦片类型
+                try {
+                    var tileInfo = tileMapInfo.tileDic[mapInfos[i][j]];
+                    // 找到了，然后将对应的Tile按照类名初始化
+                    // 必须填写类的完全限定名，这点应当在Json中体现
+                    dynamic obj = assembly.CreateInstance(tileInfo.tileClass);
+                    Tile tile = (Tile)obj;
+                    // 由于BeginTile()为override继承，显式类型转换不影响子类方法执行。
+                    var spriteInfo = tileMapInfo.spriteDic[tileInfo.usedSprite];
+                    // 找到图集，那么创建瓦片
+                    tile.BeginTile(spriteInfo.texture, tileInfo.usedFrameL,
+                    tileInfo.usedFrameR, tileInfo.startFrame, tileInfo.frameDelay, tileInfo.extArgus);
+                    // 对每个Tile对象生成Drawable
+                    tile.drawable = new Drawable(tile.UsedSprite, new Vector2(j * tileWidth, i * tileHeight),
+                    new Vector2(-tile.UsedSprite.Width / 2, -tile.UsedSprite.Height / 2),
+                    tileWidth / tile.UsedSprite.Width, 0, SpriteEffects.None, layer);
+                    tiles[i][j] = tile;
                 }
+                catch { continue; }
+                // 瓦片读取失败，则忽略该瓦片
             }
         }
     }
@@ -160,7 +172,7 @@ public class TileMap {
             BuildingInfo currentInfo = tileMapInfo.buildingInfos[i];
             building.StartBuilding(currentInfo.spriteInfo.ReturnAnimation(Content),
             new Vector2(currentInfo.posX, currentInfo.posY), new Vector2(currentInfo.anchorPointX, currentInfo.anchorPointY),
-            currentInfo.sizeScale, currentInfo.angle, SpriteEffects.None, currentInfo.layer);
+            currentInfo.sizeScale, currentInfo.angle, SpriteEffects.None, currentInfo.layer, currentInfo.extArgus);
             buildings.Add(building);
         }
     }
@@ -175,6 +187,27 @@ public class TileMap {
     #endregion
 
     /// <summary>
+    /// 平移整个瓦片地图
+    /// </summary>
+    /// <param name="swiftPos">偏移量</param>
+    public void Translate(Vector2 swiftPos) {
+        // 同时平移瓦片，地物和瓦片物理
+        for (int i = 0; i < tiles.Length; i++) {
+            for (int j = 0; j < tiles[i].Length; j++) {
+                tiles[i][j]?.Translate(swiftPos);
+            }
+        }
+        foreach (Building building in buildings) {
+            building?.Translate(swiftPos);
+        }
+        for (int i = 0; i < tilePhysics.CollisionBoxs.Length; i++) {
+            for (int j = 0; j < tilePhysics.CollisionBoxs[i].Length; j++) {
+                tilePhysics.CollisionBoxs[i][j]?.Translate(swiftPos);
+            }
+        }
+    }
+
+    /// <summary>
     /// 更新瓦片地图
     /// </summary>
     public void Update(GameTime gameTime) {
@@ -186,6 +219,41 @@ public class TileMap {
         foreach (Building building in buildings) {
             building.Update(gameTime);
         }
+    }
+
+    /// <summary>
+    /// 设置单个瓦片信息
+    /// </summary>
+    /// <param name="tileName">瓦片名称</param>
+    /// <param name="row">行坐标</param>
+    /// <param name="column">列坐标</param>
+    /// <param name="extArgus">额外参数</param>
+    public void SetTile(string tileName, int row, int column, object[] extArgus) {
+        try {
+            var tileInfo = tileMapInfo.tileDic[tileName];
+            // 从字典中匹配相应的瓦片信息
+            dynamic obj = assembly.CreateInstance(tileInfo.tileClass);
+            Tile tile = (Tile)obj;
+            var spriteInfo = tileMapInfo.spriteDic[tileInfo.usedSprite];
+            // 找到图集，那么创建瓦片
+            tile.BeginTile(spriteInfo.texture, tileInfo.usedFrameL,
+            tileInfo.usedFrameR, tileInfo.startFrame, tileInfo.frameDelay, extArgus);
+            // 将指定位置的瓦片换成对应的瓦片
+            tile.drawable = new Drawable(tile.UsedSprite, new Vector2(column * tileWidth, row * tileHeight),
+            new Vector2(-tile.UsedSprite.Width / 2, -tile.UsedSprite.Height / 2),
+            tileWidth / tile.UsedSprite.Width, 0, SpriteEffects.None, layer);
+            tiles[row][column] = tile;
+        }
+        catch { return; }
+        // 忽略掉错误的内容
+    }
+
+    /// <summary>
+    /// 重新使用一套地图瓦片组成信息来构建地图
+    /// </summary>
+    /// <param name="mapInfos">地图瓦片组成信息</param>
+    public void SetTiles(string[][] mapInfos) {
+        LoadTiles(tileMapInfo, mapInfos);
     }
 
     /// <summary>

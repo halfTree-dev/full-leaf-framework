@@ -30,9 +30,13 @@ public class Building
         float sizeScale,
         float angle = 0,
         SpriteEffects effects = SpriteEffects.None,
-        int layer = 0) {
+        int layer = 0, object[] extArgus = null) {
             drawable = new Drawable(currentAnimation, pos, anchorPoint, sizeScale,
             angle, effects, layer);
+    }
+
+    public virtual void Translate(Vector2 swiftPos) {
+        drawable.pos += swiftPos;
     }
 
     /// <summary>

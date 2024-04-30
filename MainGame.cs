@@ -76,7 +76,7 @@ public class MainGame : Game
         // TODO: use this.Content to load your game content here
         // 读取菜单
         Camera hudCamera = new Camera(spriteBatch, new Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
-        new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), new Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+        new Vector2(400, 300), new Vector2(800, 600));
         hudController = new HudController(Content, hudCamera);
         Menu menu = (Menu)hudController.AddHud("utils/Interact/test_hud.json", true, true);
         menu.FillMenu(inputManager, hudCamera);
@@ -170,11 +170,11 @@ public class MainGame : Game
         hudController.InsertDrawObjects();
         // 测试BmFont
         bmfontController.InsertDrawObjects(camera, new string[2] { "你好，世界！", "Hello, BMFont!"},
-        new Vector2(0, 100), BmfontDrawable.TranslateMethod.Middle, 1, true);
+        new Vector2(0, 0), BmfontDrawable.TranslateMethod.Middle, 1);
         bmfontController.InsertDrawObjects(camera, new string[2] { "你好，世界！", "Hello, BMFont!"},
-        new Vector2(-350, 100), BmfontDrawable.TranslateMethod.Left, 1, false, transparency : 0.75f);
+        new Vector2(0, 100), BmfontDrawable.TranslateMethod.Left, 1, transparency : 0.75f);
         bmfontController.InsertDrawObjects(camera, new string[2] { "你好，世界！", "Hello, BMFont!"},
-        new Vector2(350, 100), BmfontDrawable.TranslateMethod.Right, 0.75f, true, transparency : 0.5f);
+        new Vector2(0, 200), BmfontDrawable.TranslateMethod.Right, 1, transparency : 0.5f);
         base.Update(gameTime);
     }
 

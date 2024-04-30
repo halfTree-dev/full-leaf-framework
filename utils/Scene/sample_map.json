@@ -23,6 +23,7 @@
 
     "mapWidth":10,
     "mapHeight":5,
+    "layer":10,
     "mapInfos":[
         ["#", "#", "#", "#", "#", "#", "#", "#", "#", "#"],
         ["#", "#", "#", "#", "#", "#", "#", "#", "#", "#"],
@@ -40,7 +41,8 @@
             "usedFrameL":0,
             "usedFrameR":0,
             "frameDelay":0,
-            "startFrame":0
+            "startFrame":0,
+            "extArgus":[]
         },
         {
             "tileClass":"full_leaf_framework.Scene.Tile",
@@ -50,7 +52,8 @@
             "usedFrameR":0,
             "frameDelay":0,
             "startFrame":0,
-            "comments5":"认为瓦片中心为(0, 0),相对坐标啦"
+            "comments5":"认为瓦片中心为(0, 0),相对坐标啦",
+            "extArgus":[]
         }
     ],
 
@@ -70,7 +73,8 @@
             "anchorPointY":0,
             "sizeScale":1,
             "angle":0,
-            "layer":1
+            "layer":1,
+            "extArgus":[]
         }
     ],
 

@@ -11,7 +11,7 @@ namespace full_leaf_framework.Scene;
 
 public class ChildTile : Tile {
 
-    public override void BeginTile(AnimatedSprite usedSprite, int usedFrameL, int usedFrameR, int currentFrame, float frameDelay, string[] extArugs)
+    public override void BeginTile(AnimatedSprite usedSprite, int usedFrameL, int usedFrameR, int currentFrame, float frameDelay, object[] extArugs)
     {
         base.BeginTile(usedSprite, usedFrameL, usedFrameR, currentFrame, frameDelay, extArugs);
         Console.WriteLine("我是一个特殊的瓦片类！");

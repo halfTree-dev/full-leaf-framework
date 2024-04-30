@@ -46,7 +46,7 @@ public class Menu : Hud {
         var mouse = inputManager.GetTrackingMouse();
         Vector2 mousePos = mouse.pos.ToVector2();
         mousePos = camera.ReturnPointerPos(mousePos);
-        if (ShapeManager.IsCollision(button.collisionBox, new Circle(mouse.pos.ToVector2(), 1))) {
+        if (ShapeManager.IsCollision(button.collisionBox, new Circle(mousePos, 1))) {
             button.focus.Invoke(button);
             if (mouse.firedLeft) { button.fired?.Invoke(button); }
             if (mouse.pressedLeft) { button.hold?.Invoke(button);  }

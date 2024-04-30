@@ -17,6 +17,7 @@ public class CollisionTestMenu : Hud {
         var polygonTest = (TestPolygon)hudUnit;
         if (inputManager.GetTrackingKey(polygonTest.activeKey).pressed) {
             var mouse = inputManager.GetTrackingMouse();
+            // 注意转换相对坐标
             polygonTest.drawable.pos = mouse.pos.ToVector2();
         }
         polygonTest.drawable.settledFrame = polygonTest.showingPolygon;

@@ -99,7 +99,7 @@ public class BmfontController {
     /// <summary>
     /// 获得由指定字符串转化而成的Drawable集合
     /// </summary>
-    private BmfontDrawable GetDrawableString(string drawString, float sizeScale, bool noOffSet = true,
+    private BmfontDrawable GetDrawableString(string drawString, float sizeScale, bool noOffSet = false,
     SpriteEffects effects = SpriteEffects.None, int layer = 10, float transparency = 1) {
         List<Drawable> drawChars = new List<Drawable>();
         int xSwift = 0;
@@ -110,7 +110,7 @@ public class BmfontController {
             AnimatedSprite sprite = pagesDic[charsDic[charAscii].Page];
             FontChar fontChar = charsDic[charAscii];
             var drawable = new Drawable(sprite, new Vector2(xSwift, 0),
-            new Vector2(fontChar.Width / 2, fontChar.Height / 2), sizeScale,
+            new Vector2(0, -fontChar.Height / 2), sizeScale,
             drawArea : new Rectangle(fontChar.X, fontChar.Y, fontChar.Width, fontChar.Height),
             effects : effects, layer : layer, transparency : transparency);
             if (!noOffSet) { drawable.pos += new Vector2(fontChar.XOffset, fontChar.YOffset); }
@@ -119,14 +119,11 @@ public class BmfontController {
             if (i < charArray.Length - 1) {
                 Point kerning = new Point(charArray[i], charArray[i+1]);
                 if (kerningsDic.ContainsKey(kerning)) {
-                    xSwift += (int)(kerningsDic[kerning] * sizeScale);
+                    xSwift += (int)(kerningsDic[kerning] * sizeScale) + (int)(fontChar.XAdvance * sizeScale);
                 }
                 else {
                     xSwift += (int)(fontChar.XAdvance * sizeScale);
                 }
-            }
-            else {
-                xSwift += (int)(fontChar.XAdvance * sizeScale);
             }
             // 推进到下一个绘制位点，如果有字偶矩则使用字偶矩
         }
@@ -152,7 +149,7 @@ public class BmfontController {
     /// <param name="layer">绘制的优先级，越小越高，越容易绘制在底层</param>
     /// <param name="transparency">透明度（0为完全透明，1为完全不透明）</param>
     public void InsertDrawObjects(Camera camera, string drawString,
-    Vector2 pos, BmfontDrawable.TranslateMethod method, float sizeScale = 1, bool noOffSet = true,
+    Vector2 pos, BmfontDrawable.TranslateMethod method, float sizeScale = 1, bool noOffSet = false,
     SpriteEffects effects = SpriteEffects.None, int layer = 10, float transparency = 1) {
         try { var drawableString = GetDrawableString(drawString, sizeScale, noOffSet, effects, layer, transparency);
             drawableString.InsertDrawObjects(camera, pos, method);
@@ -173,7 +170,7 @@ public class BmfontController {
     /// <param name="layer">绘制的优先级，越小越高，越容易绘制在底层</param>
     /// <param name="transparency">透明度（0为完全透明，1为完全不透明）</param>
     public void InsertDrawObjects(Camera camera, string[] drawString,
-    Vector2 pos, BmfontDrawable.TranslateMethod method, float sizeScale = 1, bool noOffSet = true,
+    Vector2 pos, BmfontDrawable.TranslateMethod method, float sizeScale = 1, bool noOffSet = false,
     SpriteEffects effects = SpriteEffects.None, int layer = 10, float transparency = 1) {
         foreach (string singleString in drawString) {
             try {

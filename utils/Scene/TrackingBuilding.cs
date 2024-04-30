@@ -29,7 +29,7 @@ public class TrackingBuilding : Building
         float sizeScale,
         float angle = 0,
         SpriteEffects effects = SpriteEffects.None,
-        int layer = 0) {
+        int layer = 0, object[] extArgus = null) {
             base.StartBuilding(currentAnimation, pos, anchorPoint, sizeScale,
             angle, effects, layer);
             track = MainGame.trackController.ReturnAnimationTrack("SampleAnimation1");
