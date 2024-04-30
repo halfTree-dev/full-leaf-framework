@@ -49,16 +49,17 @@ public class TilePhysics {
                 Vector2 shiftPos = new Vector2(j * tileMap.TileWidth, i * tileMap.TileHeight);
                 string currentTile = tileMapInfo.mapInfos[i][j];
                 // 然后计算每个瓦片的碰撞区域
-                foreach (TilePhysicsInfo tilePhysicsInfo in tileMapInfo.tilePhysics) {
-                    if (currentTile == tilePhysicsInfo.tileName) {
-                        Polygon collisionArea = tilePhysicsInfo.GetCollisionBox();
-                        if (collisionArea != null)
-                            collisionArea.Translate(shiftPos);
-                        // 创建相应的碰撞区域
-                        collisionBoxs[i][j] = new CollisionBox(collisionArea, tilePhysicsInfo.collisionLayer);
-                        break;
-                    }
+                try {
+                    var tilePhysicsInfo = tileMapInfo.tilePhysicsDic[currentTile];
+                    Polygon collisionArea = tilePhysicsInfo.GetCollisionBox();
+                    if (collisionArea != null)
+                        collisionArea.Translate(shiftPos);
+                    // 创建相应的碰撞区域
+                    collisionBoxs[i][j] = new CollisionBox(collisionArea, tilePhysicsInfo.collisionLayer);
+                    break;
                 }
+                catch { continue; }
+                // 如果读取失败则忽略
             }
         }
     }
@@ -153,6 +154,13 @@ public class CollisionBox {
     public CollisionBox(Polygon collisionArea, int collisionLayer) {
         this.collisionArea = collisionArea;
         this.collisionLayer = collisionLayer;
+    }
+
+    /// <summary>
+    /// 平移碰撞箱
+    /// </summary>
+    public virtual void Translate(Vector2 swiftPos) {
+        collisionArea?.Translate(swiftPos);
     }
 
 }

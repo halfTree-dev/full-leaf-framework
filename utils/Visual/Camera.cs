@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace full_leaf_framework.Visual;
 
@@ -152,17 +153,8 @@ public class Camera {
 
     private void DrawList() {
         // 将绘制物体按照y值和优先级排序
-        for (int i = 0; i < drawTargets.Count; i++) {
-            for (int j = i + 1; j < drawTargets.Count; j++) {
-                if (drawTargets[i].layer > drawTargets[j].layer ||
-                (drawTargets[i].layer == drawTargets[j].layer &&
-                drawTargets[i].pos.Y > drawTargets[j].pos.Y)) {
-                    Drawable swap = drawTargets[i];
-                    drawTargets[i] = drawTargets[j];
-                    drawTargets[j] = swap;
-                }
-            }
-        }
+        drawTargets.OrderBy(i => i.layer).ThenBy(i => i.pos.Y);
+        // 然后再输出drawObject对象
         foreach (Drawable obj in drawTargets)
         {
             try {

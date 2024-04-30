@@ -13,8 +13,7 @@ public class MainGame : Game
     public static int SCREEN_WIDTH = 800;
     public static int SCREEN_HEIGHT = 600;
 
-    public MainGame()
-    {
+    public MainGame() {
         graphics = new GraphicsDeviceManager(this)
         {
             PreferredBackBufferWidth = SCREEN_WIDTH,
@@ -25,25 +24,21 @@ public class MainGame : Game
         IsMouseVisible = true;
     }
 
-    protected override void Initialize()
-    {
+    protected override void Initialize() {
         base.Initialize();
     }
 
-    protected override void LoadContent()
-    {
+    protected override void LoadContent() {
         spriteBatch = new SpriteBatch(GraphicsDevice);
     }
 
-    protected override void Update(GameTime gameTime)
-    {
+    protected override void Update(GameTime gameTime) {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
         base.Update(gameTime);
     }
 
-    protected override void Draw(GameTime gameTime)
-    {
+    protected override void Draw(GameTime gameTime) {
         GraphicsDevice.Clear(Color.CornflowerBlue);
         spriteBatch.Begin();
         spriteBatch.End();

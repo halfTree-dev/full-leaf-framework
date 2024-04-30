@@ -58,19 +58,19 @@ public class InputManager
         foreach (Keys key in keys)
         {
             // 创建追踪按键
-            TrackingKey new_key = new TrackingKey(key, this);
-            bool is_repeated = false;
-            foreach (TrackingKey tracked_key in trackingKeys)
+            TrackingKey newKey = new TrackingKey(key, this);
+            bool isRepeated = false;
+            foreach (TrackingKey trackedKey in trackingKeys)
             {
-                if (tracked_key.keyId == key)
+                if (trackedKey.keyId == key)
                 {
-                    is_repeated = true;
+                    isRepeated = true;
                 }
             }
-            if (!is_repeated)
+            if (!isRepeated)
             {
                 // 不重复时增添按键
-                trackingKeys.Add(new_key);
+                trackingKeys.Add(newKey);
             }
         }
     }
