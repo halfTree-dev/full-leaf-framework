@@ -34,6 +34,14 @@ public class TileMapInfo {
     /// </summary>
     public int tileHeight;
     /// <summary>
+    /// 每个瓦片的额外横向位移
+    /// </summary>
+    public int xAdvance;
+    /// <summary>
+    /// 每个瓦片的额外纵向位移
+    /// </summary>
+    public int yAdvance;
+    /// <summary>
     /// 瓦片地图列数
     /// </summary>
     public int mapWidth;

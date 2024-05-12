@@ -21,6 +21,10 @@
     "tileHeight":30,
     "comments4":"请注意,这里的width和height表示的是在游戏地图上的地块大小",
 
+    "xAdvance":0,
+    "yAdvance":0,
+    "comments6":"每个瓦片的额外偏移量",
+
     "mapWidth":10,
     "mapHeight":5,
     "layer":10,

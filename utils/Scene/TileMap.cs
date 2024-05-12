@@ -56,6 +56,17 @@ public class TileMap {
     public int MapHeight { get => mapHeight; }
 
     /// <summary>
+    /// 每个瓦片的额外X偏移量
+    /// </summary>
+    private int xAdvance;
+    /// <summary>
+    /// 每个瓦片的额外Y偏移量
+    /// </summary>
+    private int yAdvance;
+    public int XAdvance { get => xAdvance; }
+    public int YAdvance { get => yAdvance; }
+
+    /// <summary>
     /// 瓦片将会在的图层
     /// </summary>
     private int layer;
@@ -97,6 +108,8 @@ public class TileMap {
         tileHeight = tileMapInfo.tileHeight;
         mapWidth = tileMapInfo.mapWidth;
         mapHeight = tileMapInfo.mapHeight;
+        xAdvance = tileMapInfo.xAdvance;
+        yAdvance = tileMapInfo.yAdvance;
         layer = tileMapInfo.layer;
         // 填充基本数据
         LoadSprites(tileMapInfo);
@@ -146,9 +159,10 @@ public class TileMap {
                     tile.BeginTile(spriteInfo.texture, tileInfo.usedFrameL,
                     tileInfo.usedFrameR, tileInfo.startFrame, tileInfo.frameDelay, tileInfo.extArgus);
                     // 对每个Tile对象生成Drawable
-                    tile.drawable = new Drawable(tile.UsedSprite, new Vector2(j * tileWidth, i * tileHeight),
+                    tile.drawable = new Drawable(tile.UsedSprite,
+                    new Vector2(j * (tileWidth + tileMapInfo.xAdvance), i * (tileHeight + tileMapInfo.yAdvance)),
                     new Vector2(-tile.UsedSprite.Width / 2, -tile.UsedSprite.Height / 2),
-                    tileWidth / tile.UsedSprite.Width, 0, SpriteEffects.None, layer);
+                    (float)tileWidth / tile.UsedSprite.Width, 0, SpriteEffects.None, layer);
                     tiles[i][j] = tile;
                 }
                 catch { continue; }
@@ -239,7 +253,8 @@ public class TileMap {
             tile.BeginTile(spriteInfo.texture, tileInfo.usedFrameL,
             tileInfo.usedFrameR, tileInfo.startFrame, tileInfo.frameDelay, extArgus);
             // 将指定位置的瓦片换成对应的瓦片
-            tile.drawable = new Drawable(tile.UsedSprite, new Vector2(column * tileWidth, row * tileHeight),
+            tile.drawable = new Drawable(tile.UsedSprite, new Vector2(column * (tileWidth + tileMapInfo.xAdvance),
+            row * (tileHeight + tileMapInfo.yAdvance)),
             new Vector2(-tile.UsedSprite.Width / 2, -tile.UsedSprite.Height / 2),
             tileWidth / tile.UsedSprite.Width, 0, SpriteEffects.None, layer);
             tiles[row][column] = tile;
@@ -261,7 +276,8 @@ public class TileMap {
     /// </summary>
     /// <param name="polygon">多边形</param>
     /// <param name="collisionLayer">碰撞图层</param>
-    public bool IsCollision(Polygon polygon, int collisionLayer) {
+    /// <returns>碰撞结果，包含是否碰撞和涉及瓦片</returns>
+    public TileCollisionResult IsCollision(Polygon polygon, int collisionLayer) {
         return tilePhysics.IsCollision(polygon, collisionLayer);
     }
 
@@ -270,7 +286,8 @@ public class TileMap {
     /// </summary>
     /// <param name="circle">圆形</param>
     /// <param name="collisionLayer">碰撞图层</param>
-    public bool IsCollision(Circle circle, int collisionLayer) {
+    /// <returns>碰撞结果，包含是否碰撞和涉及瓦片</returns>
+    public TileCollisionResult IsCollision(Circle circle, int collisionLayer) {
         return tilePhysics.IsCollision(circle, collisionLayer);
     }
 

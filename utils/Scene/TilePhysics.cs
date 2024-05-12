@@ -5,6 +5,7 @@
 需要注意的是这个物理系统只管瓦片的物理效果，不管建筑物的
 */
 
+using System.Collections.Generic;
 using full_leaf_framework.Physics;
 using Microsoft.Xna.Framework;
 
@@ -46,7 +47,7 @@ public class TilePhysics {
                 collisionBoxs[i][j] = null;
                 // 用tileMap[i][j]表示第i+1行j+1列的瓦片
                 // 首先计算瓦片左上角相对于地图(0, 0)的偏移量
-                Vector2 shiftPos = new Vector2(j * tileMap.TileWidth, i * tileMap.TileHeight);
+                Vector2 shiftPos = new Vector2(j * (tileMap.TileWidth + tileMapInfo.xAdvance), i * (tileMap.TileHeight + tileMapInfo.yAdvance));
                 string currentTile = tileMapInfo.mapInfos[i][j];
                 // 然后计算每个瓦片的碰撞区域
                 try {
@@ -56,7 +57,6 @@ public class TilePhysics {
                         collisionArea.Translate(shiftPos);
                     // 创建相应的碰撞区域
                     collisionBoxs[i][j] = new CollisionBox(collisionArea, tilePhysicsInfo.collisionLayer);
-                    break;
                 }
                 catch { continue; }
                 // 如果读取失败则忽略
@@ -67,35 +67,49 @@ public class TilePhysics {
     /// <summary>
     /// 判断是否碰撞
     /// </summary>
-    public bool IsCollision(Polygon shape, int collisionLayer)
+    public TileCollisionResult IsCollision(Polygon shape, int collisionLayer)
     {
-        bool result = false;
+        bool isCollision = false;
+        List<Tile> collisionTiles = new List<Tile>();
         int[] favoriteArea = GetFavouriteArea(shape);
         for (int i = favoriteArea[0]; i <= favoriteArea[2]; i++) {
             for (int j = favoriteArea[1]; j <= favoriteArea[3]; j++) {
                 if (collisionBoxs[j][i].collisionLayer == collisionLayer
                 && collisionBoxs[j][i].collisionArea != null)
-                    result = ShapeManager.IsCollision(collisionBoxs[j][i].collisionArea, shape) || result;
+                    if (ShapeManager.IsCollision(collisionBoxs[j][i].collisionArea, shape)) {
+                        isCollision = true;
+                        collisionTiles.Add(tileMap.tiles[j][i]);
+                    }
             }
         }
-        return result;
+        return new TileCollisionResult() {
+            isCollision = isCollision,
+            collisionTiles = collisionTiles.ToArray()
+        };
     }
 
     /// <summary>
     /// 判断是否碰撞
     /// </summary>
-    public bool IsCollision(Circle shape, int collisionLayer)
+    public TileCollisionResult IsCollision(Circle shape, int collisionLayer)
     {
-        bool result = false;
+        bool isCollision = false;
+        List<Tile> collisionTiles = new List<Tile>();
         int[] favoriteArea = GetFavouriteArea(shape);
         for (int i = favoriteArea[0]; i <= favoriteArea[2]; i++) {
             for (int j = favoriteArea[1]; j <= favoriteArea[3]; j++) {
                 if (collisionBoxs[j][i].collisionLayer == collisionLayer
                 && collisionBoxs[j][i].collisionArea != null)
-                    result = ShapeManager.IsCollision(collisionBoxs[j][i].collisionArea, shape) || result;
+                    if (ShapeManager.IsCollision(collisionBoxs[j][i].collisionArea, shape)) {
+                        isCollision = true;
+                        collisionTiles.Add(tileMap.tiles[j][i]);
+                    }
             }
         }
-        return result;
+        return new TileCollisionResult() {
+            isCollision = isCollision,
+            collisionTiles = collisionTiles.ToArray()
+        };
     }
 
     /// <summary>
@@ -106,10 +120,10 @@ public class TilePhysics {
     private int[] GetFavouriteArea(IShape shape) {
         Rectangle favouriteArea = shape.GetSmallestAABBRectangle();
         // 瓦片索引对应：左上角i 左上角j 右下角i 右下角j
-        float leftEdge = (float)favouriteArea.X / tileMap.TileWidth;
-        float rightEdge = (float)(favouriteArea.X + favouriteArea.Width) / tileMap.TileWidth;
-        float upEdge = (float)favouriteArea.Y / tileMap.TileHeight;
-        float downEdge = (float)(favouriteArea.Y + favouriteArea.Height) / tileMap.TileHeight;
+        float leftEdge = (favouriteArea.X - tileMap.tiles[0][0].drawable.pos.X) / (tileMap.TileWidth + tileMap.XAdvance);
+        float rightEdge = (favouriteArea.X + favouriteArea.Width - tileMap.tiles[0][0].drawable.pos.X) / (tileMap.TileWidth + tileMap.XAdvance);
+        float upEdge = (favouriteArea.Y - tileMap.tiles[0][0].drawable.pos.Y) / (tileMap.TileHeight + tileMap.YAdvance);
+        float downEdge = (favouriteArea.Y + favouriteArea.Height - tileMap.tiles[0][0].drawable.pos.Y) / (tileMap.TileHeight + tileMap.YAdvance);
         int[] result = new int[4] {(int)leftEdge, (int)upEdge, (int)rightEdge + 1, (int)downEdge + 1};
         // 算出对应瓦片索引
         result[0] = LimitTheValue(result[0], 0, tileMap.MapWidth - 1);
@@ -162,5 +176,21 @@ public class CollisionBox {
     public virtual void Translate(Vector2 swiftPos) {
         collisionArea?.Translate(swiftPos);
     }
+
+}
+
+/// <summary>
+/// 瓦片地图碰撞结果
+/// </summary>
+public struct TileCollisionResult {
+
+    /// <summary>
+    /// 是否发生碰撞
+    /// </summary>
+    public bool isCollision;
+    /// <summary>
+    /// 碰撞的瓦片对象列表
+    /// </summary>
+    public Tile[] collisionTiles;
 
 }
